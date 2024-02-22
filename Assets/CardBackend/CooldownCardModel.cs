@@ -21,11 +21,11 @@ namespace CardOperations
         // TODO placeholder later ability implementation
         // public Ability ability;
 
-        public new void Awake()
+        public new void OnEnable()
         {
-            Debug.Log("cooldown card model awake: " + cardName);
+            //Debug.Log("cooldown card model awake: " + cardName);
             initialTime = Time.time - cooldown;
-            base.Awake();
+            base.OnEnable();
         }
 
 
@@ -33,13 +33,14 @@ namespace CardOperations
         // might want to refactor into coroutine?
         private bool OnCooldown()
         {
-            Debug.Log("checking cooldown: ");
-            Debug.Log("current time: " + Time.time + ", initial time: " + initialTime);
+            // Debug.Log("current time: " + Time.time + ", initial time: " + initialTime);
             if (Time.time > initialTime + cooldown)
             {
-                return true;
+                //Debug.Log("is not on cooldown");
+                return false;
             }
-            return false;
+            //Debug.Log("is on cooldown");
+            return true;
         }
 
         // returns float 0-1 for how far cooldown has progressed 
@@ -69,6 +70,7 @@ namespace CardOperations
         {
             if (OnCooldown())
             {
+                // ideally shouldnt hit here since UseActive checks OnCooldown() too, but just in case
                 Debug.Log("already on cooldown, avoided restarting cooldown");
                 return;
             }
@@ -81,11 +83,12 @@ namespace CardOperations
             // first checks if card on cooldown
             if (OnCooldown())
             {
-                Debug.Log("Card " + name + " on cooldown");
+                Debug.Log("Card " + cardName + " on cooldown, " + CooldownRemaining() + " seconds left");
                 return;
                 // ability not used if on cooldown
             }
             // if not on cooldown, runs parent UseActive()
+            Debug.Log("starting cooldown on " + cardName);
             StartCooldown();
             base.UseActive();
         }

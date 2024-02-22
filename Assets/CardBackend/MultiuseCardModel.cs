@@ -16,18 +16,18 @@ namespace CardOperations
         public int maxUses;
         private int remainingUses;
 
-        public new void Awake()
+        public new void OnEnable()
         {
-            Debug.Log("multiuse card model awake: " + cardName);
+            //Debug.Log("multiuse card model awake: " + cardName);
             remainingUses = maxUses;
-            base.Awake();
+            base.OnEnable();
         }
 
-        // TODO fix UseActive conditions 
+        // TODO fix UseActive conditions. add cooldown function here.
         public override void UseActive()
         {
             // first checks if remaining uses
-            if (remainingUses > 0)
+            if (remainingUses == 0)
             {
                 Debug.Log("Card " + name + " has no uses left");
                 return;

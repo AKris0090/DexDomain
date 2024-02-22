@@ -32,9 +32,9 @@ namespace CardOperations
         //public int equipSlot;
         [SerializeField] internal EquipSlots equipSlot = EquipSlots.Primary;
 
-        public void Awake()
+        public void OnEnable()
         {
-            Debug.Log("base card awake: " +  cardName);
+            //Debug.Log("base card awake: " +  cardName);
             isEquipped = false;
         }
 
