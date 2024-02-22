@@ -15,8 +15,7 @@ public class CharacterMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sprite = this.transform.GetChild(0).gameObject;
-        rb = sprite.GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         Cursor.lockState = CursorLockMode.Confined;
     }
 
@@ -33,9 +32,9 @@ public class CharacterMovement : MonoBehaviour
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         // get direction you want to point at
-        Vector2 direction = (mousePos - (Vector2) sprite.transform.position).normalized;
+        Vector2 direction = (mousePos - (Vector2) transform.position).normalized;
 
         // set vector of transform directly
-        sprite.transform.up = direction;
+        transform.up = direction;
     }
 }
