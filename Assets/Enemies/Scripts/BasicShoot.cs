@@ -10,7 +10,6 @@ using UnityEngine.AI;
 
 public class BasicShoot : Enemy
 {
-    [SerializeField] Transform target;
     NavMeshAgent agent;
     public GameObject bullet;
     public float viewDistance = 30;
@@ -29,9 +28,10 @@ public class BasicShoot : Enemy
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         // external code ends
-        StartCoroutine(UpdateTarget());
         readyToFire = true;
         canTakeDamage = true;
+        manager = EnemyManager.Instance;
+        StartCoroutine(UpdateTarget());
     }
 
     // Only change directions once every 0.1 seconds, just to save processing power
@@ -39,27 +39,30 @@ public class BasicShoot : Enemy
     {
         while (true)
         {
+            Vector3 playerPos = manager.GetPlayerPosition();
             // Draw a line between the target and this enemy
-            Vector2 line = target.position - transform.position;
+            Vector2 line = playerPos - transform.position;
             // Draw a line from here to the target
             RaycastHit2D hit = Physics2D.Raycast(transform.position, line, viewDistance);
             // If it intercepts the target, update the destination
-            if(hit.collider && hit.collider.gameObject.transform == target)
+            if(hit.collider && manager.CheckIfPlayer(hit.collider.gameObject))
             {
                 // If the target is outside the fireRange, move towards it
                 if (line.magnitude > fireRange)
                 {
-                    agent.SetDestination(target.position); 
+                    agent.SetDestination(playerPos); 
                     // If it is inside the run range, run away and fire
                 }
                 else if (line.magnitude < runRange)
                 {
-                    agent.SetDestination(-line);
+                    Vector2 pos = transform.position;
+                    agent.SetDestination(pos-line);
                     Fire();
                 }else
                 // If it is between the fire and run range, stay in place
                 // TODO: make it move around randomly a bit, to make things more interesting for the player
                 {
+                    
                     agent.SetDestination(transform.position);
                     Fire();
                 }
@@ -83,14 +86,8 @@ public class BasicShoot : Enemy
             readyToFire = false;
             StartCoroutine(FireCooldown());
             GameObject newBullet = Instantiate(bullet, transform.position, transform.rotation);
-            newBullet.GetComponent<Bullet>().SetTarget(target.position, force, bulletLifespan);
+            newBullet.GetComponent<Bullet>().SetTarget(manager.GetPlayerPosition(), force, bulletLifespan);
         }
         return;
-    }
-
-    // Change the basic shooter's target to loc
-    public void setTarget(Transform loc)
-    {
-        target = loc;
     }
 }

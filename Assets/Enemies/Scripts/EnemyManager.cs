@@ -42,10 +42,9 @@ public class EnemyManager : MonoBehaviour
 
     // Spawns a basic shoot enemy at location, targeting target
     // Basic shoot enemies move towards their target, until they're within a certain range, before firing a damaging projectile
-    public void SpawnBasicShoot(Vector2 location, Transform target)
+    public void SpawnBasicShoot(Vector3 location)
     {
-        GameObject newEnemy = Instantiate(BasicShoot, location, BasicShoot.transform.rotation);
-        newEnemy.GetComponent<BasicShoot>().setTarget(target);
+        Instantiate(BasicShoot, location, BasicShoot.transform.rotation);
     }
 
     // Hurts the passed in enemy
@@ -62,7 +61,7 @@ public class EnemyManager : MonoBehaviour
     }
 
     // Return the player's position, mostly used by enemies
-    public Vector2 GetPlayerPosition()
+    public Vector3 GetPlayerPosition()
     {
         return Player.transform.position;
     }
