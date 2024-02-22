@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     // NEED TO SET THIS TO TRUE IN ALL THE CHILD STARTS OR THEY CAN'T TAKE DAMAGE
     protected bool canTakeDamage;
     public float damageCooldown = 0.5f;
+    protected EnemyManager manager;
     // Take damage using damage feedback and waiting for damage cooldown before being able to take damage again
     private void Start()
     {
