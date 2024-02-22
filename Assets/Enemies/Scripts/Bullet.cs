@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour
         Vector2 line = tar - transform.position;
         line = line.normalized;
         self.AddForce(line * force);
-        StartCoroutine(lifespan(life));
+        StartCoroutine(Lifespan(life));
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    IEnumerator lifespan(float seconds)
+    IEnumerator Lifespan(float seconds)
     {
         yield return new WaitForSeconds(seconds);
         Destroy(this.gameObject);
