@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    // Generic bullet, can be used for multiple enemies
+    // Create a instance, then use set target
+    // Give it a target, a force, and a target with set target
     Rigidbody2D self;
     private void Start()
     {
         self = GetComponent<Rigidbody2D>();
     }
-    public void SetTarget(Transform tar, float force, float life)
+    // Sends the bullet towards tar with force newtons for life seconds
+    public void SetTarget(Vector3 tar, float force, float life)
     {
         self = GetComponent<Rigidbody2D>();
         // Draw a line between the target and this bullet
-        Vector2 line = tar.position - transform.position;
+        Vector2 line = tar - transform.position;
         line = line.normalized;
         self.AddForce(line * force);
         StartCoroutine(lifespan(life));
@@ -21,7 +25,6 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("You sure hit something");
         EnemyManager.Instance.DamageObject(collision.gameObject);
         Destroy(this.gameObject);
     }

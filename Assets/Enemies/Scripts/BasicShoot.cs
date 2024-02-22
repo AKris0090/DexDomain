@@ -4,6 +4,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
+// This enemy needs to be given a target when it is created with set target
+// It will then move towards that target until it reaches fire range, at which point it will stop and begin firing at the target
+// Should the target move within run range units, it will run away
+
 public class BasicShoot : MonoBehaviour
 {
     [SerializeField] Transform target;
@@ -79,7 +83,7 @@ public class BasicShoot : MonoBehaviour
             readyToFire = false;
             StartCoroutine(FireCooldown());
             GameObject newBullet = Instantiate(bullet, transform.position, transform.rotation);
-            newBullet.GetComponent<Bullet>().SetTarget(target, force, bulletLifespan);
+            newBullet.GetComponent<Bullet>().SetTarget(target.position, force, bulletLifespan);
         }
         return;
     }
