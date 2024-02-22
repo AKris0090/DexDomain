@@ -52,15 +52,12 @@ public class EnemyManager : MonoBehaviour
     // TODO: firgue out a better way to do this
     // the switch statement to determine which enemy has been damaged, then calling the respective damage function,
     // feels clunky and kind of bad. I'll have to ask cole about a better way of doing this
-    public void DamageEnemy(GameObject enemy)
+    public void DamageEnemy(GameObject enemy, int amount)
     {
-        switch (enemy.tag)
+        Enemy test = enemy.GetComponent<Enemy>();
+        if(test != null)
         {
-            case "ShootEnemy":
-                enemy.GetComponent<BasicShoot>().Damage();
-                return;
-            default:
-                return;
+            test.Damage(amount);
         }
     }
 

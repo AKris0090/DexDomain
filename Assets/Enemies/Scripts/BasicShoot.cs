@@ -8,7 +8,7 @@ using UnityEngine.AI;
 // It will then move towards that target until it reaches fire range, at which point it will stop and begin firing at the target
 // Should the target move within run range units, it will run away
 
-public class BasicShoot : MonoBehaviour
+public class BasicShoot : Enemy
 {
     [SerializeField] Transform target;
     NavMeshAgent agent;
@@ -16,7 +16,6 @@ public class BasicShoot : MonoBehaviour
     public float viewDistance = 30;
     public float runRange = 5;
     public float fireRange = 20;
-    public int health = 1;
     public float firerate = 0.5f;
     public float force = 100f;
     public float bulletLifespan = 5f;
@@ -32,6 +31,7 @@ public class BasicShoot : MonoBehaviour
         // external code ends
         StartCoroutine(UpdateTarget());
         readyToFire = true;
+        canTakeDamage = true;
     }
 
     // Only change directions once every 0.1 seconds, just to save processing power
@@ -92,16 +92,5 @@ public class BasicShoot : MonoBehaviour
     public void setTarget(Transform loc)
     {
         target = loc;
-    }
-
-    // Take damage
-    public void Damage()
-    {
-        health--;
-        Debug.Log("Damage delt to enemy");
-        if(health == 0)
-        {
-            Destroy(this.gameObject);
-        }
     }
 }
