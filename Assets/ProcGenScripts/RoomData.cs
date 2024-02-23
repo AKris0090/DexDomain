@@ -12,53 +12,58 @@ public class RoomData : ScriptableObject
         West
     }
     // Editor exposed setter variables
-    [Header("Room Position")]
     [SerializeField]
-    private int x;
-    [SerializeField]
-    private int y;
+    private string roomName;
     [Header("Room Size")]
     [SerializeField]
     private int width;
     [SerializeField]
     private int height;
+    [SerializeField]
+    private float wallThickness = 2f;
     [Header("Room Connections")]
     [SerializeField]
-    private bool North;
+    private bool north;
     [SerializeField]
-    private bool East;
+    private bool east;
     [SerializeField]
-    private bool South;
+    private bool south;
     [SerializeField]
-    private bool West;
+    private bool west;
     [Header("Door Size")]
     [SerializeField]
-    private int doorSize;
-
-    // Public getters for the room position
-    public int X => x;
-    public int Y => y;
-    // Public getters for the room size
-    public int Width => width;
-    public int Height => height;
-    // Public getter for the door size
-    public int DoorSize => doorSize;
+    private Vector2 doorSize;
 
     // Dictionary to store the connections
-    public readonly Dictionary<Dir, bool> connectDirs = new()
+    private readonly Dictionary<Dir, bool> connectDirs = new()
     {
         { Dir.North, false },
         { Dir.East, false },
         { Dir.South, false },
         { Dir.West, false }
     };
+
+    // Public getter properties for the room data
+
+    public string RoomName => roomName;
+    public int Width => width;
+    public int Height => height;
+    public Vector2 DoorSize => doorSize;
+    // Public getters for the room connections
+    public Dictionary<Dir, bool> ConnectDirs => connectDirs;
+    public bool North => north;
+    public bool East => east;
+    public bool South => south;
+    public bool West => west;
+    public float WallThickness => wallThickness;
+
     // On editor validate, update the dictionary
     // This is needed as Dictionary is not serializable
     private void OnValidate()
     {
-        connectDirs[Dir.North] = North;
-        connectDirs[Dir.East] = East;
-        connectDirs[Dir.South] = South;
-        connectDirs[Dir.West] = West;
+        connectDirs[Dir.North] = north;
+        connectDirs[Dir.East] = east;
+        connectDirs[Dir.South] = south;
+        connectDirs[Dir.West] = west;
     }
 }
