@@ -7,13 +7,13 @@ public class Bullet : MonoBehaviour
     // Generic bullet, can be used for multiple enemies
     // Create a instance, then use set target
     // Give it a target, a force, and a target with set target
-    Rigidbody2D self;
+    protected Rigidbody2D self;
     private void Start()
     {
         self = GetComponent<Rigidbody2D>();
     }
     // Sends the bullet towards tar with force newtons for life seconds
-    public void SetTarget(Vector3 tar, float force, float life)
+    public virtual void SetTarget(Vector3 tar, float force, float life)
     {
         self = GetComponent<Rigidbody2D>();
         // Draw a line between the target and this bullet
@@ -23,13 +23,13 @@ public class Bullet : MonoBehaviour
         StartCoroutine(Lifespan(life));
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         EnemyManager.Instance.DamageObject(collision.gameObject);
         Destroy(this.gameObject);
     }
 
-    IEnumerator Lifespan(float seconds)
+    protected IEnumerator Lifespan(float seconds)
     {
         yield return new WaitForSeconds(seconds);
         Destroy(this.gameObject);

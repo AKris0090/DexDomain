@@ -27,7 +27,7 @@ namespace CardOperations
 
         // only allows UseActive() when remaining uses or not on cooldown
         // code here is unreasonably messy, sorry 
-        public override void UseActive()
+        public override void UseActive(Vector2 playerPosition, Vector2 lookAt)
         {
             // check if cooldown was triggered
             if (onCooldownMultiuse)
@@ -68,7 +68,7 @@ namespace CardOperations
                 StartCooldown(); 
             }
             // using scuffy skip method to call to base card class
-            BaseUseActive();
+            BaseUseActive(playerPosition, lookAt);
         }
         public override void SwapIn()
         {

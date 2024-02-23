@@ -115,40 +115,40 @@ public class CardManager : MonoBehaviour
 
     // methods to use equipped cards
     // maybe move to player model?
-    public void UsePrimary()
+    public void UsePrimary(Vector2 playerPosition, Vector2 lookAt)
     {
         int slot = (int) EquipSlots.Primary;
-        if (equippedCards[slot] != null ) {equippedCards[slot].UseActive(); }
+        if (equippedCards[slot] != null ) {equippedCards[slot].UseActive(playerPosition, lookAt); }
         else
         {
             Debug.Log("no primary card equipped");
             return;
         }
     }
-    public void UseSecondary()
+    public void UseSecondary(Vector2 playerPosition, Vector2 lookAt)
     {
         int slot = (int)EquipSlots.Secondary;
-        if (equippedCards[slot] != null) { equippedCards[slot].UseActive(); }
+        if (equippedCards[slot] != null) { equippedCards[slot].UseActive(playerPosition, lookAt); }
         else
         {
             Debug.Log("no secondary card equipped");
             return;
         }
     }
-    public void UseSpecial()
+    public void UseSpecial(Vector2 playerPosition, Vector2 lookAt)
     {
         int slot = (int)EquipSlots.Special;
-        if (equippedCards[slot] != null) { equippedCards[slot].UseActive(); }
+        if (equippedCards[slot] != null) { equippedCards[slot].UseActive(playerPosition, lookAt); }
         else
         {
             Debug.Log("no special card equipped");
             return;
         }
     }
-    public void UseMovement()
+    public void UseMovement(Vector2 playerPosition, Vector2 lookAt)
     {
         int slot = (int)EquipSlots.Movement;
-        if (equippedCards[slot] != null) { equippedCards[slot].UseActive(); }
+        if (equippedCards[slot] != null) { equippedCards[slot].UseActive(playerPosition, lookAt); }
         else
         {
             Debug.Log("no movement card equipped");
