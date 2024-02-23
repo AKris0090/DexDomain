@@ -16,6 +16,7 @@ public class RangedFloatReference : FloatReference
         {
             minValue = maxValue;
         }
+        defaultValue = Mathf.Clamp(defaultValue, minValue, maxValue);
         value = Mathf.Clamp(value, minValue, maxValue);
     }
 }

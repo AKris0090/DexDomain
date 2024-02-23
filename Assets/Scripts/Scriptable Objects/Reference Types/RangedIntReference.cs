@@ -18,6 +18,7 @@ public class RangedIntReference : IntReference
         {
             minValue = maxValue;
         }
+        defaultValue = Math.Clamp(defaultValue, minValue, maxValue);
         value = Math.Clamp(value, minValue, maxValue);
     }
 }
