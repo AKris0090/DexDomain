@@ -53,6 +53,7 @@ public class EnemyManager : MonoBehaviour
     // feels clunky and kind of bad. I'll have to ask cole about a better way of doing this
     public void DamageEnemy(GameObject enemy, int amount)
     {
+        Debug.Log(enemy);
         Enemy test = enemy.GetComponent<Enemy>();
         if(test != null)
         {

@@ -86,7 +86,7 @@ public class BasicShoot : Enemy
             readyToFire = false;
             StartCoroutine(FireCooldown());
             GameObject newBullet = Instantiate(bullet, transform.position, transform.rotation);
-            newBullet.GetComponent<Bullet>().SetTarget(manager.GetPlayerPosition(), force, bulletLifespan);
+            newBullet.GetComponent<Bullet>().SetTarget(manager.GetPlayerPosition(), force, bulletLifespan, this.gameObject);
         }
         return;
     }

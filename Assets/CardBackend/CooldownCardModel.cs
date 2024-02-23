@@ -72,7 +72,7 @@ namespace CardOperations
                 return;
             }
             initialTime = Time.time;
-            Debug.Log("started cooldown at time: " + initialTime);
+            //Debug.Log("started cooldown at time: " + initialTime);
         }
 
         // use active for cooldown card model

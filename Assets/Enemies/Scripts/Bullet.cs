@@ -8,12 +8,13 @@ public class Bullet : MonoBehaviour
     // Create a instance, then use set target
     // Give it a target, a force, and a target with set target
     protected Rigidbody2D self;
+    protected GameObject spawner;
     private void Start()
     {
         self = GetComponent<Rigidbody2D>();
     }
     // Sends the bullet towards tar with force newtons for life seconds
-    public virtual void SetTarget(Vector3 tar, float force, float life)
+    public virtual void SetTarget(Vector3 tar, float force, float life, GameObject spawner)
     {
         self = GetComponent<Rigidbody2D>();
         // Draw a line between the target and this bullet
@@ -21,12 +22,16 @@ public class Bullet : MonoBehaviour
         line = line.normalized;
         self.AddForce(line * force);
         StartCoroutine(Lifespan(life));
+        this.spawner = spawner;
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        EnemyManager.Instance.DamageObject(collision.gameObject);
-        Destroy(this.gameObject);
+        if (collision.gameObject != spawner && collision.gameObject.GetComponent<Bullet>() == null)
+        {
+            EnemyManager.Instance.DamageObject(collision.gameObject);
+            Destroy(this.gameObject);
+        }
     }
 
     protected IEnumerator Lifespan(float seconds)

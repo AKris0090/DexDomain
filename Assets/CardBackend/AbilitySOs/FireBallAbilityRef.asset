@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: FireBallAbilityRef
   m_EditorClassIdentifier: 
   fireBallRef: {fileID: 4824499621134588157, guid: ab714df045b5b7b41bca5acb82939aac, type: 3}
+  force: 400
+  lifespan: 5
