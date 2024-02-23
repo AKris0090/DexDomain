@@ -18,9 +18,6 @@ namespace CardOperations
         [SerializeField] internal float cooldown;
         internal float initialTime; // try having it be private?
 
-        // TODO placeholder later ability implementation
-        // public Ability ability;
-
         public new void OnEnable()
         {
             //Debug.Log("cooldown card model awake: " + cardName);
@@ -79,7 +76,7 @@ namespace CardOperations
         }
 
         // use active for cooldown card model
-        public override void UseActive() 
+        public override void UseActive(Vector2 playerPosition, Vector2 lookAt) 
         {
             // first checks if card on cooldown
             if (OnCooldown())
@@ -88,17 +85,18 @@ namespace CardOperations
                 return;
                 // ability not used if on cooldown
             }
+            abilityAbs.useAbility(playerPosition, lookAt);
             // if not on cooldown, runs parent UseActive()
             Debug.Log("starting cooldown on " + cardName);
             StartCooldown();
-            base.UseActive();
+            base.UseActive(playerPosition, lookAt);
         }
 
         // (fml) makeshift function to get just basecard UseActive()
         // *super* scuffy solution to a problem i created myself by having multiuseCard
-        public void BaseUseActive()
+        public void BaseUseActive(Vector2 playerPosition, Vector2 lookAt)
         {
-            base.UseActive();
+            base.UseActive(playerPosition, lookAt);
         }
 
         public override void SwapIn() 

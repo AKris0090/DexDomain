@@ -26,6 +26,9 @@ namespace CardOperations
         internal bool isEquipped; // tracks if card is in equipt slot
         // note that cards are initialized as unequipped
 
+        // Ability references
+        public AbilityAbstract abilityAbs;
+
 
         // !! equiptSlot based on enum values above. designates which slot cards attach to.
         // primary = 0, secondary = 1, special = 2, movement = 3.
@@ -39,7 +42,7 @@ namespace CardOperations
         }
 
         // uses the card's active effect
-        public virtual void UseActive()
+        public virtual void UseActive(Vector2 playerPosition, Vector2 lookAt)
         {
             if (isEquipped) {Debug.Log("Used " + cardName + " active"); }
             else { Debug.Log("Failed to use " + cardName + " active. Not Equipt"); }
