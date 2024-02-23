@@ -15,30 +15,58 @@ namespace CardOperations
     {
         public int maxUses;
         private int remainingUses;
+        private bool onCooldownMultiuse;
 
         public new void OnEnable()
         {
             //Debug.Log("multiuse card model awake: " + cardName);
             remainingUses = maxUses;
+            onCooldownMultiuse = false;
             base.OnEnable();
         }
 
-        // TODO fix UseActive conditions. add cooldown function here.
+        // only allows UseActive() when remaining uses or not on cooldown
+        // code here is unreasonably messy, sorry 
         public override void UseActive()
         {
-            // first checks if remaining uses
-            if (remainingUses == 0)
+            // check if cooldown was triggered
+            if (onCooldownMultiuse)
             {
-                Debug.Log("Card " + name + " has no uses left");
+                // check if cooldown timer complete
+                if (!OnCooldown())
+                {
+                    // cooldown finished, reset now
+                    onCooldownMultiuse = false;
+                    remainingUses = maxUses;
+                    Debug.Log("reset multiuse card " + cardName);
+                }
+                else
+                {
+                    Debug.Log("Card " + remainingUses + " on cooldown, has no uses");
+                    return;
+                }
+            }
+
+            // first checks if remaining uses and hasnt triggered reset
+            if (remainingUses == 0 && !onCooldownMultiuse)
+            {
+                Debug.Log("Card " + name + " has no uses left, starting cooldown if needed");
+                onCooldownMultiuse = true;
+                StartCooldown();
                 return;
                 // ability not used if on cooldown
             }
             
             // counts down remaining uses, then uses ability
             remainingUses -= 1;
-            Debug.Log("Card " + name + " has uses left " + remainingUses);
+            Debug.Log("Card " + name + " has " + remainingUses + " uses left ");
             // if ran out of uses, start card cooldown.
-            if (remainingUses == 0) { StartCooldown(); }
+            if (remainingUses == 0) 
+            {
+                Debug.Log("starting cooldown for multiuse");
+                onCooldownMultiuse = true;
+                StartCooldown(); 
+            }
             base.UseActive();
         }
         public override void SwapIn()

@@ -31,7 +31,7 @@ namespace CardOperations
 
         // checks if ability is on cooldown
         // might want to refactor into coroutine?
-        private bool OnCooldown()
+        internal bool OnCooldown()
         {
             // Debug.Log("current time: " + Time.time + ", initial time: " + initialTime);
             if (Time.time > initialTime + cooldown)
