@@ -77,7 +77,7 @@ public class EnemyManager : MonoBehaviour
             // TODO: make this actually damage the player 
             // Whoever does this should make sure the player doesn't take damage too much as part of the player,
             // in case we have other managers that can damage the player.
-            Debug.Log("owie");
+            Player.GetComponent<PlayerHealth>().dealDamage(1);
             return;
         }
         return;
