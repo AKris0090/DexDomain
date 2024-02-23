@@ -5,19 +5,19 @@ using UnityEngine;
 public class RangedIntReference : IntReference
 {
     [SerializeField]
-    protected int minValue;
+    protected int _minValue;
     [SerializeField]
-    protected int maxValue;
-    new public int Value { get => value; set { Math.Clamp(value, minValue, maxValue); } }
-    public int MinValue => minValue;
-    public int MaxValue => maxValue;
+    protected int _maxValue;
+    new public int Value { get => _value; set { Math.Clamp(_value, _minValue, _maxValue); } }
+    public int MinValue => _minValue;
+    public int MaxValue => _maxValue;
 
     public void OnValidate()
     {
-        if (minValue > maxValue)
+        if (_minValue > _maxValue)
         {
-            minValue = maxValue;
+            _minValue =_ maxValue;
         }
-        value = Math.Clamp(value, minValue, maxValue);
+        _value = Math.Clamp(_value, _minValue, _maxValue);
     }
 }
