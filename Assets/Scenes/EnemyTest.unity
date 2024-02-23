@@ -870,10 +870,7 @@ PrefabInstance:
     - {fileID: 5411470096503279641, guid: 785a617d815ba484aab9fefb29399514, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3918334083854667380, guid: 785a617d815ba484aab9fefb29399514, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 988782789}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 785a617d815ba484aab9fefb29399514, type: 3}
 --- !u!1 &849915029
 GameObject:
@@ -1008,56 +1005,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 849915029}
   m_CullTransparentMesh: 1
---- !u!1 &988782786 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3918334083854667380, guid: 785a617d815ba484aab9fefb29399514, type: 3}
-  m_PrefabInstance: {fileID: 762255139}
-  m_PrefabAsset: {fileID: 0}
---- !u!61 &988782789
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 988782786}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 20.48, y: 20.48}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 20.48, y: 20.48}
-  m_EdgeRadius: 0
 --- !u!1 &1008040117
 GameObject:
   m_ObjectHideFlags: 0
@@ -2006,6 +1953,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1746984582 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6281089458180515670, guid: 785a617d815ba484aab9fefb29399514, type: 3}
+  m_PrefabInstance: {fileID: 762255139}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1817385433
 GameObject:
   m_ObjectHideFlags: 0
@@ -2524,7 +2476,7 @@ PrefabInstance:
     - target: {fileID: 1712570226094509541, guid: a0160377834061c4eab35a9c213f0c5e, type: 3}
       propertyPath: Player
       value: 
-      objectReference: {fileID: 988782786}
+      objectReference: {fileID: 1746984582}
     - target: {fileID: 4741211508966108962, guid: a0160377834061c4eab35a9c213f0c5e, type: 3}
       propertyPath: m_Name
       value: EnemyManager
