@@ -19,14 +19,11 @@ public class UIManager : MonoBehaviour
 
     // dirties
     public bool GamePlaying = false;
+    public bool CardSwapping = false;
 
     // keybindings
     KeyCode PauseGame_K = KeyCode.P;
-    KeyCode Ability1_K = KeyCode.Q;
-    KeyCode Ability2_K = KeyCode.W;
-    KeyCode Ability3_K = KeyCode.E;
-    KeyCode Ability4_K = KeyCode.R;
-
+    KeyCode SwapCardPage_K = KeyCode.T;
     KeyCode EndGame_K = KeyCode.O;
 
     // Start is called before the first frame update
@@ -45,13 +42,27 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(PauseGame_K))
+        if (GamePlaying && Input.GetKeyDown(PauseGame_K))
         {
             // pause menu
             OpenMenu(MENU.Pause);
             GamePlaying = false;
         }
-
+        if (GamePlaying && Input.GetKeyDown(SwapCardPage_K))
+        {
+            if (CardSwapping)
+            {
+                Debug.Log("finished swapping hand");
+                CloseMenu(MENU.CardSwap);
+                CardSwapping = false;
+            }
+            else
+            {
+                Debug.Log("swapping hand");
+                OpenMenu(MENU.CardSwap);
+                CardSwapping = true;
+            }
+        }
 
         // for testing
         if (Input.GetKeyDown(EndGame_K))
