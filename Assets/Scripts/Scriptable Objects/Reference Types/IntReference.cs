@@ -4,14 +4,14 @@ using UnityEngine;
 public class IntReference : ScriptableObject
 {
     [SerializeField]
-    protected int value;
+    protected int _value;
     [SerializeField]
-    protected int defaultValue;
-    public int Value { get; set; }
-    public int DefaultValue => defaultValue;
+    protected int _defaultValue;
+    public int Value => _value;
+    public int DefaultValue => _defaultValue;
 
     public void Reset()
     {
-        value = defaultValue;
+        _value = _defaultValue;
     }
 }
