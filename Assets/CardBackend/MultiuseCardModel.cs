@@ -67,7 +67,8 @@ namespace CardOperations
                 onCooldownMultiuse = true;
                 StartCooldown(); 
             }
-            base.UseActive();
+            // using scuffy skip method to call to base card class
+            BaseUseActive();
         }
         public override void SwapIn()
         {
