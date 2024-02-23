@@ -603,9 +603,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6281089458180515670, guid: 785a617d815ba484aab9fefb29399514, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1772503549}
     - targetCorrespondingSourceObject: {fileID: 3918334083854667380, guid: 785a617d815ba484aab9fefb29399514, type: 3}
       insertIndex: -1
       addedObject: {fileID: 988782789}
@@ -956,24 +953,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPos: {fileID: 284707463}
---- !u!1 &1772503547 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6281089458180515670, guid: 785a617d815ba484aab9fefb29399514, type: 3}
-  m_PrefabInstance: {fileID: 762255139}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1772503549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1772503547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 217601572c286bd4b867775f536a9a14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 10
 --- !u!1 &1904544988
 GameObject:
   m_ObjectHideFlags: 0
