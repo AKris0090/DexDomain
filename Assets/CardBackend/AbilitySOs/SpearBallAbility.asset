@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47a0ffea95ff7ff47b487f22f62c3894, type: 3}
   m_Name: SpearBallAbility
   m_EditorClassIdentifier: 
-  fireBallRef: {fileID: 0}
+  fireBallRef: {fileID: 4824499621134588157, guid: c00a8db0a370b84479e908079c418b50, type: 3}

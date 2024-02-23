@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ae93f7d44475641bfc8f86fc5f05f4, type: 3}
   m_Name: SHPEAR
   m_EditorClassIdentifier: 
-  cardName: 
-  abilityAbs: {fileID: 0}
+  cardName: SHPEAR
+  abilityAbs: {fileID: 11400000, guid: fe992a9f34bdf0344be4b19798b92d2e, type: 2}
   equipSlot: 0
-  cooldown: 0
+  cooldown: 1

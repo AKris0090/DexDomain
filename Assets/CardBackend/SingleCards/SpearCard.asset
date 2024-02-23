@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: SpearCard
   m_EditorClassIdentifier: 
   cardName: Spear
+  abilityAbs: {fileID: 0}
+  equipSlot: 0
   cooldown: 5
-  maxUses: 3
+  maxUses: 1
