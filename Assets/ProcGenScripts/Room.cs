@@ -73,8 +73,9 @@ public class Room : MonoBehaviour
         _colliders.Add(ColliderType.EastDoor, CreateCollider(ColliderType.EastDoor));
         _colliders.Add(ColliderType.SouthDoor, CreateCollider(ColliderType.SouthDoor));
         _colliders.Add(ColliderType.WestDoor, CreateCollider(ColliderType.WestDoor));
-        // Add rigidbody to the room game object
-        gameObject.AddComponent<Rigidbody2D>();
+        // Add rigidbody to the room game object if it doesnt have one already
+        if (!gameObject.GetComponent<Rigidbody2D>())
+            gameObject.AddComponent<Rigidbody2D>();
         gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
     }
 
