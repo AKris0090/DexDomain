@@ -10,6 +10,7 @@ enum MENU
     HUD = 2,
     AbilityGUI = 3,
     CardSwap = 4,
+    Pause = 5,
 }
 
 public class UIManager : MonoBehaviour
@@ -18,6 +19,15 @@ public class UIManager : MonoBehaviour
 
     // dirties
     public bool GamePlaying = false;
+
+    // keybindings
+    KeyCode PauseGame_K = KeyCode.P;
+    KeyCode Ability1_K = KeyCode.Q;
+    KeyCode Ability2_K = KeyCode.W;
+    KeyCode Ability3_K = KeyCode.E;
+    KeyCode Ability4_K = KeyCode.R;
+
+    KeyCode EndGame_K = KeyCode.O;
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +45,20 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(PauseGame_K))
+        {
+            // pause menu
+            OpenMenu(MENU.Pause);
+            GamePlaying = false;
+        }
 
+
+        // for testing
+        if (Input.GetKeyDown(EndGame_K))
+        {
+            EndGame();
+            GamePlaying = false;
+        }
     }
 
     // Menu Changing Functions
@@ -64,6 +87,7 @@ public class UIManager : MonoBehaviour
     // Functions for Buttons
     public void StartGame()
     {
+        Debug.Log("starting game");
         CloseAllMenus();
         OpenMenu(MENU.HUD);
         OpenMenu(MENU.AbilityGUI);
@@ -72,9 +96,24 @@ public class UIManager : MonoBehaviour
     }
     public void RestartGame()
     {
-        CloseAllMenus();
+        Debug.Log("restarting game");
         // call functions to reset the game state
-        // Opening HUD?
+        StartGame();
+        GamePlaying = true;
+    }
+    public void ReturnToMenu()
+    {
+        Debug.Log("returning to menu");
+        CloseAllMenus();
+        OpenMenu(MENU.Start);
+        GamePlaying = false;
+    }
 
+    // other things
+    void EndGame()
+    {
+        Debug.Log("ending game");
+        CloseAllMenus();
+        OpenMenu(MENU.End);
     }
 }
