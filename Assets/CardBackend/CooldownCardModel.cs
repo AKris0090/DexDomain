@@ -78,6 +78,7 @@ namespace CardOperations
             Debug.Log("started cooldown at time: " + initialTime);
         }
 
+        // use active for cooldown card model
         public override void UseActive() 
         {
             // first checks if card on cooldown
@@ -92,6 +93,14 @@ namespace CardOperations
             StartCooldown();
             base.UseActive();
         }
+
+        // (fml) makeshift function to get just basecard UseActive()
+        // *super* scuffy solution to a problem i created myself by having multiuseCard
+        public void BaseUseActive()
+        {
+            base.UseActive();
+        }
+
         public override void SwapIn() 
         {
         
