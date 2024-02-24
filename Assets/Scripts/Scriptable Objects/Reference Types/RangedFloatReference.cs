@@ -4,19 +4,19 @@ using UnityEngine;
 public class RangedFloatReference : FloatReference
 {
     [SerializeField]
-    protected float minValue;
+    protected float _minValue;
     [SerializeField]
-    protected float maxValue;
-    new public float Value { get => value; set { Mathf.Clamp(value, minValue, maxValue); } }
-    public float MinValue => minValue;
-    public float MaxValue => maxValue;
+    protected float _maxValue;
+    new public float Value { get => _value; set { Mathf.Clamp(value, _minValue, _maxValue); } }
+    public float MinValue => _minValue;
+    public float MaxValue => _maxValue;
     public void OnValidate()
     {
-        if (minValue > maxValue)
+        if (_minValue > _maxValue)
         {
-            minValue = maxValue;
+            _minValue = _maxValue;
         }
-        defaultValue = Mathf.Clamp(defaultValue, minValue, maxValue);
-        value = Mathf.Clamp(value, minValue, maxValue);
+        _defaultValue = Mathf.Clamp(_defaultValue, _minValue, _maxValue);
+        _value = Mathf.Clamp(_value, _minValue, _maxValue);
     }
 }
