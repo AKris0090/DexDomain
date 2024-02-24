@@ -7,7 +7,7 @@ public class FloatReference : ScriptableObject
     protected float _value;
     [SerializeField]
     protected float _defaultValue;
-    public float Value => _value;
+    public float Value { get => _value; set => _value = value; }
     public float DefaultValue => _defaultValue;
 
     public void Reset()

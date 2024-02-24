@@ -7,7 +7,11 @@ public class RangedFloatReference : FloatReference
     protected float _minValue;
     [SerializeField]
     protected float _maxValue;
-    new public float Value { get => _value; set { Mathf.Clamp(value, _minValue, _maxValue); } }
+    new public float Value 
+    { 
+        get => _value; 
+        set => _value = Mathf.Clamp(value, _minValue, _maxValue); 
+    }
     public float MinValue => _minValue;
     public float MaxValue => _maxValue;
     public void OnValidate()
