@@ -16,7 +16,7 @@ public class RangedIntReference : IntReference
     {
         if (_minValue > _maxValue)
         {
-            _minValue =_ maxValue;
+            _minValue = _maxValue;
         }
         _value = Math.Clamp(_value, _minValue, _maxValue);
     }
