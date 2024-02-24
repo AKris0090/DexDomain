@@ -4,14 +4,14 @@ using UnityEngine;
 public class FloatReference : ScriptableObject
 {
     [SerializeField]
-    protected float value;
+    protected float _value;
     [SerializeField]
-    protected float defaultValue;
-    public float Value { get; set; }
-    public float DefaultValue => defaultValue;
+    protected float _defaultValue;
+    public float Value => _value;
+    public float DefaultValue => _defaultValue;
 
     public void Reset()
     {
-        value = defaultValue;
+        _value = _defaultValue;
     }
 }
