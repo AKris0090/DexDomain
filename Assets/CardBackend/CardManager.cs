@@ -50,7 +50,7 @@ public class CardManager : MonoBehaviour
         Debug.Log("swapping cards");
         // making sure input card is in hand
         Debug.Assert(hand.Contains(card), "Error: Attempted to equip card not found in hand");
-        int slot = (int) card.equipSlot;
+        int slot = (int) card._equipSlot;
 
         // if card already equippped, add back to hand
         if (equippedCards[slot] != null )
@@ -61,7 +61,7 @@ public class CardManager : MonoBehaviour
             hand.Add(swappedOut);
 
             // marking this card as inactive
-            swappedOut.isEquipped = false;
+            swappedOut._isEquipped = false;
             Debug.Assert(hand.Contains(swappedOut), "Error: Card swapped out not found in hand");
         }
         // !! possible issue with hand swapping...
@@ -69,7 +69,7 @@ public class CardManager : MonoBehaviour
         hand.Remove(card);
 
         // set slot to card + activate card
-        card.isEquipped = true;
+        card._isEquipped = true;
         equippedCards[slot] = card;
 
         // Debug.Assert(!hand.Contains(card), "Error: Card still in hand after equipping");
@@ -87,7 +87,7 @@ public class CardManager : MonoBehaviour
             Debug.Log("Duplicate card found in hand, skipping");
             return;
         }
-        if (equippedCards[(int) card.equipSlot] == card)
+        if (equippedCards[(int) card._equipSlot] == card)
         {
             Debug.Log("Duplicate card found in slot, skipping");
             return;

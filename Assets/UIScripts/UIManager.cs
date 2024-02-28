@@ -15,24 +15,24 @@ enum MENU
 
 public class UIManager : MonoBehaviour
 {
-    public List<Canvas> Menus;
+    public List<Canvas> menus;
 
     // dirties
-    public bool GamePlaying = false;
-    public bool CardSwapping = false;
+    public bool gamePlaying = false;
+    public bool cardSwapping = false;
 
     // keybindings
-    KeyCode PauseGame_K = KeyCode.P;
-    KeyCode SwapCardPage_K = KeyCode.T;
-    KeyCode EndGame_K = KeyCode.O;
+    KeyCode PAUSEGAME_K = KeyCode.P;
+    KeyCode SWAPCARDPAGE_K = KeyCode.T;
+    KeyCode ENDGAME_K = KeyCode.O;
 
     // Start is called before the first frame update
     void Start()
     {
         // snap all canvases to view
-        for (int i = 0; i < Menus.Count; ++i)
+        for (int i = 0; i < menus.Count; ++i)
         {
-            Menus[i].GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            menus[i].GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         }
 
         // start game
@@ -42,33 +42,33 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GamePlaying && Input.GetKeyDown(PauseGame_K))
+        if (gamePlaying && Input.GetKeyDown(PAUSEGAME_K))
         {
             // pause menu
             OpenMenu(MENU.Pause);
-            GamePlaying = false;
+            gamePlaying = false;
         }
-        if (GamePlaying && Input.GetKeyDown(SwapCardPage_K))
+        if (gamePlaying && Input.GetKeyDown(SWAPCARDPAGE_K))
         {
-            if (CardSwapping)
+            if (cardSwapping)
             {
                 Debug.Log("finished swapping hand");
                 CloseMenu(MENU.CardSwap);
-                CardSwapping = false;
+                cardSwapping = false;
             }
             else
             {
                 Debug.Log("swapping hand");
                 OpenMenu(MENU.CardSwap);
-                CardSwapping = true;
+                cardSwapping = true;
             }
         }
 
         // for testing
-        if (Input.GetKeyDown(EndGame_K))
+        if (Input.GetKeyDown(ENDGAME_K))
         {
             EndGame();
-            GamePlaying = false;
+            gamePlaying = false;
         }
     }
 
@@ -76,22 +76,22 @@ public class UIManager : MonoBehaviour
     void SwapMenu(MENU M) // USE IF YOU ONLY NEED ONE MENU OPEN
     {
         CloseAllMenus();
-        Menus[(int)M].enabled = true;
+        menus[(int)M].enabled = true;
     }
     void CloseAllMenus()
     {
-        for (int i = 0; i < Menus.Count; ++i)
+        for (int i = 0; i < menus.Count; ++i)
         {
-            Menus[i].enabled = false;
+            menus[i].enabled = false;
         }
     }
     void CloseMenu(MENU M) // SINGLE MENU OP.
     {
-        Menus[(int)M].enabled = false;
+        menus[(int)M].enabled = false;
     }
     void OpenMenu(MENU M) // SINGLE MENU OP.
     {
-        Menus[(int)M].enabled = true;
+        menus[(int)M].enabled = true;
     }
 
 
@@ -102,7 +102,7 @@ public class UIManager : MonoBehaviour
         CloseAllMenus();
         OpenMenu(MENU.HUD);
         OpenMenu(MENU.AbilityGUI);
-        GamePlaying = true;
+        gamePlaying = true;
         // other functions to start game
     }
     public void RestartGame()
@@ -110,14 +110,14 @@ public class UIManager : MonoBehaviour
         Debug.Log("restarting game");
         // call functions to reset the game state
         StartGame();
-        GamePlaying = true;
+        gamePlaying = true;
     }
     public void ReturnToMenu()
     {
         Debug.Log("returning to menu");
         CloseAllMenus();
         OpenMenu(MENU.Start);
-        GamePlaying = false;
+        gamePlaying = false;
     }
 
     // other things

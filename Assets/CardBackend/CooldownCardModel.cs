@@ -16,12 +16,12 @@ namespace CardOperations
     {
         // internal lets me use currentCooldown in other class/files
         [SerializeField] internal float cooldown;
-        internal float initialTime; // try having it be private?
+        internal float _initialTime; // try having it be private?
 
         public new void OnEnable()
         {
             //Debug.Log("cooldown card model awake: " + cardName);
-            initialTime = Time.time - cooldown;
+            _initialTime = Time.time - cooldown;
             base.OnEnable();
         }
 
@@ -31,7 +31,7 @@ namespace CardOperations
         internal bool OnCooldown()
         {
             // Debug.Log("current time: " + Time.time + ", initial time: " + initialTime);
-            if (Time.time > initialTime + cooldown)
+            if (Time.time > _initialTime + cooldown)
             {
                 //Debug.Log("is not on cooldown");
                 return false;
@@ -45,7 +45,7 @@ namespace CardOperations
         public float CooldownProgress()
         {
             // if on cooldown return 0-1 float for percentage completed
-            if (OnCooldown()) return Time.time / (initialTime + cooldown);
+            if (OnCooldown()) return Time.time / (_initialTime + cooldown);
 
             // else return 1 = 100%
             return 1;
@@ -56,7 +56,7 @@ namespace CardOperations
         public float CooldownRemaining()
         {
             // return cooldown - (time since initial) = time remaining
-            if (OnCooldown()) return cooldown - (Time.time - initialTime);
+            if (OnCooldown()) return cooldown - (Time.time - _initialTime);
 
             // else return 0 for no time remaining
             return 0;
@@ -71,7 +71,7 @@ namespace CardOperations
                 Debug.Log("already on cooldown, avoided restarting cooldown");
                 return;
             }
-            initialTime = Time.time;
+            _initialTime = Time.time;
             //Debug.Log("started cooldown at time: " + initialTime);
         }
 
@@ -85,7 +85,7 @@ namespace CardOperations
                 return;
                 // ability not used if on cooldown
             }
-            abilityAbs.useAbility(playerPosition, lookAt);
+            abilityAbs.UseAbility(playerPosition, lookAt);
             // if not on cooldown, runs parent UseActive()
             Debug.Log("starting cooldown on " + cardName);
             StartCooldown();

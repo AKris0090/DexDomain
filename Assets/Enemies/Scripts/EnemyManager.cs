@@ -20,10 +20,10 @@ using static UnityEditor.FilePathAttribute;
 public class EnemyManager : MonoBehaviour
 {
     // Variables for all of the enemy types
-    public GameObject BasicShoot;
+    public GameObject basicShoot;
 
     // Variable to keep track of the player
-    public GameObject Player;
+    public GameObject player;
 
     // Singletonize it
     private static EnemyManager _instance;
@@ -44,7 +44,7 @@ public class EnemyManager : MonoBehaviour
     // Basic shoot enemies move towards their target, until they're within a certain range, before firing a damaging projectile
     public void SpawnBasicShoot(Vector3 location)
     {
-        Instantiate(BasicShoot, location, BasicShoot.transform.rotation);
+        Instantiate(basicShoot, location, basicShoot.transform.rotation);
     }
 
     // Hurts the passed in enemy
@@ -54,17 +54,17 @@ public class EnemyManager : MonoBehaviour
     public void DamageEnemy(GameObject enemy, int amount)
     {
         Debug.Log(enemy);
-        Enemy test = enemy.GetComponent<Enemy>();
-        if(test != null)
+        Enemy damagedEnemy = enemy.GetComponent<Enemy>();
+        if(damagedEnemy != null)
         {
-            test.Damage(amount);
+            damagedEnemy.Damage(amount);
         }
     }
 
     // Return the player's position, mostly used by enemies
     public Vector3 GetPlayerPosition()
     {
-        return Player.transform.position;
+        return player.transform.position;
     }
 
     // This function will be called whenever an enemy tries to damage an object
@@ -72,12 +72,12 @@ public class EnemyManager : MonoBehaviour
     // at which point the manager will decide if that makes sense
     public void DamageObject(GameObject damaged)
     {
-        if(damaged == Player)
+        if(damaged == player)
         {
             // TODO: make this actually damage the player 
             // Whoever does this should make sure the player doesn't take damage too much as part of the player,
             // in case we have other managers that can damage the player.
-            Player.GetComponent<PlayerHealth>().dealDamage(1);
+            player.GetComponent<PlayerHealth>().DealDamage(1);
             return;
         }
         return;
@@ -86,6 +86,6 @@ public class EnemyManager : MonoBehaviour
     // Check if possible is player
     public bool CheckIfPlayer(GameObject possible)
     {
-        return Player == possible;
+        return player == possible;
     }
 }

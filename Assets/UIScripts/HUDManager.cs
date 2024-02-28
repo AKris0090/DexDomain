@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class HUDManager : MonoBehaviour
 {
-    public Canvas HPContainer;
-    List<GameObject> Hearts;
-    public GameObject HeartPrefab;
+    public Canvas healthPointsContainer;
+    List<GameObject> hearts;
+    public GameObject heartPrefab;
 
     // Start is called before the first frame update
     void Start()

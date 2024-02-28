@@ -12,9 +12,9 @@ public class FireBallAbility : AbilityAbstract
     public float force;
     public float lifespan;
 
-    public override void useAbility(Vector2 playerPos, Vector2 lookAt)
+    public override void UseAbility(Vector2 playerPos, Vector2 lookAt)
     {
-        base.useAbility(playerPos, lookAt);
+        base.UseAbility(playerPos, lookAt);
         // Fireball code
         fireBallPrefab = Instantiate(fireBallRef);
         fireBallPrefab.transform.position = playerPos;

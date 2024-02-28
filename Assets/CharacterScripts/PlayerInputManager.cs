@@ -5,25 +5,31 @@ using UnityEngine;
 public class PlayerInputManager : MonoBehaviour
 {
 
-    private Vector2 mousePos;
+    private CharacterMovement _characterMovement;
+    private Vector2 _mousePos;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        _characterMovement = this.gameObject.GetComponent<CharacterMovement>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(1)) {
-            // convert mouse position into world coordinates
-            mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            // get direction you want to point at
-            Vector2 direction = (mousePos - (Vector2) transform.position).normalized;
-
-            CardManager.Instance.UsePrimary(transform.position, direction);
+        if(Input.GetKeyDown(KeyCode.E)) {
+            // Fire the primary weapon/card towards the mouse position
+            CardManager.Instance.UsePrimary(transform.position, _characterMovement.mouseDirection);
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            // Fire the primary weapon/card towards the mouse position
+            CardManager.Instance.UseSecondary(transform.position, _characterMovement.mouseDirection);
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            // Fire the primary weapon/card towards the mouse position
+            CardManager.Instance.UseMovement(transform.position, _characterMovement.mouseDirection);
         }
     }
 }

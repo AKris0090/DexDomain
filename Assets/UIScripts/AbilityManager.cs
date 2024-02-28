@@ -14,16 +14,16 @@ enum ABILITIES
 
 public class AbilityManager : MonoBehaviour
 {
-    public List<Canvas> AbilitySlots;
-    private List<bool> AbilityActive = new()
+    public List<Canvas> abilitySlots;
+    private List<bool> abilityActive = new()
     {
         false,
         false,
         false,
         false,
     };
-    public List<Canvas> DeckSlots;
-    private List<string> DeckSetup = new() {
+    public List<Canvas> deckSlots;
+    private List<string> deckSetup = new() {
         "FIREBALL",
         "SWORD",
         "SPEAR",
@@ -34,32 +34,32 @@ public class AbilityManager : MonoBehaviour
     // get card manager obj!!
 
     // keybinds
-    private KeyCode Ability1_K = KeyCode.Q;
-    private KeyCode Ability2_K = KeyCode.W;
-    private KeyCode Ability3_K = KeyCode.E;
-    private KeyCode Ability4_K = KeyCode.R;
+    private KeyCode ABILITY1_K = KeyCode.Q;
+    private KeyCode ABILITY2_K = KeyCode.W;
+    private KeyCode ABILITY3_K = KeyCode.E;
+    private KeyCode ABILITY4_K = KeyCode.R;
 
     // Start is called before the first frame update
     void Start()
     {
         // add event listeners for deck
-        foreach (Canvas CardSlot in DeckSlots)
+        foreach (Canvas cardSlot in deckSlots)
         {
             // Find the button within the canvas
-            Button Card = CardSlot.GetComponentInChildren<Button>();
+            Button card = cardSlot.GetComponentInChildren<Button>();
 
-            if (Card != null)
+            if (card != null)
             {
                 // Add the onClick function "foo" to the button
-                Card.onClick.AddListener(() => SwapToCard(DeckSetup[DeckSlots.IndexOf(CardSlot)]));
+                card.onClick.AddListener(() => SwapToCard(deckSetup[deckSlots.IndexOf(cardSlot)]));
 
             }
         }
 
         // hide all abilities at start
-        foreach (Canvas Ability in AbilitySlots)
+        foreach (Canvas ability in abilitySlots)
         {
-            Button Card = Ability.GetComponentInChildren<Button>();
+            Button Card = ability.GetComponentInChildren<Button>();
             Card.gameObject.SetActive(false);
         }
     }
@@ -67,19 +67,19 @@ public class AbilityManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(Ability1_K))
+        if (Input.GetKeyDown(ABILITY1_K))
         {
             Ability1();
         }
-        if (Input.GetKeyDown(Ability2_K))
+        if (Input.GetKeyDown(ABILITY2_K))
         {
             Ability2();
         }
-        if (Input.GetKeyDown(Ability3_K))
+        if (Input.GetKeyDown(ABILITY3_K))
         {
             Ability3();
         }
-        if (Input.GetKeyDown(Ability4_K))
+        if (Input.GetKeyDown(ABILITY4_K))
         {
             Ability4();
         }
@@ -108,39 +108,39 @@ public class AbilityManager : MonoBehaviour
     {
         Debug.Log("swaping to card " + Card);
 
-        int A; // ability to swap to
+        int abilityIndex; // ability to swap to
 
         // set up abilities (hardcoded sorry)
         if (Card == "FIREBALL")
         {
-            A = 0;
+            abilityIndex = 0;
         }
         else if (Card == "SWORD" || Card == "SPEAR")
         {
-            A = 1;
+            abilityIndex = 1;
         }
         else if (Card == "DAGGER")
         {
-            A = 2;
+            abilityIndex = 2;
         }
         else
         {
-            A = 3;
+            abilityIndex = 3;
         }
 
-        Canvas Ability = AbilitySlots[A];
-        Button B = Ability.GetComponentInChildren<Button>(true);
+        Canvas _ability = abilitySlots[abilityIndex];
+        Button _button = _ability.GetComponentInChildren<Button>(true);
 
-        if (!AbilityActive[A])
+        if (!abilityActive[abilityIndex])
         {
-            AbilityActive[A] = true;
+            abilityActive[abilityIndex] = true;
             
-            Debug.Log(B);
-            B.gameObject.SetActive(true);
+            Debug.Log(_button);
+            _button.gameObject.SetActive(true);
         }
 
         // we are kinda only just using the text rn
-        B.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = Card;
+        _button.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = Card;
 
     }
 }

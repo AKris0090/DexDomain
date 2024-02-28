@@ -23,7 +23,7 @@ namespace CardOperations
     public abstract class BaseCardClass : ScriptableObject
     {
         public string cardName;
-        internal bool isEquipped; // tracks if card is in equipt slot
+        internal bool _isEquipped; // tracks if card is in equipt slot
         // note that cards are initialized as unequipped
 
         // Ability references
@@ -33,18 +33,18 @@ namespace CardOperations
         // !! equiptSlot based on enum values above. designates which slot cards attach to.
         // primary = 0, secondary = 1, special = 2, movement = 3.
         //public int equipSlot;
-        [SerializeField] internal EquipSlots equipSlot = EquipSlots.Primary;
+        [SerializeField] internal EquipSlots _equipSlot = EquipSlots.Primary;
 
         public void OnEnable()
         {
             //Debug.Log("base card awake: " +  cardName);
-            isEquipped = false;
+            _isEquipped = false;
         }
 
         // uses the card's active effect
         public virtual void UseActive(Vector2 playerPosition, Vector2 lookAt)
         {
-            if (isEquipped) {Debug.Log("Used " + cardName + " active"); }
+            if (_isEquipped) {Debug.Log("Used " + cardName + " active"); }
             else { Debug.Log("Failed to use " + cardName + " active. Not Equipt"); }
         }
 
