@@ -13,9 +13,11 @@ public class Bullet : MonoBehaviour
     {
         self = GetComponent<Rigidbody2D>();
     }
-    // Sends the bullet towards tar with force newtons for life seconds
-    public virtual void SetTarget(Vector3 tar, float force, float life, GameObject spawner)
+    // Sends the bullet towards tar with force newtons for life seconds, starting at position rotation
+    public virtual void SetTarget(Vector3 tar, float force, float life, GameObject spawner, Vector3 position, Quaternion rotation)
     {
+        transform.position = position;
+        transform.rotation = rotation;
         self = GetComponent<Rigidbody2D>();
         // Draw a line between the target and this bullet
         Vector2 line = tar - transform.position;
@@ -30,13 +32,13 @@ public class Bullet : MonoBehaviour
         if (collision.gameObject != spawner && collision.gameObject.GetComponent<Bullet>() == null)
         {
             EnemyManager.Instance.DamageObject(collision.gameObject);
-            Destroy(this.gameObject);
+            EnemyManager.Instance.ReturnBullet(this);
         }
     }
 
     protected IEnumerator Lifespan(float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        Destroy(this.gameObject);
+        EnemyManager.Instance.ReturnBullet(this);
     }
 }

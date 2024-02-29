@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2510973711582537703}
   - component: {fileID: 4223590554288157424}
   - component: {fileID: 3286506318984747486}
-  - component: {fileID: 7809105303456094021}
   - component: {fileID: 1616635555802609445}
   m_Layer: 2
   m_Name: BasicShootEnemy
@@ -124,40 +123,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 1
   damageCooldown: 0.5
-  bullet: {fileID: 7892811708458513837, guid: cb2e8005ea96eab43a6a41f0eee5bbc7, type: 3}
   viewDistance: 30
   runRange: 5
-  fireRange: 15
+  fireRange: 10
   firerate: 0.5
   force: 300
   bulletLifespan: 5
---- !u!50 &7809105303456094021
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6529392268432006113}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!58 &1616635555802609445
 CircleCollider2D:
   m_ObjectHideFlags: 0
