@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using Redcode.Pools;
 
 // This enemy needs to be given a target when it is created with set target
 // It will then move towards that target until it reaches fire range, at which point it will stop and begin firing at the target
@@ -11,7 +12,6 @@ using UnityEngine.AI;
 public class BasicShoot : Enemy
 {
     NavMeshAgent agent;
-    public GameObject bullet;
     public float viewDistance = 30;
     public float runRange = 5;
     public float fireRange = 20;
@@ -19,9 +19,11 @@ public class BasicShoot : Enemy
     public float force = 100f;
     public float bulletLifespan = 5f;
     bool readyToFire;
+
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         // Code from https://www.youtube.com/watch?v=HRX0pUSucW4
         agent = GetComponent<NavMeshAgent>();
         // Sets up agent to be in 2d
@@ -29,8 +31,6 @@ public class BasicShoot : Enemy
         agent.updateUpAxis = false;
         // external code ends
         readyToFire = true;
-        canTakeDamage = true;
-        manager = EnemyManager.Instance;
         StartCoroutine(UpdateTarget());
     }
 
@@ -39,13 +39,13 @@ public class BasicShoot : Enemy
     {
         while (true)
         {
-            Vector3 playerPos = manager.GetPlayerPosition();
+            Vector3 playerPos = enemyManager.GetPlayerPosition();
             // Draw a line between the target and this enemy
             Vector2 line = playerPos - transform.position;
             // Draw a line from here to the target
             RaycastHit2D hit = Physics2D.Raycast(transform.position, line, viewDistance);
             // If it intercepts the target, update the destination
-            if(hit.collider && manager.CheckIfPlayer(hit.collider.gameObject))
+            if(hit.collider && enemyManager.CheckIfPlayer(hit.collider.gameObject))
             {
                 // If the target is outside the fireRange, move towards it
                 if (line.magnitude > fireRange)
@@ -85,8 +85,8 @@ public class BasicShoot : Enemy
         {
             readyToFire = false;
             StartCoroutine(FireCooldown());
-            GameObject newBullet = Instantiate(bullet, transform.position, transform.rotation);
-            newBullet.GetComponent<Bullet>().SetTarget(manager.GetPlayerPosition(), force, bulletLifespan, this.gameObject);
+            Bullet newBullet = enemyManager.GetBullet();
+            newBullet.SetTarget(enemyManager.GetPlayerPosition(), force, bulletLifespan, this.gameObject, transform.position, transform.rotation);
         }
         return;
     }

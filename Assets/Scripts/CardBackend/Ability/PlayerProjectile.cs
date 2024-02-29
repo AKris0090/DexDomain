@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerProjectile : Bullet
 {
     // Derives from abstract class bullet, but spawns from the player in direction of mouse
-    public override void SetTarget(Vector3 tar, float force, float life, GameObject spawner)
+    public void SetTarget(Vector3 tar, float force, float life, GameObject spawner)
     {
         self = GetComponent<Rigidbody2D>();
         // Draw a line between the target and this bullet

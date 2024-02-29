@@ -1469,18 +1469,6 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 284707463}
-    - target: {fileID: 3286506318984747486, guid: 465c3ce157a575f4e93d857583dc0e4f, type: 3}
-      propertyPath: runRange
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3286506318984747486, guid: 465c3ce157a575f4e93d857583dc0e4f, type: 3}
-      propertyPath: fireRange
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3286506318984747486, guid: 465c3ce157a575f4e93d857583dc0e4f, type: 3}
-      propertyPath: viewDistance
-      value: 30
-      objectReference: {fileID: 0}
     - target: {fileID: 4223590554288157424, guid: 465c3ce157a575f4e93d857583dc0e4f, type: 3}
       propertyPath: m_Speed
       value: 5
@@ -1545,8 +1533,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7809105303456094021, guid: 465c3ce157a575f4e93d857583dc0e4f, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2476,6 +2463,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1712570226094509541, guid: a0160377834061c4eab35a9c213f0c5e, type: 3}
       propertyPath: Player
+      value: 
+      objectReference: {fileID: 1746984582}
+    - target: {fileID: 1712570226094509541, guid: a0160377834061c4eab35a9c213f0c5e, type: 3}
+      propertyPath: player
       value: 
       objectReference: {fileID: 1746984582}
     - target: {fileID: 4741211508966108962, guid: a0160377834061c4eab35a9c213f0c5e, type: 3}
