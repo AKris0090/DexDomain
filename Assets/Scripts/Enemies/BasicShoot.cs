@@ -18,7 +18,7 @@ public class BasicShoot : Enemy
     public float firerate = 0.5f;
     public float force = 100f;
     public float bulletLifespan = 5f;
-    bool readyToFire;
+    protected bool readyToFire;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -35,7 +35,7 @@ public class BasicShoot : Enemy
     }
 
     // Only change directions once every 0.1 seconds, just to save processing power
-    IEnumerator UpdateTarget()
+    protected IEnumerator UpdateTarget()
     {
         while (true)
         {
@@ -72,13 +72,13 @@ public class BasicShoot : Enemy
     }
 
     // wait for firerate seconds before being able to shoot again
-    IEnumerator FireCooldown()
+    protected IEnumerator FireCooldown()
     {
         yield return new WaitForSeconds(firerate);
         readyToFire = true;
     }
 
-    public void Fire()
+    public virtual void Fire()
     {
         // If the enemy is ready to fire, do so
         if (readyToFire)

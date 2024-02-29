@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 7302646176959624971}
   - component: {fileID: 2510973711582537703}
   - component: {fileID: 4223590554288157424}
-  - component: {fileID: 3286506318984747486}
+  - component: {fileID: 6954984797754504002}
   - component: {fileID: 1616635555802609445}
-  - component: {fileID: 5226185645371340219}
+  - component: {fileID: 4076371307110783524}
   m_Layer: 2
-  m_Name: BasicShootEnemy
+  m_Name: RapidFireEnemy
   m_TagString: ShootEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.77632976, g: 0.9716981, b: 0.6004361, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -98,8 +98,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.6
-  m_Speed: 5
-  m_Acceleration: 20
+  m_Speed: 7
+  m_Acceleration: 30
   avoidancePriority: 30
   m_AngularSpeed: 120
   m_StoppingDistance: 0
@@ -110,7 +110,7 @@ NavMeshAgent:
   m_BaseOffset: 0.6
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3286506318984747486
+--- !u!114 &6954984797754504002
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,17 +119,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 6529392268432006113}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e192c7d49c40d54dbebc389d82264d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 0878780a7b799ad4089656614d91413a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1
+  health: 3
   damageCooldown: 0.5
   viewDistance: 30
   runRange: 5
-  fireRange: 10
+  fireRange: 20
   firerate: 0.5
   force: 300
   bulletLifespan: 5
+  timeBetweenShots: 0.2
+  numOfShots: 3
 --- !u!58 &1616635555802609445
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -165,7 +167,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!50 &5226185645371340219
+--- !u!50 &4076371307110783524
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
