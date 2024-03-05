@@ -253,6 +253,9 @@ MonoBehaviour:
   - {fileID: 8125297043332585203}
   - {fileID: 6000339730248676777}
   - {fileID: 5719891008483703584}
+  UIManagerObj: {fileID: 1718066537187061538}
+  CardManagerObj: {fileID: 0}
+  CardManager: {fileID: 0}
 --- !u!1 &3319168954245545993
 GameObject:
   m_ObjectHideFlags: 0

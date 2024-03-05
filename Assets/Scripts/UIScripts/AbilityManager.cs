@@ -31,9 +31,11 @@ public class AbilityManager : MonoBehaviour
         "BOOTS",
     };
 
-    // get card manager obj!!
+    // make sure objs holding manager scripts are named appropriately!!
+    private UIManager UIManager;
+    private CardManager CardManager;
 
-    // keybinds
+    // keybinds (WILL PROBABLY HAVE TO REMAP THIS LATER D:
     private KeyCode ABILITY1_K = KeyCode.Q;
     private KeyCode ABILITY2_K = KeyCode.W;
     private KeyCode ABILITY3_K = KeyCode.E;
@@ -42,6 +44,10 @@ public class AbilityManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // get managers
+        UIManager = GameObject.Find("UIEventSystem").GetComponent<UIManager>();
+        CardManager = GameObject.Find("CardManager").GetComponent<CardManager>();
+
         // add event listeners for deck
         foreach (Canvas cardSlot in deckSlots)
         {
@@ -67,21 +73,24 @@ public class AbilityManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(ABILITY1_K))
+        if (UIManager.gamePlaying)
         {
-            Ability1();
-        }
-        if (Input.GetKeyDown(ABILITY2_K))
-        {
-            Ability2();
-        }
-        if (Input.GetKeyDown(ABILITY3_K))
-        {
-            Ability3();
-        }
-        if (Input.GetKeyDown(ABILITY4_K))
-        {
-            Ability4();
+            if (Input.GetKeyDown(ABILITY1_K))
+            {
+                Ability1();
+            }
+            if (Input.GetKeyDown(ABILITY2_K))
+            {
+                Ability2();
+            }
+            if (Input.GetKeyDown(ABILITY3_K))
+            {
+                Ability3();
+            }
+            if (Input.GetKeyDown(ABILITY4_K))
+            {
+                Ability4();
+            }
         }
     }
 
