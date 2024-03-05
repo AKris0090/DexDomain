@@ -10,7 +10,7 @@ public class HUDManager : MonoBehaviour
     private int prevHealth;
 
     // image refactoring
-    private List<GameObject> heartsPool;
+    private List<GameObject> heartsPool = new();
 
     void Start()
     {
@@ -20,11 +20,13 @@ public class HUDManager : MonoBehaviour
         for (int i=0; i<playerHealth.MaxValue; ++i)
         {
             GameObject heartSprite = Instantiate(heartsPrefab, healthPointsContainer.transform, false);
+            RectTransform t = heartSprite.GetComponent<RectTransform>();
+            Vector3 t2 = t.anchoredPosition;
+            t2.x += 125*i;
+            t.anchoredPosition = t2;
 
             heartsPool.Add(heartSprite);
         }
-
-        UpdateHeartsHUD();
     }
 
     // Update is called once per frame
@@ -32,12 +34,15 @@ public class HUDManager : MonoBehaviour
     {
         if (prevHealth != playerHealth.Value)
         {
-            UpdateHeartsHUD();
+            prevHealth = playerHealth.Value;
+            for (int i=0; i<playerHealth.Value; ++i)
+            {
+                heartsPool[i].SetActive(true);
+            }
+            for (int j=playerHealth.Value; j<heartsPool.Count; ++j)
+            {
+                heartsPool[j].SetActive(false);
+            }
         }
-    }
-
-    private void UpdateHeartsHUD()
-    {
-
     }
 }
