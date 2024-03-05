@@ -5,28 +5,39 @@ using UnityEngine;
 public class HUDManager : MonoBehaviour
 {
     public Canvas healthPointsContainer;
-    List<GameObject> hearts;
-    public GameObject heartPrefab;
+    public GameObject heartsPrefab;
+    public RangedIntReference playerHealth;
+    private int prevHealth;
 
-    // Start is called before the first frame update
+    // image refactoring
+    private List<GameObject> heartsPool;
+
     void Start()
     {
-        // grab health data (max health)
-        //Hearts.Add(Instantiate(HeartPrefab));
-        UpdateHealthHUD();
+        prevHealth = playerHealth.MaxValue; // start at max health
+
+        Debug.Log(playerHealth.MaxValue);
+        for (int i=0; i<playerHealth.MaxValue; ++i)
+        {
+            GameObject heartSprite = Instantiate(heartsPrefab, healthPointsContainer.transform, false);
+
+            heartsPool.Add(heartSprite);
+        }
+
+        UpdateHeartsHUD();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (prevHealth != playerHealth.Value)
+        {
+            UpdateHeartsHUD();
+        }
     }
 
-    public void UpdateHealthHUD()
+    private void UpdateHeartsHUD()
     {
-        // grab data from scriptable obj
 
-        // I HAVE NO IDEA WHAT IM DOING HERE SORRY
-        
     }
 }
