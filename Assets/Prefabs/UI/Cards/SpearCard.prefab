@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 6833000893305250933}
   - component: {fileID: 3832391404002291530}
   - component: {fileID: 1175778695975283533}
+  - component: {fileID: 8193992672398837535}
   m_Layer: 5
-  m_Name: Card
+  m_Name: SpearCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121,6 +122,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8193992672398837535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3147494322152419602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dd7b1a3ab79446c78f44bf000b8d603, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CardScriptObj: {fileID: 11400000, guid: fc0439bef239a3a42948039e4d90fc6b, type: 2}
 --- !u!1 &6514457311964679953
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +200,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: CARD
+  m_text: SPEAR
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

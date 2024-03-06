@@ -3,144 +3,76 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
-enum ABILITIES
-{
-    Attack = 0,
-    Weapon1 = 1,
-    Weapon2 = 2,
-    Equipment = 3,
-}
+using CardOperations;
 
 public class AbilityManager : MonoBehaviour
 {
-    public List<Canvas> abilitySlots;
-    private List<bool> abilityActive = new()
+    // referencing from card manager
+    private static AbilityManager _instance;
+    public static AbilityManager Instance { get { return _instance; } }
+    void Awake()
     {
-        false,
-        false,
-        false,
-        false,
-    };
+        Debug.Log("ability manager exists (the one that deals with UI)");
+        if (_instance == null) // If there is no instance already
+        {
+            DontDestroyOnLoad(gameObject); // Keep the GameObject, this component is attached to, across different scenes
+            _instance = this;
+        }
+        else if (_instance != this) // If there is already an instance and it's not `this` instance
+        {
+            Destroy(gameObject); // Destroy the GameObject, this component is attached to
+        }
+    }
+
+
+    public List<Canvas> abilitySlots;
+
     public List<Canvas> deckSlots;
-    private List<string> deckSetup = new() {
-        "FIREBALL",
-        "SWORD",
-        "SPEAR",
-        "DAGGER",
-        "BOOTS",
-    };
+    private int nextSlot = 0;
 
-    // get card manager obj!!
 
-    // keybinds
-    private KeyCode ABILITY1_K = KeyCode.Q;
-    private KeyCode ABILITY2_K = KeyCode.W;
-    private KeyCode ABILITY3_K = KeyCode.E;
-    private KeyCode ABILITY4_K = KeyCode.R;
-
-    // Start is called before the first frame update
     void Start()
     {
-        // add event listeners for deck
-        foreach (Canvas cardSlot in deckSlots)
+    }
+
+    // add card to swapper page (called from Card Manager)
+    public void AddCardToHand(BaseCardClass card)
+    {
+        Debug.Log("(UI) Adding " + card.cardName + " card to hand");
+
+        // make visible
+        GameObject newCard = Instantiate(card.cardUIPrefab, deckSlots[nextSlot].transform, false);
+
+        // make obtainable (can move from hand to equipped)
+        Button cardButton = deckSlots[nextSlot].GetComponentInChildren<Button>();
+        cardButton.onClick.AddListener(() => CardManager.Instance.SwapIn(card));
+        // basically clicking a card calls the card manager to do it's swapping in
+        // then the card manager SwapIn() calls the ability ui manager (this) to update the UI
+
+        // for next
+        nextSlot++;
+    }
+
+    // also called from Card Manager
+    public void EquipCard(BaseCardClass card)
+    {
+        Debug.Log("(UI) Equipping " + card.cardName);
+
+        Canvas targetCanvas = abilitySlots[(int)card.EquipPlacement];
+
+        // clear canvas if any cards are already there
+        if (targetCanvas.transform.childCount > 0)
         {
-            // Find the button within the canvas
-            Button card = cardSlot.GetComponentInChildren<Button>();
-
-            if (card != null)
+            foreach (Transform child in targetCanvas.transform)
             {
-                // Add the onClick function "foo" to the button
-                card.onClick.AddListener(() => SwapToCard(deckSetup[deckSlots.IndexOf(cardSlot)]));
-
+                Destroy(child.gameObject);
             }
         }
 
-        // hide all abilities at start
-        foreach (Canvas ability in abilitySlots)
-        {
-            Button Card = ability.GetComponentInChildren<Button>();
-            Card.gameObject.SetActive(false);
-        }
-    }
+        // add to equip slot
+        Instantiate(card.cardUIPrefab, targetCanvas.transform, false);
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(ABILITY1_K))
-        {
-            Ability1();
-        }
-        if (Input.GetKeyDown(ABILITY2_K))
-        {
-            Ability2();
-        }
-        if (Input.GetKeyDown(ABILITY3_K))
-        {
-            Ability3();
-        }
-        if (Input.GetKeyDown(ABILITY4_K))
-        {
-            Ability4();
-        }
-    }
 
-    // wrapper function for casting abilities
-    public void Ability1()
-    {
-        Debug.Log("do the ability 1 thing");
-    }
-    public void Ability2()
-    {
-        Debug.Log("do the ability 2 thing");
-    }
-    public void Ability3()
-    {
-        Debug.Log("do the ability 3 thing");
-    }
-    public void Ability4()
-    {
-        Debug.Log("do the ability 4 thing");
-    }
-
-    // wrapper to contact card manager
-    void SwapToCard(string Card)
-    {
-        Debug.Log("swaping to card " + Card);
-
-        int abilityIndex; // ability to swap to
-
-        // set up abilities (hardcoded sorry)
-        if (Card == "FIREBALL")
-        {
-            abilityIndex = 0;
-        }
-        else if (Card == "SWORD" || Card == "SPEAR")
-        {
-            abilityIndex = 1;
-        }
-        else if (Card == "DAGGER")
-        {
-            abilityIndex = 2;
-        }
-        else
-        {
-            abilityIndex = 3;
-        }
-
-        Canvas _ability = abilitySlots[abilityIndex];
-        Button _button = _ability.GetComponentInChildren<Button>(true);
-
-        if (!abilityActive[abilityIndex])
-        {
-            abilityActive[abilityIndex] = true;
-            
-            Debug.Log(_button);
-            _button.gameObject.SetActive(true);
-        }
-
-        // we are kinda only just using the text rn
-        _button.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = Card;
-
+        // using the cards should be done in player control
     }
 }
