@@ -17,16 +17,22 @@ public class PlayerInputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.E)) {
+        if(Input.GetButton("PrimaryAttack")) {
             // Fire the primary weapon/card towards the mouse position
+            Debug.Log("player input primary attack");
             CardManager.Instance.UsePrimary(transform.position, _characterMovement.mouseDirection);
         }
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetButton("SecondaryAttack"))
         {
             // Fire the primary weapon/card towards the mouse position
             CardManager.Instance.UseSecondary(transform.position, _characterMovement.mouseDirection);
         }
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetButton("SpecialAbility"))
+        {
+            // Fire the primary weapon/card towards the mouse position
+            CardManager.Instance.UseSpecial(transform.position, _characterMovement.mouseDirection);
+        }
+        if (Input.GetButton("MovementAbility"))
         {
             // Fire the primary weapon/card towards the mouse position
             CardManager.Instance.UseMovement(transform.position, _characterMovement.mouseDirection);

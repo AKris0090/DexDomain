@@ -6,7 +6,7 @@ public class BaseMeleeAbility : BaseAbility
 {
     private List<Collider2D> hitboxes = new List<Collider2D>();
     [SerializeField] private int numHitboxes;
-    [SerializeField] private float hitTime = 1;
+    [SerializeField] private float hitTime = 0.7f;
     [SerializeField] public int damage = 1; // will likely need to add invincibility frames to avoid multihits bc of overlapping hitboxes
 
 
@@ -29,7 +29,7 @@ public class BaseMeleeAbility : BaseAbility
 
     private IEnumerator Attack()
     {
-        float hitboxInterval = hitboxes.Count/numHitboxes;
+        float hitboxInterval = hitTime/hitboxes.Count;
 
         for (int i = 0;i < numHitboxes;i++) 
         {

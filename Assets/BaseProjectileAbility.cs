@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// since abilities are visual, should prob be game objects, so monobehavior?
 
-public class BaseAbility : MonoBehaviour
+// completely placeholder rn
+public class BaseProjectileAbility : BaseAbility
 {
     // Start is called before the first frame update
     void Start()
@@ -16,10 +16,5 @@ public class BaseAbility : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public virtual void UseAbility()
-    {
-        Debug.Log("Used Ability!");
     }
 }

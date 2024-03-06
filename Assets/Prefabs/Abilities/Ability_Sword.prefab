@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7405330975005280316}
-  - component: {fileID: 8260171862251671546}
+  - component: {fileID: 2639678632228989983}
   m_Layer: 0
   m_Name: Ability_Sword
   m_TagString: Untagged
@@ -33,14 +33,14 @@ Transform:
   - {fileID: 8440985785092724271}
   - {fileID: 8237062058371695531}
   - {fileID: 1172710435771720927}
-  - {fileID: 7734772060641581510}
   - {fileID: 1901311180043427478}
+  - {fileID: 7734772060641581510}
   - {fileID: 8286122432151872848}
   - {fileID: 1413054747466051859}
   - {fileID: 1935331349306676065}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8260171862251671546
+--- !u!114 &2639678632228989983
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -49,10 +49,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 445814121433712507}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a8f8369bb165764dacabc50694ee7bd, type: 3}
+  m_Script: {fileID: 11500000, guid: e202a914bdd458b4783e7622804e7a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numHitboxes: 0
+  numHitboxes: 8
+  hitTime: 1
+  damage: 1
 --- !u!1 &460304686567210456
 GameObject:
   m_ObjectHideFlags: 0
