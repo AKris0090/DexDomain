@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Spear
   abilityAbs: {fileID: 0}
-  equipSlot: 0
+  _equipSlot: 0
+  cardUIPrefab: {fileID: 3147494322152419602, guid: 21c825a8756f446e7b360b3943123d58, type: 3}
   cooldown: 5
   maxUses: 1
