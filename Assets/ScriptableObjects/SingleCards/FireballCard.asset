@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Fireball
   abilityAbs: {fileID: 11400000, guid: 1472a0e39e93c65488600ab81d01ed75, type: 2}
-  equipSlot: 0
+  _equipSlot: 2
   cooldown: 1
