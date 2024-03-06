@@ -6,11 +6,9 @@ public class BaseMeleeAbility : BaseAbility
 {
     private List<Collider2D> hitboxes = new List<Collider2D>();
     [SerializeField] private int numHitboxes;
-    [SerializeField] private float hitTime = 0.7f;
+    [SerializeField] private float hitTime = 0.5f;
     [SerializeField] public int damage = 1; // will likely need to add invincibility frames to avoid multihits bc of overlapping hitboxes
 
-
-    // scriptable object start()
     void Start()
     {
         for (int i = 0; i < numHitboxes; i++)
