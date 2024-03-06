@@ -15,6 +15,10 @@ enum MENU
 
 public class UIManager : MonoBehaviour
 {
+    // referencing from card manager
+    private static UIManager _instance;
+    public static UIManager Instance { get { return _instance; } }
+
     public List<Canvas> menus;
 
     // dirties
