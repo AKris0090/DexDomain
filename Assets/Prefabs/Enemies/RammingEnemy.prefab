@@ -190,9 +190,9 @@ MonoBehaviour:
   runRange: 5
   fireRange: 20
   firerate: 1
-  windup: 4
+  windup: 1
   windupSpeed: 1
-  ramSpeed: 20
-  ramAceleration: 100
-  windupRotation: 30
-  ramDistance: 10
+  ramSpeed: 60
+  ramAceleration: 200
+  ramDistance: 2
+  numberOfBlinks: 4

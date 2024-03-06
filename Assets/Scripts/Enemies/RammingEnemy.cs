@@ -18,8 +18,8 @@ public class RammingEnemy : Enemy
     public float windupSpeed = 1;
     public float ramSpeed = 20;
     public float ramAceleration = 100;
-    public float windupRotation = 30;
     public float ramDistance = 10;
+    public float numberOfBlinks = 4;
     protected bool readyToFire;
     bool currentlyRamming;
     Color oldColor;
@@ -84,17 +84,17 @@ public class RammingEnemy : Enemy
             currentlyRamming = false;
             // To begin, have the enemy start winding up its ram
             float oldSpeed = agent.speed;
-            float oldRoation = agent.angularSpeed;
             // slow the enemy way down, both in max speed and rotation
             agent.speed = windupSpeed;
-            agent.angularSpeed = windupRotation;
             // Blink the sprite blue as it winds up
             SpriteRenderer renderer = gameObject.GetComponent<SpriteRenderer>();
-            renderer.color = Color.blue;
-            yield return new WaitForSeconds(windup/4);
-            renderer.color = oldColor;
-            yield return new WaitForSeconds(windup/4);
-
+            for (int i = 0; i < numberOfBlinks - 1; i++)
+            {
+                renderer.color = Color.blue;
+                yield return new WaitForSeconds(windup / numberOfBlinks);
+                renderer.color = oldColor;
+                yield return new WaitForSeconds(windup / numberOfBlinks);
+            }
             // Set the target to a bit past where the player is right now, and stop it from changing further
             Vector2 playerPos = enemyManager.GetPlayerPosition();
             Vector2 loc = transform.position;
@@ -104,21 +104,20 @@ public class RammingEnemy : Enemy
             currentlyRamming = true;
             agent.SetDestination(playerPos + (line.normalized * ramDistance));
             // Give another quick blink
-            yield return new WaitForSeconds(windup / 4);
+            renderer.color = Color.blue;
+            yield return new WaitForSeconds(windup / numberOfBlinks);
             renderer.color = oldColor;
-            yield return new WaitForSeconds(windup / 4);
+            yield return new WaitForSeconds(windup / numberOfBlinks);
             float oldAccel = agent.acceleration;
             agent.speed = ramSpeed;
             agent.acceleration = ramAceleration;
             // Wait until the ram is complete
-            Debug.Log(agent.remainingDistance);
-            while (agent.remainingDistance <= 0.2f)
+            while (agent.remainingDistance >= 0.2f)
             {
                 yield return new WaitForSeconds(0.1f);
             }
             // Then reset the values
             agent.speed = oldSpeed;
-            agent.angularSpeed = oldRoation;
             agent.acceleration = oldAccel;
             currentlyRamming = false;
             StartCoroutine(FireCooldown());
