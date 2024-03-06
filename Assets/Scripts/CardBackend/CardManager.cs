@@ -102,6 +102,10 @@ public class CardManager : MonoBehaviour
         hand.Add(card);
         Debug.Log("Added new card: " + card.name);
         Debug.Assert(hand.Contains(card), "FATAL ERROR: new card not found in hand???");
+
+
+        // contacting UI for UI to update!
+        AbilityManager.Instance.AddCardToHand(card);
     }
 
     /// <summary>

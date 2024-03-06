@@ -10,6 +10,20 @@ public class AbilityManager : MonoBehaviour
     // referencing from card manager
     private static AbilityManager _instance;
     public static AbilityManager Instance { get { return _instance; } }
+    void Awake()
+    {
+        Debug.Log("ability manager exists (the one that deals with UI)");
+        if (_instance == null) // If there is no instance already
+        {
+            DontDestroyOnLoad(gameObject); // Keep the GameObject, this component is attached to, across different scenes
+            _instance = this;
+        }
+        else if (_instance != this) // If there is already an instance and it's not `this` instance
+        {
+            Destroy(gameObject); // Destroy the GameObject, this component is attached to
+        }
+    }
+
 
     public List<Canvas> abilitySlots;
 
@@ -24,6 +38,8 @@ public class AbilityManager : MonoBehaviour
     // add card to swapper page (called from Card Manager)
     public void AddCardToHand(BaseCardClass card)
     {
+        Debug.Log("(UI) Adding " + card.cardName + " card to hand");
+
         // make visible
         GameObject newCard = Instantiate(card.cardUIPrefab, deckSlots[nextSlot].transform, false);
 
@@ -40,6 +56,8 @@ public class AbilityManager : MonoBehaviour
     // also called from Card Manager
     public void EquipCard(BaseCardClass card)
     {
+        Debug.Log("(UI) Equipping " + card.cardName);
+
         Canvas targetCanvas = abilitySlots[(int)card.EquipPlacement];
 
         // clear canvas if any cards are already there
