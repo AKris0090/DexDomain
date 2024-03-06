@@ -36,7 +36,7 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    protected IEnumerator Lifespan(float seconds)
+    protected virtual IEnumerator Lifespan(float seconds)
     {
         yield return new WaitForSeconds(seconds);
         EnemyManager.Instance.ReturnBullet(this);

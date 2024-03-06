@@ -21,4 +21,10 @@ public class PlayerProjectile : Bullet
             Destroy(this.gameObject);
         }
     }
+
+    protected override IEnumerator Lifespan(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        Destroy(this.gameObject);
+    }
 }
