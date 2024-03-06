@@ -73,6 +73,10 @@ public class CardManager : MonoBehaviour
         equippedCards[slot] = card;
 
         // Debug.Assert(!hand.Contains(card), "Error: Card still in hand after equipping");
+
+
+        // update the equipped UI
+        AbilityManager.Instance.EquipCard(card);
     }
 
     /// <summary>

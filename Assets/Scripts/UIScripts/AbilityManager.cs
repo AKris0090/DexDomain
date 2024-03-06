@@ -16,8 +16,6 @@ public class AbilityManager : MonoBehaviour
     public List<Canvas> deckSlots;
     private int nextSlot = 0;
 
-    public List<GameObject> activeCards = new();
-
 
     void Start()
     {
@@ -31,19 +29,20 @@ public class AbilityManager : MonoBehaviour
 
         // make obtainable (can move from hand to equipped)
         Button cardButton = deckSlots[nextSlot].GetComponentInChildren<Button>();
-        cardButton.onClick.AddListener(() => EquipCard(card));
+        cardButton.onClick.AddListener(() => CardManager.Instance.SwapIn(card));
+        // basically clicking a card calls the card manager to do it's swapping in
+        // then the card manager SwapIn() calls the ability ui manager (this) to update the UI
 
         // for next
         nextSlot++;
     }
 
     // also called from Card Manager
-    private void EquipCard(BaseCardClass card)
+    public void EquipCard(BaseCardClass card)
     {
+        Canvas targetCanvas = abilitySlots[(int)card.EquipPlacement];
 
-        // TODO find a way to get equip slots available to use :(
-        //Canvas targetCanvas = abilitySlots[deckSetup[b.EquipSlot]];
-        Canvas targetCanvas = abilitySlots[0];
+        // clear canvas if any cards are already there
         if (targetCanvas.transform.childCount > 0)
         {
             foreach (Transform child in targetCanvas.transform)
@@ -53,7 +52,9 @@ public class AbilityManager : MonoBehaviour
         }
 
         // add to equip slot
-        _ = Instantiate(card, targetCanvas.transform, false);
+        Instantiate(card.cardUIPrefab, targetCanvas.transform, false);
+
+
         // using the cards should be done in player control
     }
 }

@@ -5,12 +5,12 @@ using UnityEngine;
 // edited from mechanics module
 enum MENU
 {
-    Start = 0,
-    End = 1,
-    HUD = 2,
-    AbilityGUI = 3,
-    CardSwap = 4,
-    Pause = 5,
+    Start,
+    End,
+    HUD,
+    AbilityGUI,
+    CardSwap,
+    Pause,
 }
 
 public class UIManager : MonoBehaviour
@@ -95,6 +95,7 @@ public class UIManager : MonoBehaviour
     }
     void OpenMenu(MENU M) // SINGLE MENU OP.
     {
+        Debug.Log((int)M);
         menus[(int)M].enabled = true;
     }
 

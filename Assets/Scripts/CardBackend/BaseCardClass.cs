@@ -51,5 +51,10 @@ namespace CardOperations
         // maybe replace. intended to swap in/out cards, but maybe just do that in the manager
         public abstract void SwapIn();
         public abstract void SwapOut();
+
+
+        // UI access
+        public EquipSlots EquipPlacement { get { return _equipSlot; } }
+        public GameObject cardUIPrefab;
     }
 }
