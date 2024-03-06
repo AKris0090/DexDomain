@@ -95,9 +95,6 @@ public class EnemyManager : MonoBehaviour
     {
         if(damaged == player)
         {
-            // TODO: make this actually damage the player 
-            // Whoever does this should make sure the player doesn't take damage too much as part of the player,
-            // in case we have other managers that can damage the player.
             player.GetComponent<PlayerHealth>().DealDamage(1);
             return;
         }
