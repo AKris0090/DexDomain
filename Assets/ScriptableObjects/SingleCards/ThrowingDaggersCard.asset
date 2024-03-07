@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: ThrowingDaggersCard
   m_EditorClassIdentifier: 
   cardName: Throwing Daggers
-  equipSlot: 1
+  abilityAbs: {fileID: 0}
+  _equipSlot: 0
+  cardUIPrefab: {fileID: 3147494322152419602, guid: cb0a733e30f4e4b33afc3dd7b89c2c97, type: 3}
   cooldown: 10
   maxUses: 10

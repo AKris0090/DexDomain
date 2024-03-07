@@ -134,6 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
+  mouseDirection: {x: 0, y: 0}
 --- !u!58 &388418349910705250
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -194,7 +195,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &8295782010370468097
 MonoBehaviour:

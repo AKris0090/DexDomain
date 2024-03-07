@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: SwordCard
   m_EditorClassIdentifier: 
   cardName: Sword
-  equipSlot: 0
+  abilityAbs: {fileID: 0}
+  _equipSlot: 0
+  cardUIPrefab: {fileID: 3147494322152419602, guid: 8c14637df93164ed6bf070b4090a9431, type: 3}
   cooldown: 5
   maxUses: 5

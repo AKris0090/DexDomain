@@ -5,16 +5,33 @@ using UnityEngine;
 // edited from mechanics module
 enum MENU
 {
-    Start = 0,
-    End = 1,
-    HUD = 2,
-    AbilityGUI = 3,
-    CardSwap = 4,
-    Pause = 5,
+    Start,
+    End,
+    HUD,
+    AbilityGUI,
+    CardSwap,
+    Pause,
 }
 
 public class UIManager : MonoBehaviour
 {
+    // referencing from card manager
+    private static UIManager _instance;
+    public static UIManager Instance { get { return _instance; } }
+    void Awake()
+    {
+        Debug.Log("menu manager exists (UIManager component)");
+        if (_instance == null) // If there is no instance already
+        {
+            DontDestroyOnLoad(gameObject); // Keep the GameObject, this component is attached to, across different scenes
+            _instance = this;
+        }
+        else if (_instance != this) // If there is already an instance and it's not `this` instance
+        {
+            Destroy(gameObject); // Destroy the GameObject, this component is attached to
+        }
+    }
+
     public List<Canvas> menus;
 
     // dirties

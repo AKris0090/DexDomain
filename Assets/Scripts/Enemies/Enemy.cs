@@ -1,3 +1,4 @@
+using Redcode.Pools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,11 +11,13 @@ public class Enemy : MonoBehaviour
     // NEED TO SET THIS TO TRUE IN ALL THE CHILD STARTS OR THEY CAN'T TAKE DAMAGE
     protected bool canTakeDamage;
     public float damageCooldown = 0.5f;
-    protected EnemyManager manager;
+    protected EnemyManager enemyManager;
+    protected Pool<Bullet> bulletPool;
     // Take damage using damage feedback and waiting for damage cooldown before being able to take damage again
-    private void Start()
+    protected virtual void Start()
     {
         canTakeDamage = true;
+        enemyManager = EnemyManager.Instance;
     }
     public void Damage(int amount)
     {

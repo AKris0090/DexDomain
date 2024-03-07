@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2510973711582537703}
   - component: {fileID: 4223590554288157424}
   - component: {fileID: 3286506318984747486}
-  - component: {fileID: 7809105303456094021}
   - component: {fileID: 1616635555802609445}
+  - component: {fileID: 5226185645371340219}
   m_Layer: 2
   m_Name: BasicShootEnemy
   m_TagString: ShootEnemy
@@ -97,17 +97,17 @@ NavMeshAgent:
   m_GameObject: {fileID: 6529392268432006113}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
+  m_Radius: 0.6
+  m_Speed: 5
   m_Acceleration: 20
-  avoidancePriority: 50
+  avoidancePriority: 30
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 1
-  m_BaseOffset: 0.5
+  m_Height: 1.2
+  m_BaseOffset: 0.6
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &3286506318984747486
@@ -124,40 +124,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 1
   damageCooldown: 0.5
-  bullet: {fileID: 7892811708458513837, guid: cb2e8005ea96eab43a6a41f0eee5bbc7, type: 3}
   viewDistance: 30
   runRange: 5
-  fireRange: 15
+  fireRange: 10
   firerate: 0.5
   force: 300
   bulletLifespan: 5
---- !u!50 &7809105303456094021
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6529392268432006113}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!58 &1616635555802609445
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -193,3 +165,30 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!50 &5226185645371340219
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6529392268432006113}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0

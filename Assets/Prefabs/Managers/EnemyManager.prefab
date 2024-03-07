@@ -44,5 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5917b0ba7bf3d54cbc52e65c64d4583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BasicShoot: {fileID: 6529392268432006113, guid: 465c3ce157a575f4e93d857583dc0e4f, type: 3}
-  Player: {fileID: 0}
+  basicShoot: {fileID: 6529392268432006113, guid: 465c3ce157a575f4e93d857583dc0e4f, type: 3}
+  player: {fileID: 0}
+  enemyBullet: {fileID: 4661476730269234599, guid: cb2e8005ea96eab43a6a41f0eee5bbc7, type: 3}

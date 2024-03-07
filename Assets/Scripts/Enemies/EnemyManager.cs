@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using Redcode.Pools;
 using static UnityEditor.FilePathAttribute;
 
 // Singlton manager for managing enemies
@@ -25,6 +26,10 @@ public class EnemyManager : MonoBehaviour
     // Variable to keep track of the player
     public GameObject player;
 
+    // Bullet used by all enemies
+    public Bullet enemyBullet;
+    Pool<Bullet> bullets;
+
     // Singletonize it
     private static EnemyManager _instance;
     public static EnemyManager Instance { get { return _instance; } }
@@ -38,6 +43,22 @@ public class EnemyManager : MonoBehaviour
         {
             _instance = this;
         }
+    }
+
+    private void Start()
+    {
+        // Create a pool for enemy bullets
+        bullets = Pool.Create(enemyBullet);
+    }
+
+    public Bullet GetBullet()
+    {
+        return bullets.Get();
+    }
+
+    public void ReturnBullet(Bullet bullet)
+    {
+        bullets.Take(bullet);
     }
 
     // Spawns a basic shoot enemy at location, targeting target
@@ -74,9 +95,6 @@ public class EnemyManager : MonoBehaviour
     {
         if(damaged == player)
         {
-            // TODO: make this actually damage the player 
-            // Whoever does this should make sure the player doesn't take damage too much as part of the player,
-            // in case we have other managers that can damage the player.
             player.GetComponent<PlayerHealth>().DealDamage(1);
             return;
         }
