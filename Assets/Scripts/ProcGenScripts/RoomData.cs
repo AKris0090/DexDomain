@@ -14,6 +14,7 @@ public class RoomData : ScriptableObject
     // Editor exposed setter variables
     [SerializeField]
     private string roomName;
+    [SerializeField] private Sprite roomSprite;
     [Header("Room Size")]
     [SerializeField]
     private int width;
@@ -46,6 +47,7 @@ public class RoomData : ScriptableObject
     // Public getter properties for the room data
 
     public string RoomName => roomName;
+    public Sprite RoomSprite => roomSprite;
     public int Width => width;
     public int Height => height;
     public Vector2 DoorSize => doorSize;
