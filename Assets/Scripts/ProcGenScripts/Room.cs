@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ProcGenScripts;
 using UnityEngine;
 
 public class Room : MonoBehaviour
@@ -10,6 +11,7 @@ public class Room : MonoBehaviour
     private RoomData _roomData;
     private readonly List<RoomData.Dir> availableDirections = new();
     public bool Visited;
+    public Vector2Int DistanceFromStart;
     private bool _isStart;
     private bool _isEnd;
     private readonly Dictionary<ColliderType, Collider2D> _colliders = new();
@@ -51,15 +53,16 @@ public class Room : MonoBehaviour
         if (_roomData.East) availableDirections.Add(RoomData.Dir.East);
         if (_roomData.South) availableDirections.Add(RoomData.Dir.South);
         if (_roomData.West) availableDirections.Add(RoomData.Dir.West);
+
         Visited = false;
         _isStart = false;
         _isEnd = false;
 
-        // Create the room game object
         gameObject.transform.position = position;
         gameObject.transform.parent = transform;
         gameObject.name = _roomData.RoomName;
-        // Create Colliders
+
+        // Create Wall Colliders
         _colliders.Add(ColliderType.NorthWest, CreateCollider(ColliderType.NorthWest));
         _colliders.Add(ColliderType.NorthEast, CreateCollider(ColliderType.NorthEast));
         _colliders.Add(ColliderType.SouthWest, CreateCollider(ColliderType.SouthWest));
@@ -68,15 +71,29 @@ public class Room : MonoBehaviour
         _colliders.Add(ColliderType.WestSouth, CreateCollider(ColliderType.WestSouth));
         _colliders.Add(ColliderType.EastNorth, CreateCollider(ColliderType.EastNorth));
         _colliders.Add(ColliderType.EastSouth, CreateCollider(ColliderType.EastSouth));
-        // Doors
+        // Create Door Colliders
         _colliders.Add(ColliderType.NorthDoor, CreateCollider(ColliderType.NorthDoor));
         _colliders.Add(ColliderType.EastDoor, CreateCollider(ColliderType.EastDoor));
         _colliders.Add(ColliderType.SouthDoor, CreateCollider(ColliderType.SouthDoor));
         _colliders.Add(ColliderType.WestDoor, CreateCollider(ColliderType.WestDoor));
-        // Add rigidbody to the room game object if it doesnt have one already
+
         if (!gameObject.GetComponent<Rigidbody2D>())
             gameObject.AddComponent<Rigidbody2D>();
         gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        CreateRoomSprite();
+    }
+
+    private void CreateRoomSprite()
+    {
+        // Create the room sprite
+        SpriteRenderer spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
+        spriteRenderer.sprite = _roomData.RoomSprite;
+        spriteRenderer.sortingLayerName = "Rooms";
+        spriteRenderer.sortingOrder = 0;
+        // Tester code
+        spriteRenderer.drawMode = SpriteDrawMode.Sliced;
+        spriteRenderer.color = new Color(0.9698113f, 0.9696587f, 0.9570024f, 1f);
+        spriteRenderer.size = new Vector2(_roomData.Width - _roomData.WallThickness, _roomData.Height - _roomData.WallThickness);
     }
 
     /// <summary>
@@ -104,6 +121,37 @@ public class Room : MonoBehaviour
     {
         if (availableDirections.Count == 0) return RoomData.Dir.North;
         return availableDirections[Random.Range(0, availableDirections.Count)];
+    }
+
+    /// <summary>
+    /// Gets a weighted randoim direction from the available directions.
+    /// The weight is used to determine the likelihood of a direction being chosen
+    /// from [-1, 1] in the X and Y. 1, 1 would be a 50/50 chance of N or E. And
+    /// 0, 0 would be an equal chance of all directions.
+    /// </summary>
+    /// <returns>A random direction this room can connect to and North if none.</returns>
+    public RoomData.Dir GetRandomDirection(Vector2 weight)
+    {
+        if (availableDirections.Count == 0) return RoomData.Dir.North;
+
+        WeightedRandom<RoomData.Dir> weightedRandom = new();
+
+        if (availableDirections.Contains(RoomData.Dir.North))
+        weightedRandom.Add(RoomData.Dir.North, 1 + weight.y);
+
+        if (availableDirections.Contains(RoomData.Dir.South))
+            weightedRandom.Add(RoomData.Dir.South, 1 - weight.y);
+
+        if (availableDirections.Contains(RoomData.Dir.East))
+            weightedRandom.Add(RoomData.Dir.East, 1 + weight.x);
+
+        if (availableDirections.Contains(RoomData.Dir.West))
+            weightedRandom.Add(RoomData.Dir.West, 1 - weight.x);
+
+        RoomData.Dir dir = weightedRandom.GetRandom();
+        Debug.Log($"Weight: {weight}");
+        Debug.Log(dir);
+        return dir;
     }
 
     /// <summary>
@@ -190,4 +238,75 @@ public class Room : MonoBehaviour
         }
         return collider;
     }   
+
+    public ref readonly RoomData GetRoomData()
+    {
+        return ref _roomData;
+    }
+
+    public void StartRoom(bool lockDoors=true)
+    {
+        _isStart = true;
+        if (lockDoors) LockDoors();
+    }
+
+    public void EndRoom(bool unlockDoors=true)
+    {
+        _isEnd = true;
+        if (unlockDoors) UnlockDoors();
+    }
+
+    public void LockDoors()
+    {
+        if (_roomData.North) _colliders[ColliderType.NorthDoor].enabled = true;
+        if (_roomData.East) _colliders[ColliderType.EastDoor].enabled = true;
+        if (_roomData.South) _colliders[ColliderType.SouthDoor].enabled = true;
+        if (_roomData.West) _colliders[ColliderType.WestDoor].enabled = true;
+    }
+
+    public void UnlockDoors()
+    {
+        if (_roomData.North) _colliders[ColliderType.NorthDoor].enabled = false;
+        if (_roomData.East) _colliders[ColliderType.EastDoor].enabled = false;
+        if (_roomData.South) _colliders[ColliderType.SouthDoor].enabled = false;
+        if (_roomData.West) _colliders[ColliderType.WestDoor].enabled = false;
+    }
+
+    public void LockDoor(RoomData.Dir dir)
+    {
+        switch (dir)
+        {
+            case RoomData.Dir.North:
+                _colliders[ColliderType.NorthDoor].enabled = true;
+                break;
+            case RoomData.Dir.East:
+                _colliders[ColliderType.EastDoor].enabled = true;
+                break;
+            case RoomData.Dir.South:
+                _colliders[ColliderType.SouthDoor].enabled = true;
+                break;
+            case RoomData.Dir.West:
+                _colliders[ColliderType.WestDoor].enabled = true;
+                break;
+        }
+    }
+
+    public void UnlockDoor(RoomData.Dir dir)
+    {
+        switch (dir)
+        {
+            case RoomData.Dir.North:
+                _colliders[ColliderType.NorthDoor].enabled = false;
+                break;
+            case RoomData.Dir.East:
+                _colliders[ColliderType.EastDoor].enabled = false;
+                break;
+            case RoomData.Dir.South:
+                _colliders[ColliderType.SouthDoor].enabled = false;
+                break;
+            case RoomData.Dir.West:
+                _colliders[ColliderType.WestDoor].enabled = false;
+                break;
+        }
+    }
 }
