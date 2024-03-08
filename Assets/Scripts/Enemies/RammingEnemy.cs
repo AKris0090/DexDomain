@@ -108,13 +108,20 @@ public class RammingEnemy : Enemy
             yield return new WaitForSeconds(windup / numberOfBlinks);
             renderer.color = oldColor;
             yield return new WaitForSeconds(windup / numberOfBlinks);
+
             float oldAccel = agent.acceleration;
-            agent.speed = ramSpeed;
-            agent.acceleration = ramAceleration;
-            // Wait until the ram is complete
-            while (agent.remainingDistance >= 0.2f)
+            // Test if the player is still in sight, ram if they are
+            // TODO: Make this ignore bullets
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, enemyManager.GetPlayerPosition() - transform.position);
+            if (hit.collider && enemyManager.CheckIfPlayer(hit.collider.gameObject))
             {
-                yield return new WaitForSeconds(0.1f);
+                agent.speed = ramSpeed;
+                agent.acceleration = ramAceleration;
+                // Wait until the ram is complete
+                while (agent.remainingDistance >= 0.2f)
+                {
+                    yield return new WaitForSeconds(0.1f);
+                }
             }
             // Then reset the values
             agent.speed = oldSpeed;

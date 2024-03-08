@@ -27,6 +27,7 @@ public class Bullet : MonoBehaviour
         this.spawner = spawner;
     }
 
+    // TODO: Make this either ignore enemies, or damage them
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject != spawner && collision.gameObject.GetComponent<Bullet>() == null)
