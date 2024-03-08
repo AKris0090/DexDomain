@@ -30,11 +30,6 @@ namespace ProcGenScripts
 
         public T GetRandom()
         {
-            for (int i = 0; i < _items.Count; i++)
-            {
-                Debug.Log($"{_items[i]}");
-                Debug.Log($"{_weights[i]}");
-            }
             float random = Random.Range(0, _totalWeight);
             float weightSum = 0;
 
