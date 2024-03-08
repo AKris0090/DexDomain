@@ -57,6 +57,7 @@ public class Room : MonoBehaviour
         Visited = false;
         _isStart = false;
         _isEnd = false;
+        DistanceFromStart = Vector2Int.zero;
 
         gameObject.transform.position = position;
         gameObject.transform.parent = transform;
@@ -94,6 +95,16 @@ public class Room : MonoBehaviour
         spriteRenderer.drawMode = SpriteDrawMode.Sliced;
         spriteRenderer.color = new Color(0.9698113f, 0.9696587f, 0.9570024f, 1f);
         spriteRenderer.size = new Vector2(_roomData.Width - _roomData.WallThickness, _roomData.Height - _roomData.WallThickness);
+    }
+
+    public List<Room> GetConnectedRooms()
+    {         
+        List<Room> connectedRooms = new();
+        if (NorthRoom != null) connectedRooms.Add(NorthRoom);
+        if (EastRoom != null) connectedRooms.Add(EastRoom);
+        if (SouthRoom != null) connectedRooms.Add(SouthRoom);
+        if (WestRoom != null) connectedRooms.Add(WestRoom);
+        return connectedRooms;
     }
 
     /// <summary>
@@ -149,8 +160,6 @@ public class Room : MonoBehaviour
             weightedRandom.Add(RoomData.Dir.West, 1 - weight.x);
 
         RoomData.Dir dir = weightedRandom.GetRandom();
-        Debug.Log($"Weight: {weight}");
-        Debug.Log(dir);
         return dir;
     }
 
@@ -171,6 +180,62 @@ public class Room : MonoBehaviour
         };
     }
 
+    public RoomData.Dir GetDirectionToRoom(Room toRoom)
+    {
+        // If the room is connected to the specified room, return the direction
+        switch (toRoom)
+        {
+            case { } when toRoom == NorthRoom:
+                return RoomData.Dir.North;
+            case { } when toRoom == EastRoom:
+                return RoomData.Dir.East;
+            case { } when toRoom == SouthRoom:
+                return RoomData.Dir.South;
+            case { } when toRoom == WestRoom:
+                return RoomData.Dir.West;
+        }
+        // Else calculate direction based on position
+        Vector3 toRoomPos = toRoom.transform.position;
+        Vector3 thisRoomPos = transform.position;
+        Vector3 diff = toRoomPos - thisRoomPos;
+        if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
+        {
+            return diff.x > 0 ? RoomData.Dir.East : RoomData.Dir.West;
+        }
+        return diff.y > 0 ? RoomData.Dir.North : RoomData.Dir.South;
+    }
+
+    public List<Room> FindAdjRooms()
+    {
+        List<Room> adjRooms = new();
+        foreach (RoomData.Dir dir in availableDirections)
+        {
+            if (GetRoomFromDirection(dir) != null)
+                adjRooms.Add(GetRoomFromDirection(dir));
+            else
+            {
+                Vector2 origin    = GetDoorCollider(dir).offset;
+                Vector2 direction = dir switch
+                {
+                    RoomData.Dir.North => Vector2.up,
+                    RoomData.Dir.East  => Vector2.right,
+                    RoomData.Dir.South => Vector2.down,
+                    RoomData.Dir.West  => Vector2.left,
+                    _ => Vector2.zero,
+                };
+                origin += new Vector2(transform.position.x, transform.position.y);
+                RaycastHit2D hit = Physics2D.Raycast(origin, direction, 1);
+                if (hit.collider != null)
+                {
+                    if (hit.collider.gameObject.TryGetComponent<Room>(out var hitRoom))
+                        adjRooms.Add(hitRoom);
+                }
+            }
+        }
+        return adjRooms;
+    }
+
+
     /// <summary>
     /// Creates a collider for the room in the specified slot.
     /// </summary>
@@ -179,27 +244,27 @@ public class Room : MonoBehaviour
     private Collider2D CreateCollider(ColliderType type)
     {
         BoxCollider2D collider = gameObject.AddComponent<BoxCollider2D>();
-        float wallLengthH = _roomData.Width / 2 - _roomData.DoorSize.x / 2;
-        float wallOffsetH = wallLengthH / 2 + _roomData.DoorSize.x / 2;
-        float wallLengthV = _roomData.Height / 2 - _roomData.DoorSize.x / 2;
-        float wallOffsetV = wallLengthV / 2 + _roomData.DoorSize.x / 2;
+        float wallLengthH = _roomData.Width / 2 - _roomData.DoorSize / 2;
+        float wallOffsetH = wallLengthH / 2 + _roomData.DoorSize / 2;
+        float wallLengthV = _roomData.Height / 2 - _roomData.DoorSize / 2;
+        float wallOffsetV = wallLengthV / 2 + _roomData.DoorSize / 2;
         switch (type)
         {
             // Doors
             case ColliderType.NorthDoor:
-                collider.size = new Vector2(_roomData.DoorSize.x, _roomData.DoorSize.y);
+                collider.size = new Vector2(_roomData.DoorSize, _roomData.WallThickness);
                 collider.offset = new Vector2(0, _roomData.Height / 2);
                 break;
             case ColliderType.EastDoor:
-                collider.size = new Vector2(_roomData.DoorSize.y, _roomData.DoorSize.x);
+                collider.size = new Vector2(_roomData.WallThickness, _roomData.DoorSize);
                 collider.offset = new Vector2(_roomData.Width / 2, 0);
                 break;
             case ColliderType.SouthDoor:
-                collider.size = new Vector2(_roomData.DoorSize.x, _roomData.DoorSize.y);
+                collider.size = new Vector2(_roomData.DoorSize, _roomData.WallThickness);
                 collider.offset = new Vector2(0, -_roomData.Height / 2);
                 break;
             case ColliderType.WestDoor:
-                collider.size = new Vector2(_roomData.DoorSize.y, _roomData.DoorSize.x);
+                collider.size = new Vector2(_roomData.WallThickness, _roomData.DoorSize);
                 collider.offset = new Vector2(-_roomData.Width / 2, 0);
                 break;
             // Directions
@@ -258,10 +323,10 @@ public class Room : MonoBehaviour
 
     public void LockDoors()
     {
-        if (_roomData.North) _colliders[ColliderType.NorthDoor].enabled = true;
-        if (_roomData.East) _colliders[ColliderType.EastDoor].enabled = true;
-        if (_roomData.South) _colliders[ColliderType.SouthDoor].enabled = true;
-        if (_roomData.West) _colliders[ColliderType.WestDoor].enabled = true;
+        if (_roomData.North) LockDoor(RoomData.Dir.North);
+        if (_roomData.East) LockDoor(RoomData.Dir.East);
+        if (_roomData.South) LockDoor(RoomData.Dir.South);
+        if (_roomData.West) LockDoor(RoomData.Dir.West);
     }
 
     public void UnlockDoors()
@@ -278,15 +343,23 @@ public class Room : MonoBehaviour
         {
             case RoomData.Dir.North:
                 _colliders[ColliderType.NorthDoor].enabled = true;
+                if(NorthRoom != null)
+                    NorthRoom._colliders[ColliderType.SouthDoor].enabled = true;
                 break;
             case RoomData.Dir.East:
                 _colliders[ColliderType.EastDoor].enabled = true;
+                if(EastRoom != null)
+                    EastRoom._colliders[ColliderType.WestDoor].enabled = true;
                 break;
             case RoomData.Dir.South:
                 _colliders[ColliderType.SouthDoor].enabled = true;
+                if(SouthRoom != null)
+                    SouthRoom._colliders[ColliderType.NorthDoor].enabled = true;
                 break;
             case RoomData.Dir.West:
                 _colliders[ColliderType.WestDoor].enabled = true;
+                if(WestRoom != null)
+                    WestRoom._colliders[ColliderType.EastDoor].enabled = true;
                 break;
         }
     }
@@ -297,16 +370,53 @@ public class Room : MonoBehaviour
         {
             case RoomData.Dir.North:
                 _colliders[ColliderType.NorthDoor].enabled = false;
+                if (NorthRoom != null)
+                    NorthRoom._colliders[ColliderType.SouthDoor].enabled = false;
                 break;
             case RoomData.Dir.East:
                 _colliders[ColliderType.EastDoor].enabled = false;
+                if (EastRoom != null)
+                    EastRoom._colliders[ColliderType.WestDoor].enabled = false;
                 break;
             case RoomData.Dir.South:
                 _colliders[ColliderType.SouthDoor].enabled = false;
+                if (SouthRoom != null)
+                    SouthRoom._colliders[ColliderType.NorthDoor].enabled = false;
                 break;
             case RoomData.Dir.West:
                 _colliders[ColliderType.WestDoor].enabled = false;
+                if (WestRoom != null)
+                    WestRoom._colliders[ColliderType.EastDoor].enabled = false;
                 break;
         }
+    }
+
+    public bool IsDoorLocked(RoomData.Dir dir)
+    {
+        return GetDoorCollider(dir).enabled;
+    }
+
+    private Collider2D GetDoorCollider(RoomData.Dir dir)
+    {
+        return dir switch
+        {
+            RoomData.Dir.North => _colliders[ColliderType.NorthDoor],
+            RoomData.Dir.East => _colliders[ColliderType.EastDoor],
+            RoomData.Dir.South => _colliders[ColliderType.SouthDoor],
+            RoomData.Dir.West => _colliders[ColliderType.WestDoor],
+            _ => null,
+        };
+    }
+
+    public override string ToString()
+    {
+        string str = $"Room: {_roomData.RoomName} ";
+        str += $"Position: {DistanceFromStart} ";
+        str += $"Connections: ";
+        if (NorthRoom) str += "North ";
+        if (SouthRoom) str += "South ";
+        if (EastRoom) str += "East ";
+        if (WestRoom) str += "West ";
+        return str;
     }
 }
