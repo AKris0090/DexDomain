@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DungeonGenerator : MonoBehaviour
 {
-    public List<RoomData> spawnableRooms = new();
+    public List<RoomData> SpawnableRooms = new();
     private readonly List<Room> _generatedRooms = new();
     [SerializeField]
     private int _minRooms = 1;
@@ -29,15 +29,27 @@ public class DungeonGenerator : MonoBehaviour
     /// <returns>This coroutine.</returns>
     public IEnumerator GenerateDungeon()
     {
-        int numRooms = Random.Range(_minRooms, _maxRooms);
-        RoomData baseRoom = spawnableRooms[Random.Range(0, spawnableRooms.Count)];
-        
+        int numRooms = Random.Range(_minRooms, _maxRooms);        
         Room currentRoom = new GameObject().AddComponent<Room>();
-        currentRoom.Init(baseRoom, Vector3.zero);
+        currentRoom.Init(GetRandomRoomType(), Vector3.zero);
         int roomGenCount = 1;
+        Room[,] roomAdjMatrix = new Room[numRooms, numRooms];
+        roomAdjMatrix[0, 0] = currentRoom;
+        _generatedRooms.Add(currentRoom);
+        int loopGuard = 0;
+        bool isCentered = false;
         while (roomGenCount < numRooms)
         {
-
+            if (loopGuard++ > 1000)
+            {
+                Debug.LogError("Infinite loop detected in dungeon generation.");
+                break;
+            }
+            if (roomGenCount % _centeringFactor == 0 && !isCentered)
+            {
+                currentRoom = _generatedRooms[0];
+                isCentered = true;
+            }
             RoomData.Dir dir = currentRoom.GetRandomDirection(
                 WeightFromDistance(currentRoom.DistanceFromStart, _branchingFactor));
 
@@ -47,28 +59,48 @@ public class DungeonGenerator : MonoBehaviour
                 currentRoom = currentRoom.GetRoomFromDirection(dir);
                 continue;
             }
-            else if (roomGenCount % _centeringFactor == 0 && currentRoom != _generatedRooms[0])
-            {
-                currentRoom = _generatedRooms[0];
-            }
 
-            RoomData roomType = GetRandomRoomType();
             Room newRoom = new GameObject().AddComponent<Room>();
-            newRoom.Init(roomType, currentRoom.transform.position);
+            newRoom.Init(GetRandomRoomType(), currentRoom.transform.position);
             ConnectRooms(currentRoom, newRoom, dir);
+            SnapRoomsTogether(currentRoom, newRoom, dir);
+            roomAdjMatrix[roomGenCount, roomGenCount] = newRoom;
             _generatedRooms.Add(newRoom);
+
+            foreach (Room adjRoom in newRoom.FindAdjRooms())
+            {
+                roomAdjMatrix[_generatedRooms.IndexOf(adjRoom), roomGenCount] = newRoom;
+                roomAdjMatrix[roomGenCount, _generatedRooms.IndexOf(adjRoom)] = adjRoom;
+                ConnectRooms(adjRoom, newRoom, adjRoom.GetDirectionToRoom(newRoom));
+            }
 
             currentRoom = newRoom;
             roomGenCount++;
+            isCentered = false;
             yield return new WaitForSecondsRealtime(.25f);
         }
     }
 
     private RoomData GetRandomRoomType()
     {
-        return spawnableRooms[Random.Range(0, spawnableRooms.Count)];
+        return SpawnableRooms[Random.Range(0, SpawnableRooms.Count)];
     }
 
+    private List<Room> GetAdjRooms(int roomIndex, Room[,] adjMatrix)
+    {
+        List<Room> adjRooms = new(adjMatrix.Length);
+        for (int i = 0; i < adjMatrix.GetLength(0); i++)
+        {
+            if (adjMatrix[roomIndex, i] != null && i != roomIndex)
+                adjRooms.Add(adjMatrix[roomIndex, i]);
+        }
+        return adjRooms;
+    }
+
+    /// <summary>
+    /// Stiches room connections together.
+    /// </summary>
+    /// <param name="dir">Direction from the fromRoom to the toRoom</param>
     private void ConnectRooms(Room fromRoom, Room toRoom, RoomData.Dir dir)
     {
         switch (dir)
@@ -94,21 +126,29 @@ public class DungeonGenerator : MonoBehaviour
                 toRoom.DistanceFromStart = fromRoom.DistanceFromStart + Vector2Int.left;
                 break;
         }
+    }
+
+    /// <summary>
+    /// Moves the room to the correct grid position based on the direction
+    /// from the stationary room and its position.
+    /// </summary>
+    private void SnapRoomsTogether(Room staticRoom, Room roomToMove, RoomData.Dir dir)
+    {
         // Calculate the position offset of the new room based on the direction
-        Vector3 position = fromRoom.transform.position;
+        Vector3 position = staticRoom.transform.position;
         position.x += dir switch
         {
-            RoomData.Dir.East => toRoom.GetRoomData().Width,
-            RoomData.Dir.West => -toRoom.GetRoomData().Width,
+            RoomData.Dir.East => roomToMove.GetRoomData().Width,
+            RoomData.Dir.West => -roomToMove.GetRoomData().Width,
             _ => 0,
         };
         position.y += dir switch
         {
-            RoomData.Dir.North => toRoom.GetRoomData().Height,
-            RoomData.Dir.South => -toRoom.GetRoomData().Height,
+            RoomData.Dir.North => roomToMove.GetRoomData().Height,
+            RoomData.Dir.South => -roomToMove.GetRoomData().Height,
             _ => 0,
         };
-        toRoom.transform.position = position;
+        roomToMove.transform.position = position;
     }
 
     private Vector2 WeightFromDistance(Vector2Int dist, float factor)
@@ -116,8 +156,8 @@ public class DungeonGenerator : MonoBehaviour
         float x = dist.x, y = dist.y;
         Vector2 weight = new()
         {
-            x = Mathf.Clamp(-x / factor, -1, 1),
-            y = Mathf.Clamp(-y / factor, -1, 1)
+            x = Mathf.Clamp(x / factor, -1, 1),
+            y = Mathf.Clamp(y / factor, -1, 1)
         };
         return weight;
     }
@@ -131,7 +171,23 @@ public class DungeonGenerator : MonoBehaviour
         {
             foreach (BoxCollider2D collider in room.GetComponents<BoxCollider2D>())
             {
+                RaycastHit2D[] raycastHits = new RaycastHit2D[1];
                 Gizmos.DrawWireCube(collider.bounds.center, collider.bounds.size);
+                if (collider.Raycast(Vector2.up, raycastHits, 1f) > 0)
+                {
+                    GameObject hitObject = raycastHits[0].transform.gameObject;
+                    if (hitObject == collider.gameObject)
+                        continue;
+                    
+                    Room roomHit = hitObject.GetComponent<Room>();
+                    Gizmos.color = Color.red;
+                    if (roomHit.GetConnectedRooms().Contains(room))
+                    {
+                        Gizmos.color = Color.green;
+                    }
+                    Gizmos.DrawWireCube(raycastHits[0].collider.bounds.center,
+                        raycastHits[0].collider.bounds.size);
+                }
             }
         }
     }
