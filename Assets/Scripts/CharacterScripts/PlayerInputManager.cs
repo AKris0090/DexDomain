@@ -24,17 +24,17 @@ public class PlayerInputManager : MonoBehaviour
         }
         if (Input.GetButton("SecondaryAttack"))
         {
-            // Fire the primary weapon/card towards the mouse position
+            // Fire the secondary weapon/card towards the mouse position
             CardManager.Instance.UseSecondary(transform.position, _characterMovement.mouseDirection);
         }
         if (Input.GetButton("SpecialAbility"))
         {
-            // Fire the primary weapon/card towards the mouse position
+            // Fire the special weapon/card towards the mouse position
             CardManager.Instance.UseSpecial(transform.position, _characterMovement.mouseDirection);
         }
         if (Input.GetButton("MovementAbility"))
         {
-            // Fire the primary weapon/card towards the mouse position
+            // Use the movement weapon/card towards the mouse position
             CardManager.Instance.UseMovement(transform.position, _characterMovement.mouseDirection);
         }
     }
