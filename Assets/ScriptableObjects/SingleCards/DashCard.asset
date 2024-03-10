@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DashCard
   m_EditorClassIdentifier: 
   cardName: Dash
-  abilityAbs: {fileID: 0}
-  _equipSlot: 0
+  abilityAbs: {fileID: 11400000, guid: 35fa0efd0efbefb46a2102581ce22cc5, type: 2}
+  _equipSlot: 3
   cardUIPrefab: {fileID: 3147494322152419602, guid: 9a67b0801ac4b4bd9b3dc7426aed7ef2, type: 3}
-  cooldown: 5
+  cooldown: 0.1

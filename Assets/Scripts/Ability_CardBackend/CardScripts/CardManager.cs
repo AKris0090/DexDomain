@@ -76,7 +76,7 @@ public class CardManager : MonoBehaviour
 
 
         // update the equipped UI
-        AbilityManager.Instance.EquipCard(card);
+        //AbilityManager.Instance.EquipCard(card);
     }
 
     /// <summary>
@@ -105,7 +105,7 @@ public class CardManager : MonoBehaviour
 
 
         // contacting UI for UI to update!
-        AbilityManager.Instance.AddCardToHand(card);
+        //AbilityManager.Instance.AddCardToHand(card);
     }
 
     /// <summary>
