@@ -163,7 +163,7 @@ public class Boss : Enemy
                 for (int j = 0; j < bulletsToSpawn; j++)
                 {
                     Bullet newBullet = EnemyManager.Instance.GetBullet();
-                    float properAngle = (((2 * Mathf.PI) / bulletsToSpawn) * j) + (((2 * Mathf.PI) / bulletsToSpawn)/2);
+                    float properAngle = (((2 * Mathf.PI) / bulletsToSpawn) * j);
                     float x = Mathf.Cos(properAngle);
                     float y = Mathf.Sin(properAngle);
                     Vector3 dir = new Vector3(x * 10f, y * 10f, 0);
@@ -266,7 +266,6 @@ public class Boss : Enemy
                 Vector2 line = -(boss.transform.position - playerPos);
                 // OuterArc should be at a 45 degree angle from the boss to the player
                 Vector3 outerArc = line + line.Perpendicular1();
-                Vector3 test = line;
                 for (int j = 0; j < phasedNumOfShells; j++)
                 {
                     // calculate the angle the bullet should be fired at
