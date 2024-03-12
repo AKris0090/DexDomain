@@ -16,4 +16,4 @@ MonoBehaviour:
   abilityAbs: {fileID: 11400000, guid: f069ee503225e904daea7ec3b7c4cc0d, type: 2}
   _equipSlot: 0
   cardUIPrefab: {fileID: 3147494322152419602, guid: 8c14637df93164ed6bf070b4090a9431, type: 3}
-  cooldown: 0.25
+  cooldown: 0.75
