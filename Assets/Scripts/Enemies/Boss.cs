@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using static RoomData;
+using static Unity.VisualScripting.Member;
 
 public class Boss : Enemy
 {
@@ -30,6 +31,10 @@ public class Boss : Enemy
     public float ringBulletForce = 100;
     public float bulletLifespan = 5;
     public float secondsBetweenRings = 1;
+    public int numberOfShotgunShots = 5;
+    public float shotGunForce = 500f;
+    public float shotgunFireRate = 0.5f;
+    public int numberOfShells = 5;
     float phase;
     int maxHeatlth;
     NavMeshAgent agent;
@@ -118,7 +123,7 @@ public class Boss : Enemy
             // If this line hit the player
             if (boss.enemyManager.CheckIfPlayer(hit.collider.gameObject))
             {
-                boss.state = boss.dash;
+                boss.state = boss.shotgun;
             }
             yield return new WaitForSeconds(1f);
             lookedRecently = false;
@@ -148,8 +153,8 @@ public class Boss : Enemy
                 {
                     Bullet newBullet = EnemyManager.Instance.GetBullet();
                     float properAngle = ((2*Mathf.PI) / bulletsToSpawn) * j;
-                    float x = Mathf.Cos(properAngle);
-                    float y = Mathf.Sin(properAngle);
+                    float y = Mathf.Cos(properAngle);
+                    float x = Mathf.Sin(properAngle);
                     Debug.Log("Angle: " + properAngle + " x: " + x + " y: " + y);
                     Vector3 dir = new Vector3(x * 10f, y * 10f, 0);
                     newBullet.SetTarget(dir + boss.transform.position, 5, boss.ringBulletForce, boss.gameObject, boss.transform.position, boss.transform.rotation);
@@ -219,6 +224,7 @@ public class Boss : Enemy
                     Vector2 line = (boss.transform.position - nextLocation);
                     Vector2 bossLoc = boss.transform.position;
                     Bullet newBullet = EnemyManager.Instance.GetBullet();
+                    // Fire bullets perpendicuarly from the direction of travel
                     newBullet.SetTarget(line.Perpendicular1() + bossLoc, boss.dashForce, 3, boss.gameObject, boss.transform.position, boss.transform.rotation);
                     newBullet = EnemyManager.Instance.GetBullet();
                     newBullet.SetTarget(line.Perpendicular1() * -1 + bossLoc, boss.dashForce, 3, boss.gameObject, boss.transform.position, boss.transform.rotation);
@@ -226,9 +232,9 @@ public class Boss : Enemy
                 }
                 // Update the current location
                 currentLocation = nextLocation;
-                // Change state
-                boss.SelectNewState();
             }
+            // Change state
+            boss.SelectNewState();
             attackStarted = false;
         }
 
@@ -244,6 +250,42 @@ public class Boss : Enemy
                 attackStarted = true;
                 boss.StartCoroutine(Attack(boss));
             }
+        }
+
+        IEnumerator Attack(Boss boss)
+        {
+            int phasedNumOfShells = (int)(boss.numberOfShells * boss.phase);
+            if(phasedNumOfShells % 2 == 0)
+            {
+                phasedNumOfShells -= 1;
+            }
+            // If the enemy is ready to fire, do so
+            for (int i = 0; i < boss.numberOfShotgunShots * boss.phase; i++)
+            {
+                Vector3 playerPos = EnemyManager.Instance.GetPlayerPosition();
+                Vector2 line = -(boss.transform.position - playerPos);
+                // OuterArc should be at a 45 degree angle from the boss to the player
+                Vector3 outerArc = line + line.Perpendicular1();
+                Vector3 test = line;
+                Debug.DrawLine(boss.transform.position, boss.transform.position + outerArc, Color.white, 1);
+                Debug.DrawLine(boss.transform.position, boss.transform.position + test, Color.red, 1);
+                for (int j = 0; j < phasedNumOfShells; j++)
+                {
+                    // calculate the angle the bullet should be fired at
+                    float intermediateAngle = ((Mathf.PI/4)/phasedNumOfShells) + ((Mathf.PI/2) / phasedNumOfShells) * j;
+                    float angle = Mathf.Atan2(outerArc.y, outerArc.x) + intermediateAngle;
+                    float x = Mathf.Cos(angle);
+                    float y = Mathf.Sin(angle);
+                    Vector3 dir = new Vector2(x, y);
+                    Debug.DrawLine(boss.transform.position, boss.transform.position + dir, Color.red, 1);
+                    Bullet newBullet = EnemyManager.Instance.GetBullet();
+                    newBullet.SetTarget(dir + boss.transform.position, boss.shotGunForce, 5, boss.gameObject, boss.transform.position, boss.transform.rotation);
+                }
+                yield return new WaitForSeconds(boss.shotgunFireRate);
+            }
+            // Change state
+            boss.SelectNewState();
+            attackStarted = false;
         }
     }
 }
