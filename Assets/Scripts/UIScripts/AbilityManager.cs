@@ -71,8 +71,6 @@ public class AbilityManager : MonoBehaviour
 
         // add to equip slot
         Instantiate(card.cardUIPrefab, targetCanvas.transform, false);
-
-
         // using the cards should be done in player control
     }
 }
