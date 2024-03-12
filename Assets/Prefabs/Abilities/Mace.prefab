@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7187990969246742475}
   - component: {fileID: 7498870695762313325}
   m_Layer: 0
-  m_Name: Sword
+  m_Name: Mace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 962946618411464903}
   - component: {fileID: 1241508537734430054}
   m_Layer: 0
-  m_Name: The-monarch-medieval-sword_800x
+  m_Name: mace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,13 +71,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8958785951631515571}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -1, w: 0.0000002533197}
-  m_LocalPosition: {x: -0, y: 5.75, z: 0}
-  m_LocalScale: {x: 0.32825, y: 0.32825, z: 0.32825}
+  m_LocalRotation: {x: 0, y: 0, z: -0.92387956, w: 0.38268343}
+  m_LocalPosition: {x: 3, y: 3, z: 0}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7187990969246742475}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -135}
 --- !u!212 &962946618411464903
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -119,12 +119,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5b1293bb567a0074294ec2049fc56eb4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fd38e4cf3781dbd48b8771eff4fce35a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
-  m_FlipY: 0
+  m_FlipY: 1
   m_DrawMode: 0
-  m_Size: {x: 8, y: 24.02346}
+  m_Size: {x: 4.8, y: 3.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -163,5 +163,5 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 2.29, y: 24.7}
-  m_Direction: 0
+  m_Size: {x: 5.36, y: 1.37}
+  m_Direction: 1
