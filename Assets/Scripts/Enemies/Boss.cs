@@ -35,6 +35,7 @@ public class Boss : Enemy
     public float shotGunForce = 500f;
     public float shotgunFireRate = 0.5f;
     public int numberOfShells = 5;
+    public float phaseChangeTime = 2f;
     float phase;
     int maxHeatlth;
     NavMeshAgent agent;
@@ -83,7 +84,6 @@ public class Boss : Enemy
 
     void SelectNewState()
     {
-        return; // TODO: CHANGE THIS WHEN ALL STATES WORK
         // This allows for the boss repeatedly selecting the same state. Should be okay? 
         int selector = Random.Range(0, states.Count);
         state = states[selector];
@@ -123,7 +123,7 @@ public class Boss : Enemy
             // If this line hit the player
             if (boss.enemyManager.CheckIfPlayer(hit.collider.gameObject))
             {
-                boss.state = boss.shotgun;
+                boss.state = boss.bulletHell;
             }
             yield return new WaitForSeconds(1f);
             lookedRecently = false;
@@ -155,9 +155,9 @@ public class Boss : Enemy
                     float properAngle = ((2*Mathf.PI) / bulletsToSpawn) * j;
                     float y = Mathf.Cos(properAngle);
                     float x = Mathf.Sin(properAngle);
-                    Debug.Log("Angle: " + properAngle + " x: " + x + " y: " + y);
                     Vector3 dir = new Vector3(x * 10f, y * 10f, 0);
-                    newBullet.SetTarget(dir + boss.transform.position, 5, boss.ringBulletForce, boss.gameObject, boss.transform.position, boss.transform.rotation);
+                    Debug.Log(boss.ringBulletForce);
+                    newBullet.SetTarget(dir + boss.transform.position, boss.ringBulletForce * boss.phase, 5, boss.gameObject, boss.transform.position, boss.transform.rotation);
                 }
                 yield return new WaitForSeconds(boss.secondsBetweenRings);
                 for (int j = 0; j < bulletsToSpawn; j++)
@@ -166,14 +166,14 @@ public class Boss : Enemy
                     float properAngle = (((2 * Mathf.PI) / bulletsToSpawn) * j) + (((2 * Mathf.PI) / bulletsToSpawn)/2);
                     float x = Mathf.Cos(properAngle);
                     float y = Mathf.Sin(properAngle);
-                    Debug.Log("Angle: " + properAngle + " x: " + x + " y: " + y);
                     Vector3 dir = new Vector3(x * 10f, y * 10f, 0);
-                    newBullet.SetTarget(dir + boss.transform.position, 5, boss.ringBulletForce * boss.phase, boss.gameObject, boss.transform.position, boss.transform.rotation);
+                    newBullet.SetTarget(dir + boss.transform.position, boss.ringBulletForce * boss.phase, 5, boss.gameObject, boss.transform.position, boss.transform.rotation);
                 }
                 yield return new WaitForSeconds(boss.secondsBetweenRings);
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(boss.phaseChangeTime);
             attackStarted = false;
+            
             boss.SelectNewState();
         }
     }
@@ -214,7 +214,6 @@ public class Boss : Enemy
                     }
                 }
                 // Now that the closest point has been found, fire the boss at it
-                Debug.Log(nextLocation);
                 agent.SetDestination(nextLocation);
                 agent.speed = boss.dashSpeed * boss.phase;
                 agent.acceleration = 200;
@@ -233,6 +232,7 @@ public class Boss : Enemy
                 // Update the current location
                 currentLocation = nextLocation;
             }
+            yield return new WaitForSeconds(boss.phaseChangeTime);
             // Change state
             boss.SelectNewState();
             attackStarted = false;
@@ -267,8 +267,6 @@ public class Boss : Enemy
                 // OuterArc should be at a 45 degree angle from the boss to the player
                 Vector3 outerArc = line + line.Perpendicular1();
                 Vector3 test = line;
-                Debug.DrawLine(boss.transform.position, boss.transform.position + outerArc, Color.white, 1);
-                Debug.DrawLine(boss.transform.position, boss.transform.position + test, Color.red, 1);
                 for (int j = 0; j < phasedNumOfShells; j++)
                 {
                     // calculate the angle the bullet should be fired at
@@ -277,12 +275,12 @@ public class Boss : Enemy
                     float x = Mathf.Cos(angle);
                     float y = Mathf.Sin(angle);
                     Vector3 dir = new Vector2(x, y);
-                    Debug.DrawLine(boss.transform.position, boss.transform.position + dir, Color.red, 1);
                     Bullet newBullet = EnemyManager.Instance.GetBullet();
                     newBullet.SetTarget(dir + boss.transform.position, boss.shotGunForce, 5, boss.gameObject, boss.transform.position, boss.transform.rotation);
                 }
                 yield return new WaitForSeconds(boss.shotgunFireRate);
             }
+            yield return new WaitForSeconds(boss.phaseChangeTime);
             // Change state
             boss.SelectNewState();
             attackStarted = false;

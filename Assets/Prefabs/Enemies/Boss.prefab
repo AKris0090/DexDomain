@@ -366,10 +366,15 @@ MonoBehaviour:
   dashFirerate: 0.3
   dashForce: 400
   numOfBulletHellRings: 4
-  bulletsInRings: 20
+  bulletsInRings: 14
   ringBulletForce: 200
   bulletLifespan: 5
   secondsBetweenRings: 1
+  numberOfShotgunShots: 5
+  shotGunForce: 500
+  shotgunFireRate: 0.5
+  numberOfShells: 5
+  phaseChangeTime: 2
 --- !u!195 &1936508267728229673
 NavMeshAgent:
   m_ObjectHideFlags: 0
