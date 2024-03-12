@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ae93f7d44475641bfc8f86fc5f05f4, type: 3}
   m_Name: MaceCard
   m_EditorClassIdentifier: 
-  cardName: 
-  abilityAbs: {fileID: 0}
+  cardName: Mace
+  abilityAbs: {fileID: 11400000, guid: ad895bd0e5d58db4a97ef194ef42a70f, type: 2}
   _equipSlot: 0
-  cardUIPrefab: {fileID: 0}
-  cooldown: 0
+  cardUIPrefab: {fileID: 3147494322152419602, guid: ba253724710ac07479ec3f66b0301786, type: 3}
+  cooldown: 1
