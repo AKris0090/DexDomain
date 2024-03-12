@@ -16,6 +16,7 @@ public class Bullet : MonoBehaviour
     // Sends the bullet towards tar with force newtons for life seconds, starting at position rotation
     public virtual void SetTarget(Vector3 tar, float force, float life, GameObject spawner, Vector3 position, Quaternion rotation)
     {
+        Debug.Log(force);
         transform.position = position;
         transform.rotation = rotation;
         self = GetComponent<Rigidbody2D>();

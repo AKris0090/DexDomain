@@ -84,7 +84,7 @@ public class RammingEnemy : Enemy
             currentlyRamming = false;
             // To begin, have the enemy start winding up its ram
             float oldSpeed = agent.speed;
-            // slow the enemy way down, both in max speed and rotation
+            // slow the enemy way down
             agent.speed = windupSpeed;
             // Blink the sprite blue as it winds up
             SpriteRenderer renderer = gameObject.GetComponent<SpriteRenderer>();
@@ -111,7 +111,6 @@ public class RammingEnemy : Enemy
 
             float oldAccel = agent.acceleration;
             // Test if the player is still in sight, ram if they are
-            // TODO: Make this ignore bullets
             RaycastHit2D hit = Physics2D.Raycast(transform.position, enemyManager.GetPlayerPosition() - transform.position);
             if (hit.collider && enemyManager.CheckIfPlayer(hit.collider.gameObject))
             {
