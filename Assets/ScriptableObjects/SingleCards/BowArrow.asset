@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64ae93f7d44475641bfc8f86fc5f05f4, type: 3}
+  m_Name: BowArrow
+  m_EditorClassIdentifier: 
+  cardName: Bow Arrow
+  abilityAbs: {fileID: 11400000, guid: 9afe22b78cd34ac4c8891acfe982db9d, type: 2}
+  _equipSlot: 1
+  cardUIPrefab: {fileID: 3147494322152419602, guid: 2bcdc5884809ea54090f92704c203a18, type: 3}
+  cooldown: 1.35

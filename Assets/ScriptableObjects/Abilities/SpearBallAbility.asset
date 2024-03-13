@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SpearBallAbility
   m_EditorClassIdentifier: 
   fireBallRef: {fileID: 4824499621134588157, guid: c00a8db0a370b84479e908079c418b50, type: 3}
+  fireBallPrefab: {fileID: 0}
   force: 0
-  lifespan: 0.2
+  lifespan: 0.4
