@@ -14,6 +14,7 @@ public class Boss : Enemy
     BossState bulletHell;
     BossState dash;
     BossState shotgun;
+    BossState deathRattle;
     bool phaseChanged;
     public Transform dashLocation1;
     public Transform dashLocation2;
@@ -36,6 +37,7 @@ public class Boss : Enemy
     public float shotgunFireRate = 0.5f;
     public int numberOfShells = 5;
     public float phaseChangeTime = 2f;
+    ParticleSystem bloodEmmiter;
     float phase;
     int maxHeatlth;
     NavMeshAgent agent;
@@ -52,6 +54,7 @@ public class Boss : Enemy
         bulletHell = new BulletHell();
         dash = new Dash();
         shotgun = new Shotgun();
+        deathRattle = new Deathrattle();
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
@@ -66,6 +69,8 @@ public class Boss : Enemy
         dashLocations.Add(dashLocation3);
         dashLocations.Add(dashLocation4);
         dashLocations.Add(dashLocation5);
+
+        bloodEmmiter = GetComponent<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -73,6 +78,7 @@ public class Boss : Enemy
     {
         if (health < maxHeatlth / 2 && !phaseChanged)
         {
+            GetComponent<SpriteRenderer>().color = Color.red;
             phase += 0.5f;
             phaseChanged = true;
         }
@@ -84,9 +90,13 @@ public class Boss : Enemy
 
     void SelectNewState()
     {
-        // This allows for the boss repeatedly selecting the same state. Should be okay? 
-        int selector = Random.Range(0, states.Count);
-        state = states[selector];
+        // Don't selected a new state if the boss is dying
+        if (state == deathRattle)
+        {
+            // This allows for the boss repeatedly selecting the same state. Should be okay? 
+            int selector = Random.Range(0, states.Count);
+            state = states[selector];
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -94,10 +104,53 @@ public class Boss : Enemy
         enemyManager.DamageObject(collision.gameObject);
     }
 
+    public override void Damage(int amount)
+    {
+        if (canTakeDamage)
+        {
+            bloodEmmiter.Emit(20);
+            health -= amount;
+            StartCoroutine(DamageFeedback());
+            StartCoroutine(DamageCooldown());
+            canTakeDamage = false;
+            Debug.Log("Damage delt to boss");
+            BossHealthBar.Instance.UpdateHealth(health);
+            if (health <= 0)
+            {
+                state = deathRattle;
+            }
+        }
+    }
+
     // Boss state is a state machine, that handles the bosses state
     abstract class BossState
     {
         abstract public void Act(Boss boss);
+    }
+
+    class Deathrattle : BossState
+    {
+        bool dying = false;
+        public override void Act(Boss boss)
+        {
+            if (!dying)
+            {
+                boss.StopAllCoroutines();
+                dying = true;
+                boss.StartCoroutine(Die(boss));
+            }
+        }
+
+        IEnumerator Die(Boss boss)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                boss.bloodEmmiter.Emit(50);
+                yield return new WaitForSeconds(0.3f);
+            }
+            Destroy(boss.gameObject);
+        }
+
     }
 
     // When the boss is idle, it does nothing except wait for the player 
@@ -124,6 +177,7 @@ public class Boss : Enemy
             if (boss.enemyManager.CheckIfPlayer(hit.collider.gameObject))
             {
                 boss.state = boss.bulletHell;
+                BossHealthBar.Instance.Activate(boss.health);
             }
             yield return new WaitForSeconds(1f);
             lookedRecently = false;

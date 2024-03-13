@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
         canTakeDamage = true;
         enemyManager = EnemyManager.Instance;
     }
-    public void Damage(int amount)
+    public virtual void Damage(int amount)
     {
         if (canTakeDamage)
         {
@@ -37,7 +37,7 @@ public class Enemy : MonoBehaviour
     // Give the player some feedback for damaging the enemy
     // By default, flash red
     // Dunno how the flashing will work with sprits that are not one color, but ah well, we cross that brigde when we come to it
-    IEnumerator DamageFeedback()
+    protected IEnumerator DamageFeedback()
     {
         SpriteRenderer renderer = GetComponent<SpriteRenderer>();
         Color oldColor = new Color(renderer.color.r, renderer.color.g, renderer.color.b);
@@ -51,7 +51,7 @@ public class Enemy : MonoBehaviour
     }
 
     // Resets the can take damage cooldown
-    IEnumerator DamageCooldown()
+    protected IEnumerator DamageCooldown()
     {
         yield return new WaitForSeconds(damageCooldown);
         canTakeDamage = true;

@@ -24,7 +24,6 @@ public class UIManager : MonoBehaviour
         Debug.Log("menu manager exists (UIManager component)");
         if (_instance == null) // If there is no instance already
         {
-            DontDestroyOnLoad(gameObject); // Keep the GameObject, this component is attached to, across different scenes
             _instance = this;
         }
         else if (_instance != this) // If there is already an instance and it's not `this` instance

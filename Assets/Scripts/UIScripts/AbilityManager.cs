@@ -15,7 +15,6 @@ public class AbilityManager : MonoBehaviour
         Debug.Log("ability manager exists (the one that deals with UI)");
         if (_instance == null) // If there is no instance already
         {
-            DontDestroyOnLoad(gameObject); // Keep the GameObject, this component is attached to, across different scenes
             _instance = this;
         }
         else if (_instance != this) // If there is already an instance and it's not `this` instance
