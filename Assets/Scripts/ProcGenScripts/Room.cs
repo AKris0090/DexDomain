@@ -279,13 +279,38 @@ public class Room : MonoBehaviour
 
     public void StartRoom(bool lockDoors=true)
     {
+        if (_isEnd)
+        {
+            Debug.LogError("Room is already ended");
+            return;
+        }
+
         _isStart = true;
+        SetVisibility(true);
+
+        foreach (var enemy in Enemies)
+        {
+            if (enemy)
+                enemy.gameObject.SetActive(true);
+        }
+
         if (lockDoors) LockDoors();
     }
 
     public void EndRoom(bool unlockDoors=true)
     {
         _isEnd = true;
+        foreach (var enemy in Enemies)
+        { 
+            if (enemy)
+            {
+                if (EnemyManager.Instance)
+                    EnemyManager.Instance.DamageEnemy(enemy.gameObject, 1000);
+                else
+                    Destroy(enemy.gameObject);
+            }
+        }
+
         if (unlockDoors) UnlockDoors();
     }
 
