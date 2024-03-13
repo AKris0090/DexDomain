@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb10a854bef0a364aafd130551187d1b, type: 3}
-  m_Name: DashAbility
+  m_Script: {fileID: 11500000, guid: 1d06ff3027926c146b4fce95eac8d173, type: 3}
+  m_Name: MovementSpeedAbility
   m_EditorClassIdentifier: 
-  force: 0
-  lifespan: 0.2
-  dashTime: 0.35
-  dashPower: 27
-  player: {fileID: 6281089458180515670, guid: 785a617d815ba484aab9fefb29399514, type: 3}
+  abilityType: 0
+  lifespan: 5

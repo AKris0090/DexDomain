@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3994075135801689400}
   - component: {fileID: 5645841095545444556}
   - component: {fileID: 57771663048092439}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7288820000932041094}
   - component: {fileID: 5579618854103655986}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
