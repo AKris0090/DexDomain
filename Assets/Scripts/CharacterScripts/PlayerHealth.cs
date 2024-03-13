@@ -22,6 +22,7 @@ public class PlayerHealth : MonoBehaviour
             // TODO: Add more UI events for death screen
             if (health.Value == 0)
             {
+                UIManager.Instance.EndGame();
                 gameObject.SetActive(false);
             }
         }
