@@ -9,16 +9,14 @@ public class Bullet : MonoBehaviour
     // Give it a target, a force, and a target with set target
     protected Rigidbody2D self;
     protected GameObject spawner;
+    public GameObject BulletDeath;
     private void Start()
     {
         self = GetComponent<Rigidbody2D>();
     }
     // Sends the bullet towards tar with force newtons for life seconds, starting at position rotation
-    public virtual void SetTarget(Vector3 tar, float force, float life, GameObject spawner, Vector3 position, Quaternion rotation)
+    public virtual void SetTarget(Vector3 tar, float force, float life, GameObject spawner)
     {
-        Debug.Log(force);
-        transform.position = position;
-        transform.rotation = rotation;
         self = GetComponent<Rigidbody2D>();
         // Draw a line between the target and this bullet
         Vector2 line = tar - transform.position;

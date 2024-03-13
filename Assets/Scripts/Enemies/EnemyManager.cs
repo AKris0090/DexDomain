@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using Redcode.Pools;
 using static UnityEditor.FilePathAttribute;
+using System;
 
 // Singlton manager for managing enemies
 // To get it to work, add the EnemyManager prefab to a scene
@@ -61,15 +62,22 @@ public class EnemyManager : MonoBehaviour
         };
     }
 
-    public Bullet GetBullet()
+    public Bullet GetBullet(Vector3 spawnPosition, Quaternion rotation)
     {
-        return bullets.Get();
+        Bullet bullet = bullets.Get();
+        bullet.GetComponent<TrailRenderer>().enabled = false;
+        bullet.GetComponent<TrailRenderer>().Clear();
+        bullet.transform.position = spawnPosition;
+        bullet.transform.rotation = rotation;
+        bullet.GetComponent<TrailRenderer>().enabled = true;
+        return bullet;
     }
 
     public void ReturnBullet(Bullet bullet)
     {
         if (bullet.gameObject.activeInHierarchy)
         {
+            Instantiate(bullet.BulletDeath, bullet.transform.position, bullet.transform.rotation);
             bullets.Take(bullet);
         }
     }
@@ -89,7 +97,7 @@ public class EnemyManager : MonoBehaviour
     // Gets one random enemy
     public void GetRandomEnemy(out Enemy enemy)
     {
-        int selector = Random.Range(0, mainEnemyList.Count);
+        int selector = UnityEngine.Random.Range(0, mainEnemyList.Count);
         enemy = mainEnemyList[selector];
     }
 
