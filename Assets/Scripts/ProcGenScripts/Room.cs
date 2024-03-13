@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using ProcGenScripts;
 using UnityEngine;
+using NavMeshPlus.Components;
+using NavMeshPlus.Extensions;
 
 public class Room : MonoBehaviour
 {
@@ -8,16 +10,22 @@ public class Room : MonoBehaviour
     public Room SouthRoom { get; set; } = null;
     public Room EastRoom { get; set; } = null;
     public Room WestRoom { get; set; } = null;
-    private RoomData _roomData;
-    private readonly List<RoomData.Dir> availableDirections = new();
-    public bool Visited;
-    public Vector2Int DistanceFromStart;
-    private bool _isStart;
-    private bool _isEnd;
-    private readonly Dictionary<ColliderType, Collider2D> _colliders = new();
-    // Getters for the room state flags
     public bool Started => _isStart;
     public bool Ended => _isEnd;
+    public List<GameObject> SpawnPoints => _spawnPoints;
+
+    public Vector2Int DistanceFromStart;
+    public bool Visited;
+
+    private RoomData _roomData;
+    private readonly List<RoomData.Dir> availableDirections = new();
+    private bool _isStart;
+    private bool _isEnd;
+    private readonly Dictionary<ColliderType, GameObject> _colliders = new();
+    private readonly Dictionary<RoomData.Dir, GameObject> _doors = new();
+    private SpriteRenderer _roomSprite;
+    private List<GameObject> _spawnPoints = new();
+    
     // Specifies the colliders for the room
     // First direction in name is the direction to the wall
     // Second direction in name is relative to the doorway
@@ -41,7 +49,7 @@ public class Room : MonoBehaviour
     // <summary>
     /// Initializes the room object with the specified room data and position.
     /// Sets the available directions from the specifications of theRoomData object
-    /// and creates colliders for the walls and doors. Adds a static rigidbody to
+    /// and creates colliders for the walls. Adds a static rigidbody to
     /// the room gameObject and configures its name and position.
     /// </summary>
     /// <param name="roomDataObject">The RoomData to configure this room with.</param>
@@ -72,29 +80,45 @@ public class Room : MonoBehaviour
         _colliders.Add(ColliderType.WestSouth, CreateCollider(ColliderType.WestSouth));
         _colliders.Add(ColliderType.EastNorth, CreateCollider(ColliderType.EastNorth));
         _colliders.Add(ColliderType.EastSouth, CreateCollider(ColliderType.EastSouth));
-        // Create Door Colliders
-        _colliders.Add(ColliderType.NorthDoor, CreateCollider(ColliderType.NorthDoor));
-        _colliders.Add(ColliderType.EastDoor, CreateCollider(ColliderType.EastDoor));
-        _colliders.Add(ColliderType.SouthDoor, CreateCollider(ColliderType.SouthDoor));
-        _colliders.Add(ColliderType.WestDoor, CreateCollider(ColliderType.WestDoor));
+
 
         if (!gameObject.GetComponent<Rigidbody2D>())
             gameObject.AddComponent<Rigidbody2D>();
         gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-        CreateRoomSprite();
+        _roomSprite = CreateRoomSprite();
     }
 
-    private void CreateRoomSprite()
+
+    public Dictionary<RoomData.Dir, GameObject> CreateDoors()
     {
-        // Create the room sprite
-        SpriteRenderer spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
-        spriteRenderer.sprite = _roomData.RoomSprite;
-        spriteRenderer.sortingLayerName = "Rooms";
-        spriteRenderer.sortingOrder = 0;
-        // Tester code
-        spriteRenderer.drawMode = SpriteDrawMode.Sliced;
-        spriteRenderer.color = new Color(0.9698113f, 0.9696587f, 0.9570024f, 1f);
-        spriteRenderer.size = new Vector2(_roomData.Width - _roomData.WallThickness, _roomData.Height - _roomData.WallThickness);
+        Dictionary<RoomData.Dir, GameObject> doors = new();
+        if (NorthRoom != null) doors.Add(RoomData.Dir.North, CreateDoor(RoomData.Dir.North));
+        else _colliders.Add(ColliderType.NorthDoor, CreateCollider(ColliderType.NorthDoor, gameObject));
+
+        if (SouthRoom != null) doors.Add(RoomData.Dir.South, CreateDoor(RoomData.Dir.South));
+        else _colliders.Add(ColliderType.SouthDoor, CreateCollider(ColliderType.SouthDoor, gameObject));
+
+        if (EastRoom != null) doors.Add(RoomData.Dir.East, CreateDoor(RoomData.Dir.East));
+        else _colliders.Add(ColliderType.EastDoor, CreateCollider(ColliderType.EastDoor, gameObject));
+
+        if (WestRoom != null) doors.Add(RoomData.Dir.West, CreateDoor(RoomData.Dir.West));
+        else _colliders.Add(ColliderType.WestDoor, CreateCollider(ColliderType.WestDoor, gameObject));
+        
+        foreach (var door in doors)
+        {
+            _colliders.Add(door.Key switch
+                {
+                    RoomData.Dir.North => ColliderType.NorthDoor,
+                    RoomData.Dir.East => ColliderType.EastDoor,
+                    RoomData.Dir.South => ColliderType.SouthDoor,
+                    RoomData.Dir.West => ColliderType.WestDoor,
+                    _ => ColliderType.NorthDoor,
+                },
+                door.Value
+            );
+        }
+
+        return doors;
     }
 
     public List<Room> GetConnectedRooms()
@@ -214,7 +238,15 @@ public class Room : MonoBehaviour
                 adjRooms.Add(GetRoomFromDirection(dir));
             else
             {
-                Vector2 origin    = GetDoorCollider(dir).offset;
+                Vector2 origin = dir switch
+                {
+                    RoomData.Dir.North => new Vector2(0, _roomData.Height / 2),
+                    RoomData.Dir.East => new Vector2(_roomData.Width / 2, 0),
+                    RoomData.Dir.South => new Vector2(0, -_roomData.Height / 2),
+                    RoomData.Dir.West => new Vector2(-_roomData.Width / 2, 0),
+                    _ => Vector2.zero,
+                };
+
                 Vector2 direction = dir switch
                 {
                     RoomData.Dir.North => Vector2.up,
@@ -223,6 +255,7 @@ public class Room : MonoBehaviour
                     RoomData.Dir.West  => Vector2.left,
                     _ => Vector2.zero,
                 };
+
                 origin += new Vector2(transform.position.x, transform.position.y);
                 RaycastHit2D hit = Physics2D.Raycast(origin, direction, 1);
                 if (hit.collider != null)
@@ -236,14 +269,179 @@ public class Room : MonoBehaviour
     }
 
 
+    public ref readonly RoomData GetRoomData()
+    {
+        return ref _roomData;
+    }
+
+    public void StartRoom(bool lockDoors=true)
+    {
+        _isStart = true;
+        if (lockDoors) LockDoors();
+    }
+
+    public void EndRoom(bool unlockDoors=true)
+    {
+        _isEnd = true;
+        if (unlockDoors) UnlockDoors();
+    }
+
+    public void SetVisibility(bool visible)
+    {
+         _roomSprite.enabled = visible;
+        foreach (var door in _doors)
+        {
+            door.Value.GetComponent<SpriteRenderer>().enabled = visible;
+        }
+    }
+
+    public void LockDoors()
+    {
+        foreach (var door in _doors)
+        {
+            LockDoor(door.Key);
+        }
+    }
+
+    public void UnlockDoors()
+    {
+        foreach (var door in _doors)
+        {
+            UnlockDoor(door.Key);
+        }
+    }
+
+    public void LockDoor(RoomData.Dir dir)
+    {
+        if (!_doors.ContainsKey(dir))
+        {
+            Debug.LogError("Door not found");
+            return;
+        }
+
+        _doors[dir].TryGetComponent(out SpriteRenderer spriteRenderer);
+
+        if (!spriteRenderer)
+        {
+            Debug.LogError("Door sprite renderer not found");
+            return;
+        }
+
+        spriteRenderer.sprite = _roomData.DoorClosedSprite;
+    }
+
+    public void UnlockDoor(RoomData.Dir dir)
+    {
+        if (!_doors.ContainsKey(dir))
+        {
+            Debug.LogError("Door not found");
+            return;
+        }
+
+        _doors[dir].TryGetComponent(out SpriteRenderer spriteRenderer);
+
+        if (!spriteRenderer)
+        {
+            Debug.LogError("Door sprite renderer not found");
+            return;
+        }
+
+        spriteRenderer.sprite = _roomData.DoorOpenSprite;
+    }
+
+    public bool IsDoorLocked(RoomData.Dir dir)
+    {
+        if (!_doors.ContainsKey(dir))
+        {
+            Debug.LogError("Door not found");
+            return false;
+        }
+
+        return GetDoorCollider(dir).enabled;
+    }
+
+    private Collider2D GetDoorCollider(RoomData.Dir dir)
+    {
+        return dir switch
+        {
+            RoomData.Dir.North => _colliders[ColliderType.NorthDoor].GetComponent<BoxCollider2D>(),
+            RoomData.Dir.East => _colliders[ColliderType.EastDoor].GetComponent<BoxCollider2D>(),
+            RoomData.Dir.South => _colliders[ColliderType.SouthDoor].GetComponent<BoxCollider2D>(),
+            RoomData.Dir.West => _colliders[ColliderType.WestDoor].GetComponent<BoxCollider2D>(),
+            _ => null,
+        };
+    }
+
+    public override string ToString()
+    {
+        string str = $"Room: {_roomData.RoomName} ";
+        str += $"Position: {DistanceFromStart} ";
+        str += $"Connections: ";
+        if (NorthRoom) str += "North ";
+        if (SouthRoom) str += "South ";
+        if (EastRoom) str += "East ";
+        if (WestRoom) str += "West ";
+        return str;
+    }
+
+    /** 
+     * Enemy Functions 
+    **/
+
+    // Overwrites previous spawn points, if any, and adds them as children to the room
+    public void GenerateSpawnPoints(int count)
+    {
+        List<GameObject> spawnPoints = new();
+
+        for (int i = 0; i < count; i++)
+        {
+            GameObject spawnPoint = new ("Spawn Point");
+            float width = (_roomData.Width * 0.8f);
+            float height = (_roomData.Height * 0.8f);
+            spawnPoint.transform.parent = transform;
+            spawnPoint.transform.localPosition = new (
+                Random.Range(-width / 2f, width / 2f),
+                Random.Range(-height / 2f, height / 2f),
+                0f
+            );
+            spawnPoints.Add(spawnPoint);
+        }
+
+        _spawnPoints = spawnPoints;
+    }
+    public void CreateNavMeshes()
+    {
+        foreach (var collider in _colliders)
+        {
+            var meshMod = collider.Value.AddComponent<NavMeshModifier>();
+            meshMod.overrideArea = true;
+            meshMod.AffectsAgentType(-1);
+            meshMod.area = 1;
+        }
+        var navMesh = gameObject.AddComponent<NavMeshSurface>();
+        navMesh.collectObjects = CollectObjects.Children;
+        navMesh.useGeometry = UnityEngine.AI.NavMeshCollectGeometry.PhysicsColliders;
+        navMesh.agentTypeID = 0;
+        var navCollector = gameObject.AddComponent<CollectSources2d>();
+
+        navMesh.BuildNavMesh();
+    }
+
+    // Private functions
+
     /// <summary>
     /// Creates a collider for the room in the specified slot.
     /// </summary>
     /// <param name="type"></param>
     /// <returns>A new collider created for the specified type</returns>
-    private Collider2D CreateCollider(ColliderType type)
+    private GameObject CreateCollider(ColliderType type, GameObject go=null)
     {
-        BoxCollider2D collider = gameObject.AddComponent<BoxCollider2D>();
+        if (go == null)
+        {
+            go = new ($"{type} Wall");
+            go.transform.parent = transform;
+        }
+        BoxCollider2D collider = go.AddComponent<BoxCollider2D>();
         float wallLengthH = _roomData.Width / 2 - _roomData.DoorSize / 2;
         float wallOffsetH = wallLengthH / 2 + _roomData.DoorSize / 2;
         float wallLengthV = _roomData.Height / 2 - _roomData.DoorSize / 2;
@@ -253,19 +451,23 @@ public class Room : MonoBehaviour
             // Doors
             case ColliderType.NorthDoor:
                 collider.size = new Vector2(_roomData.DoorSize, _roomData.WallThickness);
-                collider.offset = new Vector2(0, _roomData.Height / 2);
+                if (go == gameObject)
+                    collider.offset = new Vector2(0, _roomData.Height / 2);
                 break;
             case ColliderType.EastDoor:
                 collider.size = new Vector2(_roomData.WallThickness, _roomData.DoorSize);
-                collider.offset = new Vector2(_roomData.Width / 2, 0);
+                if (go == gameObject)
+                    collider.offset = new Vector2(_roomData.Width / 2, 0);
                 break;
             case ColliderType.SouthDoor:
                 collider.size = new Vector2(_roomData.DoorSize, _roomData.WallThickness);
-                collider.offset = new Vector2(0, -_roomData.Height / 2);
+                if (go == gameObject)
+                    collider.offset = new Vector2(0, -_roomData.Height / 2);
                 break;
             case ColliderType.WestDoor:
                 collider.size = new Vector2(_roomData.WallThickness, _roomData.DoorSize);
-                collider.offset = new Vector2(-_roomData.Width / 2, 0);
+                if (go == gameObject)
+                    collider.offset = new Vector2(-_roomData.Width / 2, 0);
                 break;
             // Directions
             case ColliderType.NorthWest:
@@ -301,122 +503,61 @@ public class Room : MonoBehaviour
                 collider.offset = new Vector2(_roomData.Width / 2, -wallOffsetV);
                 break;
         }
-        return collider;
-    }   
-
-    public ref readonly RoomData GetRoomData()
-    {
-        return ref _roomData;
+        return go;
     }
 
-    public void StartRoom(bool lockDoors=true)
+    private GameObject CreateDoor(RoomData.Dir dir)
     {
-        _isStart = true;
-        if (lockDoors) LockDoors();
-    }
+        string doorName = $"{_roomData.RoomName} Door {dir}";
+        GameObject door = new(doorName);
+        door.transform.parent = transform;
 
-    public void EndRoom(bool unlockDoors=true)
-    {
-        _isEnd = true;
-        if (unlockDoors) UnlockDoors();
-    }
+        SpriteRenderer doorRenderer = door.AddComponent<SpriteRenderer>();
+        Vector3 doorScale = new(0.2f, 0.1f, 1);
+        doorRenderer.transform.localScale = doorScale;
+        doorRenderer.sprite = _roomData.DoorClosedSprite;
+        doorRenderer.sortingLayerName = "Rooms";
+        doorRenderer.sortingOrder = 1;
+        doorRenderer.size = new Vector2(_roomData.DoorSize, _roomData.WallThickness);
 
-    public void LockDoors()
-    {
-        if (_roomData.North) LockDoor(RoomData.Dir.North);
-        if (_roomData.East) LockDoor(RoomData.Dir.East);
-        if (_roomData.South) LockDoor(RoomData.Dir.South);
-        if (_roomData.West) LockDoor(RoomData.Dir.West);
-    }
-
-    public void UnlockDoors()
-    {
-        if (_roomData.North) _colliders[ColliderType.NorthDoor].enabled = false;
-        if (_roomData.East) _colliders[ColliderType.EastDoor].enabled = false;
-        if (_roomData.South) _colliders[ColliderType.SouthDoor].enabled = false;
-        if (_roomData.West) _colliders[ColliderType.WestDoor].enabled = false;
-    }
-
-    public void LockDoor(RoomData.Dir dir)
-    {
-        switch (dir)
+        door.transform.SetLocalPositionAndRotation(dir switch
         {
-            case RoomData.Dir.North:
-                _colliders[ColliderType.NorthDoor].enabled = true;
-                if(NorthRoom != null)
-                    NorthRoom._colliders[ColliderType.SouthDoor].enabled = true;
-                break;
-            case RoomData.Dir.East:
-                _colliders[ColliderType.EastDoor].enabled = true;
-                if(EastRoom != null)
-                    EastRoom._colliders[ColliderType.WestDoor].enabled = true;
-                break;
-            case RoomData.Dir.South:
-                _colliders[ColliderType.SouthDoor].enabled = true;
-                if(SouthRoom != null)
-                    SouthRoom._colliders[ColliderType.NorthDoor].enabled = true;
-                break;
-            case RoomData.Dir.West:
-                _colliders[ColliderType.WestDoor].enabled = true;
-                if(WestRoom != null)
-                    WestRoom._colliders[ColliderType.EastDoor].enabled = true;
-                break;
-        }
-    }
-
-    public void UnlockDoor(RoomData.Dir dir)
-    {
-        switch (dir)
+            RoomData.Dir.North => new Vector3(0, _roomData.Height / 2),
+            RoomData.Dir.East => new Vector3(_roomData.Width / 2, 0),
+            RoomData.Dir.South => new Vector3(0, -_roomData.Height / 2),
+            RoomData.Dir.West => new Vector3(-_roomData.Width / 2, 0),
+            _ => Vector3.zero,
+        }, dir switch
         {
-            case RoomData.Dir.North:
-                _colliders[ColliderType.NorthDoor].enabled = false;
-                if (NorthRoom != null)
-                    NorthRoom._colliders[ColliderType.SouthDoor].enabled = false;
-                break;
-            case RoomData.Dir.East:
-                _colliders[ColliderType.EastDoor].enabled = false;
-                if (EastRoom != null)
-                    EastRoom._colliders[ColliderType.WestDoor].enabled = false;
-                break;
-            case RoomData.Dir.South:
-                _colliders[ColliderType.SouthDoor].enabled = false;
-                if (SouthRoom != null)
-                    SouthRoom._colliders[ColliderType.NorthDoor].enabled = false;
-                break;
-            case RoomData.Dir.West:
-                _colliders[ColliderType.WestDoor].enabled = false;
-                if (WestRoom != null)
-                    WestRoom._colliders[ColliderType.EastDoor].enabled = false;
-                break;
-        }
-    }
+            RoomData.Dir.North => Quaternion.Euler(0, 0, 0),
+            RoomData.Dir.East => Quaternion.Euler(0, 0, -90),
+            RoomData.Dir.South => Quaternion.Euler(0, 0, -180),
+            RoomData.Dir.West => Quaternion.Euler(0, 0, 90),
+            _ => Quaternion.identity,
+        });
 
-    public bool IsDoorLocked(RoomData.Dir dir)
-    {
-        return GetDoorCollider(dir).enabled;
-    }
-
-    private Collider2D GetDoorCollider(RoomData.Dir dir)
-    {
-        return dir switch
+        CreateCollider(dir switch
         {
-            RoomData.Dir.North => _colliders[ColliderType.NorthDoor],
-            RoomData.Dir.East => _colliders[ColliderType.EastDoor],
-            RoomData.Dir.South => _colliders[ColliderType.SouthDoor],
-            RoomData.Dir.West => _colliders[ColliderType.WestDoor],
-            _ => null,
-        };
+            RoomData.Dir.North => ColliderType.NorthDoor,
+            RoomData.Dir.East => ColliderType.EastDoor,
+            RoomData.Dir.South => ColliderType.SouthDoor,
+            RoomData.Dir.West => ColliderType.WestDoor,
+            _ => ColliderType.NorthDoor,
+        }, door);
+
+        door.GetComponent<BoxCollider2D>().size *= new Vector2(1 / doorScale.x, 1 / doorScale.y);
+
+        return door;
     }
 
-    public override string ToString()
+    private SpriteRenderer CreateRoomSprite()
     {
-        string str = $"Room: {_roomData.RoomName} ";
-        str += $"Position: {DistanceFromStart} ";
-        str += $"Connections: ";
-        if (NorthRoom) str += "North ";
-        if (SouthRoom) str += "South ";
-        if (EastRoom) str += "East ";
-        if (WestRoom) str += "West ";
-        return str;
+        SpriteRenderer roomRenderer = gameObject.AddComponent<SpriteRenderer>();
+        roomRenderer.sprite = _roomData.RoomSprite;
+        roomRenderer.sortingLayerName = "Rooms";
+        roomRenderer.sortingOrder = 0;
+
+        return roomRenderer;
     }
+
 }

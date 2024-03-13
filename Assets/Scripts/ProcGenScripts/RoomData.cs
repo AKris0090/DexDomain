@@ -15,6 +15,8 @@ public class RoomData : ScriptableObject
     [SerializeField]
     private string roomName;
     [SerializeField] private Sprite roomSprite;
+    [SerializeField] private Sprite doorClosedSprite;
+    [SerializeField] private Sprite doorOpenSprite;
     [Header("Room Size")]
     [SerializeField]
     private int width;
@@ -48,6 +50,8 @@ public class RoomData : ScriptableObject
 
     public string RoomName => roomName;
     public Sprite RoomSprite => roomSprite;
+    public Sprite DoorClosedSprite => doorClosedSprite;
+    public Sprite DoorOpenSprite => doorOpenSprite;
     public int Width => width;
     public int Height => height;
     public int DoorSize => doorSize;

@@ -5,6 +5,7 @@ using UnityEngine;
 public class DungeonGenerator : MonoBehaviour
 {
     public List<RoomData> SpawnableRooms = new();
+    public GameObject BossRoomPrefab;
     private readonly List<Room> _generatedRooms = new();
     [SerializeField]
     private int _minRooms = 1;
@@ -38,6 +39,7 @@ public class DungeonGenerator : MonoBehaviour
         _generatedRooms.Add(currentRoom);
         int loopGuard = 0;
         bool isCentered = false;
+        // First pass to create rooms
         while (roomGenCount < numRooms)
         {
             if (loopGuard++ > 1000)
@@ -77,8 +79,66 @@ public class DungeonGenerator : MonoBehaviour
             currentRoom = newRoom;
             roomGenCount++;
             isCentered = false;
-            yield return new WaitForSecondsRealtime(.25f);
+            yield return new WaitForEndOfFrame();
         }
+        // Second pass to create Boss room
+        Debug.Log("Generating boss room");
+        var bossRoom = Instantiate(BossRoomPrefab, new Vector3(50000f, 50000f), Quaternion.identity);
+        var pair = FindFurthestRoom();
+        Room furthestRoom = pair.Item1;
+        RoomData.Dir dirToBoss = pair.Item2;
+        
+        // Third pass to create doors
+        Debug.Log("Creating doors and nav meshes");
+        StartCoroutine(CreateDoorsAndMeshes());
+
+        // Fourth pass to spawn enemies
+        Debug.Log("Spawning enemies");
+        StartCoroutine(SpawnEnemies());
+    }
+
+    private IEnumerator CreateDoorsAndMeshes()
+    {
+        foreach (Room room in _generatedRooms)
+        {
+            room.CreateDoors();
+            room.CreateNavMeshes();
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    private IEnumerator SpawnEnemies()
+    {
+        foreach (Room room in _generatedRooms)
+        {
+            //List<Enemy> enemies = EnemyManager.Instance;
+            //room.SpawnEnemies();
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    System.Tuple<Room, RoomData.Dir> FindFurthestRoom()
+    {
+        Room furthestRoom = _generatedRooms[0];
+        int maxDistance = 0;
+        foreach (var room in _generatedRooms)
+        {
+            if (room.GetConnectedRooms().Count == 4)
+                continue;
+
+            if (room.DistanceFromStart.sqrMagnitude > maxDistance)
+            {
+                maxDistance = room.DistanceFromStart.sqrMagnitude;
+                furthestRoom = room;
+            }
+        }
+        List<RoomData.Dir> dirs = new() { RoomData.Dir.North, RoomData.Dir.East, RoomData.Dir.South, RoomData.Dir.West };
+        foreach (RoomData.Dir dir in dirs)
+        {
+            if (furthestRoom.GetRoomFromDirection(dir) == null)
+                return new System.Tuple<Room, RoomData.Dir>(furthestRoom, dir);
+        }
+        return null;
     }
 
     private RoomData GetRandomRoomType()

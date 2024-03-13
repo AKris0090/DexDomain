@@ -10,14 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a7a484ec9ca84d49ba458b8468c4de9, type: 3}
-  m_Name: TestRoom
+  m_Name: StandardRoom
   m_EditorClassIdentifier: 
-  roomName: Test Room
-  width: 5
-  height: 10
-  wallThickness: 1
+  roomName: Standard Room
+  roomSprite: {fileID: 21300000, guid: bc91932896a65df4986ed42c8b9aa8c2, type: 3}
+  doorClosedSprite: {fileID: 21300000, guid: 7071780506d0f974f8b5a084718477ba, type: 3}
+  doorOpenSprite: {fileID: 21300000, guid: a92bbc86768428e45bf0385a6b00d1fb, type: 3}
+  width: 17
+  height: 9
+  wallThickness: 2
   north: 1
-  east: 0
+  east: 1
   south: 1
-  west: 0
-  doorSize: {x: 2, y: 1}
+  west: 1
+  doorSize: 2
