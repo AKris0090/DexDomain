@@ -43,7 +43,6 @@ public class CardManager : MonoBehaviour
             {
                 AddCard(card);
             }
-            transferer.selectedCards.Clear();
         }
     }
 
