@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb10a854bef0a364aafd130551187d1b, type: 3}
-  m_Name: DashAbility
+  m_Script: {fileID: 11500000, guid: 4c0a46d8de38f8d46b513be3b4a970e1, type: 3}
+  m_Name: Teleport
   m_EditorClassIdentifier: 
-  force: 0
-  lifespan: 0.2
-  dashTime: 0.35
-  dashPower: 27
   player: {fileID: 6281089458180515670, guid: 785a617d815ba484aab9fefb29399514, type: 3}
