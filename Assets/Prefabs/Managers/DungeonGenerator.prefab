@@ -44,7 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39c397fcb677058439ea0786bdd5292f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnableRooms:
-  - {fileID: 11400000, guid: d433a6523a4e26344abed777cc53591e, type: 2}
-  _minRooms: 1
-  _maxRooms: 10
+  SpawnableRooms:
+  - {fileID: 11400000, guid: 11cf589fe983ceb4b8d50a6abd099838, type: 2}
+  BossRoomPrefab: {fileID: 0}
+  _minRooms: 8
+  _maxRooms: 15
+  _minEnemies: 2
+  _maxEnemies: 4
+  _branchingFactor: 4
+  _centeringFactor: 6

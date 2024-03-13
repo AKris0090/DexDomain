@@ -3,13 +3,16 @@ using ProcGenScripts;
 using UnityEngine;
 using NavMeshPlus.Components;
 using NavMeshPlus.Extensions;
+using UnityEngine.AI;
 
 public class Room : MonoBehaviour
 {
-    public Room NorthRoom { get; set; } = null;
-    public Room SouthRoom { get; set; } = null;
-    public Room EastRoom { get; set; } = null;
-    public Room WestRoom { get; set; } = null;
+    public Room NorthRoom  = null;
+    public Room SouthRoom  = null;
+    public Room EastRoom  = null;
+    public Room WestRoom  = null;
+
+    public List<Enemy> Enemies;
     public bool Started => _isStart;
     public bool Ended => _isEnd;
     public List<GameObject> SpawnPoints => _spawnPoints;
@@ -22,7 +25,7 @@ public class Room : MonoBehaviour
     private bool _isStart;
     private bool _isEnd;
     private readonly Dictionary<ColliderType, GameObject> _colliders = new();
-    private readonly Dictionary<RoomData.Dir, GameObject> _doors = new();
+    private Dictionary<RoomData.Dir, GameObject> _doors = new();
     private SpriteRenderer _roomSprite;
     private List<GameObject> _spawnPoints = new();
     
@@ -89,20 +92,20 @@ public class Room : MonoBehaviour
     }
 
 
-    public Dictionary<RoomData.Dir, GameObject> CreateDoors()
+    public void CreateDoors()
     {
         Dictionary<RoomData.Dir, GameObject> doors = new();
         if (NorthRoom != null) doors.Add(RoomData.Dir.North, CreateDoor(RoomData.Dir.North));
-        else _colliders.Add(ColliderType.NorthDoor, CreateCollider(ColliderType.NorthDoor, gameObject));
+        else _colliders.Add(ColliderType.NorthDoor, CreateCollider(ColliderType.NorthDoor));
 
         if (SouthRoom != null) doors.Add(RoomData.Dir.South, CreateDoor(RoomData.Dir.South));
-        else _colliders.Add(ColliderType.SouthDoor, CreateCollider(ColliderType.SouthDoor, gameObject));
+        else _colliders.Add(ColliderType.SouthDoor, CreateCollider(ColliderType.SouthDoor));
 
         if (EastRoom != null) doors.Add(RoomData.Dir.East, CreateDoor(RoomData.Dir.East));
-        else _colliders.Add(ColliderType.EastDoor, CreateCollider(ColliderType.EastDoor, gameObject));
+        else _colliders.Add(ColliderType.EastDoor, CreateCollider(ColliderType.EastDoor));
 
         if (WestRoom != null) doors.Add(RoomData.Dir.West, CreateDoor(RoomData.Dir.West));
-        else _colliders.Add(ColliderType.WestDoor, CreateCollider(ColliderType.WestDoor, gameObject));
+        else _colliders.Add(ColliderType.WestDoor, CreateCollider(ColliderType.WestDoor));
         
         foreach (var door in doors)
         {
@@ -118,7 +121,7 @@ public class Room : MonoBehaviour
             );
         }
 
-        return doors;
+        _doors = doors;
     }
 
     public List<Room> GetConnectedRooms()
@@ -229,44 +232,44 @@ public class Room : MonoBehaviour
         return diff.y > 0 ? RoomData.Dir.North : RoomData.Dir.South;
     }
 
-    public List<Room> FindAdjRooms()
-    {
-        List<Room> adjRooms = new();
-        foreach (RoomData.Dir dir in availableDirections)
-        {
-            if (GetRoomFromDirection(dir) != null)
-                adjRooms.Add(GetRoomFromDirection(dir));
-            else
-            {
-                Vector2 origin = dir switch
-                {
-                    RoomData.Dir.North => new Vector2(0, _roomData.Height / 2),
-                    RoomData.Dir.East => new Vector2(_roomData.Width / 2, 0),
-                    RoomData.Dir.South => new Vector2(0, -_roomData.Height / 2),
-                    RoomData.Dir.West => new Vector2(-_roomData.Width / 2, 0),
-                    _ => Vector2.zero,
-                };
+    //public List<Room> FindAdjRooms()
+    //{
+    //    List<Room> adjRooms = new();
+    //    foreach (RoomData.Dir dir in availableDirections)
+    //    {
+    //        if (GetRoomFromDirection(dir) != null)
+    //            adjRooms.Add(GetRoomFromDirection(dir));
+    //        else
+    //        {
+    //            Vector2 origin = dir switch
+    //            {
+    //                RoomData.Dir.North => new Vector2(0, _roomData.Height / 2),
+    //                RoomData.Dir.East => new Vector2(_roomData.Width / 2, 0),
+    //                RoomData.Dir.South => new Vector2(0, -_roomData.Height / 2),
+    //                RoomData.Dir.West => new Vector2(-_roomData.Width / 2, 0),
+    //                _ => Vector2.zero,
+    //            };
 
-                Vector2 direction = dir switch
-                {
-                    RoomData.Dir.North => Vector2.up,
-                    RoomData.Dir.East  => Vector2.right,
-                    RoomData.Dir.South => Vector2.down,
-                    RoomData.Dir.West  => Vector2.left,
-                    _ => Vector2.zero,
-                };
+    //            Vector2 direction = dir switch
+    //            {
+    //                RoomData.Dir.North => Vector2.up,
+    //                RoomData.Dir.East  => Vector2.right,
+    //                RoomData.Dir.South => Vector2.down,
+    //                RoomData.Dir.West  => Vector2.left,
+    //                _ => Vector2.zero,
+    //            };
 
-                origin += new Vector2(transform.position.x, transform.position.y);
-                RaycastHit2D hit = Physics2D.Raycast(origin, direction, 1);
-                if (hit.collider != null)
-                {
-                    if (hit.collider.gameObject.TryGetComponent<Room>(out var hitRoom))
-                        adjRooms.Add(hitRoom);
-                }
-            }
-        }
-        return adjRooms;
-    }
+    //            origin += new Vector2(transform.position.x, transform.position.y);
+    //            RaycastHit2D hit = Physics2D.Raycast(origin, direction, 0.5f);
+    //            if (hit.collider != null)
+    //            {
+    //                if (hit.collider.gameObject.TryGetComponent<Room>(out var hitRoom))
+    //                    adjRooms.Add(hitRoom);
+    //            }
+    //        }
+    //    }
+    //    return adjRooms;
+    //}
 
 
     public ref readonly RoomData GetRoomData()
@@ -418,13 +421,10 @@ public class Room : MonoBehaviour
             meshMod.AffectsAgentType(-1);
             meshMod.area = 1;
         }
-        var navMesh = gameObject.AddComponent<NavMeshSurface>();
-        navMesh.collectObjects = CollectObjects.Children;
-        navMesh.useGeometry = UnityEngine.AI.NavMeshCollectGeometry.PhysicsColliders;
-        navMesh.agentTypeID = 0;
-        var navCollector = gameObject.AddComponent<CollectSources2d>();
 
-        navMesh.BuildNavMesh();
+        var mod = gameObject.AddComponent<NavMeshModifier>();
+        mod.overrideArea = true;
+        mod.area = 0;
     }
 
     // Private functions
@@ -440,6 +440,8 @@ public class Room : MonoBehaviour
         {
             go = new ($"{type} Wall");
             go.transform.parent = transform;
+            go.transform.localPosition = Vector3.zero;
+            go.isStatic = true;
         }
         BoxCollider2D collider = go.AddComponent<BoxCollider2D>();
         float wallLengthH = _roomData.Width / 2 - _roomData.DoorSize / 2;
@@ -450,57 +452,57 @@ public class Room : MonoBehaviour
         {
             // Doors
             case ColliderType.NorthDoor:
-                collider.size = new Vector2(_roomData.DoorSize, _roomData.WallThickness);
-                if (go == gameObject)
-                    collider.offset = new Vector2(0, _roomData.Height / 2);
+                collider.size = new (_roomData.DoorSize, _roomData.WallThickness);
+                if (go.isStatic)
+                    go.transform.localPosition = new (0, _roomData.Height / 2);
                 break;
             case ColliderType.EastDoor:
-                collider.size = new Vector2(_roomData.WallThickness, _roomData.DoorSize);
-                if (go == gameObject)
-                    collider.offset = new Vector2(_roomData.Width / 2, 0);
+                collider.size = new (_roomData.WallThickness, _roomData.DoorSize);
+                if (go.isStatic)
+                    go.transform.localPosition = new (_roomData.Width / 2, 0);
                 break;
             case ColliderType.SouthDoor:
-                collider.size = new Vector2(_roomData.DoorSize, _roomData.WallThickness);
-                if (go == gameObject)
-                    collider.offset = new Vector2(0, -_roomData.Height / 2);
+                collider.size = new (_roomData.DoorSize, _roomData.WallThickness);
+                if (go.isStatic)
+                    go.transform.localPosition = new (0, -_roomData.Height / 2);
                 break;
             case ColliderType.WestDoor:
-                collider.size = new Vector2(_roomData.WallThickness, _roomData.DoorSize);
-                if (go == gameObject)
-                    collider.offset = new Vector2(-_roomData.Width / 2, 0);
+                collider.size = new (_roomData.WallThickness, _roomData.DoorSize);
+                if (go.isStatic)
+                    go.transform.localPosition = new (-_roomData.Width / 2, 0);
                 break;
             // Directions
             case ColliderType.NorthWest:
-                collider.size = new Vector2(wallLengthH, _roomData.WallThickness);
-                collider.offset = new Vector2(-wallOffsetH, _roomData.Height / 2);
+                collider.size = new (wallLengthH, _roomData.WallThickness);
+                go.transform.localPosition = new (-wallOffsetH, _roomData.Height / 2);
                 break;
             case ColliderType.NorthEast:
-                collider.size = new Vector2(wallLengthH, _roomData.WallThickness);
-                collider.offset = new Vector2(wallOffsetH, _roomData.Height / 2);
+                collider.size = new (wallLengthH, _roomData.WallThickness);
+                go.transform.localPosition = new (wallOffsetH, _roomData.Height / 2);
                 break;
             case ColliderType.SouthWest:
-                collider.size = new Vector2(wallLengthH, _roomData.WallThickness);
-                collider.offset = new Vector2(-wallOffsetH, -_roomData.Height / 2);
+                collider.size = new (wallLengthH, _roomData.WallThickness);
+                go.transform.localPosition = new (-wallOffsetH, -_roomData.Height / 2);
                 break;
             case ColliderType.SouthEast:
-                collider.size = new Vector2(wallLengthH, _roomData.WallThickness);
-                collider.offset = new Vector2(wallOffsetH, -_roomData.Height / 2);
+                collider.size = new (wallLengthH, _roomData.WallThickness);
+                go.transform.localPosition = new (wallOffsetH, -_roomData.Height / 2);
                 break;
             case ColliderType.WestNorth:
-                collider.size = new Vector2(_roomData.WallThickness, wallLengthV);
-                collider.offset = new Vector2(-_roomData.Width / 2, wallOffsetV);
+                collider.size = new (_roomData.WallThickness, wallLengthV);
+                go.transform.localPosition = new (-_roomData.Width / 2, wallOffsetV);
                 break;
             case ColliderType.WestSouth:
-                collider.size = new Vector2(_roomData.WallThickness, wallLengthV);
-                collider.offset = new Vector2(-_roomData.Width / 2, -wallOffsetV);
+                collider.size = new (_roomData.WallThickness, wallLengthV);
+                go.transform.localPosition = new (-_roomData.Width / 2, -wallOffsetV);
                 break;
             case ColliderType.EastNorth:
-                collider.size = new Vector2(_roomData.WallThickness, wallLengthV);
-                collider.offset = new Vector2(_roomData.Width / 2, wallOffsetV);
+                collider.size = new (_roomData.WallThickness, wallLengthV);
+                go.transform.localPosition = new (_roomData.Width / 2, wallOffsetV);
                 break;
             case ColliderType.EastSouth:
-                collider.size = new Vector2(_roomData.WallThickness, wallLengthV);
-                collider.offset = new Vector2(_roomData.Width / 2, -wallOffsetV);
+                collider.size = new (_roomData.WallThickness, wallLengthV);
+                go.transform.localPosition = new (_roomData.Width / 2, -wallOffsetV);
                 break;
         }
         return go;
@@ -513,13 +515,31 @@ public class Room : MonoBehaviour
         door.transform.parent = transform;
 
         SpriteRenderer doorRenderer = door.AddComponent<SpriteRenderer>();
-        Vector3 doorScale = new(0.2f, 0.1f, 1);
-        doorRenderer.transform.localScale = doorScale;
+        //doorRenderer.transform.localScale = doorScale;
         doorRenderer.sprite = _roomData.DoorClosedSprite;
         doorRenderer.sortingLayerName = "Rooms";
         doorRenderer.sortingOrder = 1;
         doorRenderer.size = new Vector2(_roomData.DoorSize, _roomData.WallThickness);
 
+        CreateCollider(dir switch
+        {
+            RoomData.Dir.North => ColliderType.NorthDoor,
+            RoomData.Dir.East => ColliderType.EastDoor,
+            RoomData.Dir.South => ColliderType.SouthDoor,
+            RoomData.Dir.West => ColliderType.WestDoor,
+            _ => ColliderType.NorthDoor,
+        }, door);
+
+        var collider = door.GetComponent<BoxCollider2D>();
+        if (dir == RoomData.Dir.West || dir == RoomData.Dir.East)
+            collider.size = new (collider.size.y, collider.size.x);
+
+        //door.GetComponent<BoxCollider2D>().size *= dir switch
+        //{
+        //    RoomData.Dir.North or RoomData.Dir.South => new Vector2(1 / doorScale.x, 1 / doorScale.y),
+        //    RoomData.Dir.East or RoomData.Dir.West => new Vector2(1 / doorScale.y, 1 / doorScale.x),
+        //    _ => Vector2.one
+        //};
         door.transform.SetLocalPositionAndRotation(dir switch
         {
             RoomData.Dir.North => new Vector3(0, _roomData.Height / 2),
@@ -536,16 +556,7 @@ public class Room : MonoBehaviour
             _ => Quaternion.identity,
         });
 
-        CreateCollider(dir switch
-        {
-            RoomData.Dir.North => ColliderType.NorthDoor,
-            RoomData.Dir.East => ColliderType.EastDoor,
-            RoomData.Dir.South => ColliderType.SouthDoor,
-            RoomData.Dir.West => ColliderType.WestDoor,
-            _ => ColliderType.NorthDoor,
-        }, door);
 
-        door.GetComponent<BoxCollider2D>().size *= new Vector2(1 / doorScale.x, 1 / doorScale.y);
 
         return door;
     }

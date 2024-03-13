@@ -1,28 +1,50 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using NavMeshPlus.Components;
+using NavMeshPlus.Extensions;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DungeonGenerator : MonoBehaviour
 {
+    public float CenteringFactor { get => _centeringFactor; set => _centeringFactor = value; }
+    public float BranchingFactor { get => _branchingFactor; set => _branchingFactor = value; }
+    public int MinRooms { get => _minRooms; set => _minRooms = Mathf.Max(value, 0); }
+    public int MaxRooms { get => _maxRooms; set => _maxRooms = Mathf.Max(value, _minRooms); }
+
     public List<RoomData> SpawnableRooms = new();
     public GameObject BossRoomPrefab;
+
+    private GameObject _root;
     private readonly List<Room> _generatedRooms = new();
     [SerializeField]
     private int _minRooms = 1;
     [SerializeField]
     private int _maxRooms = 1;
     [SerializeField]
+    private int _minEnemies = 2;
+    [SerializeField]
+    private int _maxEnemies = 4;
+    [SerializeField]
     private float _branchingFactor = 1f;
     [SerializeField]
     private float _centeringFactor = 1f;
-    public float CenteringFactor { get => _centeringFactor; set => _centeringFactor = value; }
-    public float BranchingFactor { get => _branchingFactor; set => _branchingFactor = value; }
-    public int MinRooms { get => _minRooms; set => _minRooms = Mathf.Max(value, 0); }
-    public int MaxRooms { get => _maxRooms; set => _maxRooms = Mathf.Max(value, _minRooms); }
-    public void StartGeneration()
+    public void StartGeneration() => StartCoroutine(GenerateDungeon());
+
+    public void DestroyDungeon()
     {
-        StartCoroutine(GenerateDungeon());
+        foreach (Room room in _generatedRooms)
+        {
+            Destroy(room.gameObject);
+        }
+        _generatedRooms.Clear();
+        if (_root)
+            Destroy(_root);
     }
+
     /// <summary>
     /// Generates a dungeon with a random number of rooms between the min and max room count.
     /// It chooses rooms from the spawnableRooms list and connects them together.
@@ -30,12 +52,14 @@ public class DungeonGenerator : MonoBehaviour
     /// <returns>This coroutine.</returns>
     public IEnumerator GenerateDungeon()
     {
-        int numRooms = Random.Range(_minRooms, _maxRooms);        
+        int numRooms = UnityEngine.Random.Range(_minRooms, _maxRooms);        
         Room currentRoom = new GameObject().AddComponent<Room>();
         currentRoom.Init(GetRandomRoomType(), Vector3.zero);
         int roomGenCount = 1;
-        Room[,] roomAdjMatrix = new Room[numRooms, numRooms];
-        roomAdjMatrix[0, 0] = currentRoom;
+        Dictionary<(int, int), Room> roomMatrix = new()
+        {
+            [(0, 0)] = currentRoom
+        };
         _generatedRooms.Add(currentRoom);
         int loopGuard = 0;
         bool isCentered = false;
@@ -66,19 +90,18 @@ public class DungeonGenerator : MonoBehaviour
             newRoom.Init(GetRandomRoomType(), currentRoom.transform.position);
             ConnectRooms(currentRoom, newRoom, dir);
             SnapRoomsTogether(currentRoom, newRoom, dir);
-            roomAdjMatrix[roomGenCount, roomGenCount] = newRoom;
+            roomMatrix[XY(newRoom)] = newRoom;
             _generatedRooms.Add(newRoom);
 
-            foreach (Room adjRoom in newRoom.FindAdjRooms())
+            foreach (Room adjRoom in GetAdjRooms(XY(newRoom), roomMatrix))
             {
-                roomAdjMatrix[_generatedRooms.IndexOf(adjRoom), roomGenCount] = newRoom;
-                roomAdjMatrix[roomGenCount, _generatedRooms.IndexOf(adjRoom)] = adjRoom;
                 ConnectRooms(adjRoom, newRoom, adjRoom.GetDirectionToRoom(newRoom));
             }
 
             currentRoom = newRoom;
             roomGenCount++;
             isCentered = false;
+
             yield return new WaitForEndOfFrame();
         }
         // Second pass to create Boss room
@@ -99,25 +122,57 @@ public class DungeonGenerator : MonoBehaviour
 
     private IEnumerator CreateDoorsAndMeshes()
     {
+        if (!_root)
+            _root = new GameObject("NavMesh");
+        var navMesh = _root.AddComponent<NavMeshSurface>();
+        navMesh.collectObjects = CollectObjects.Children;
+        navMesh.useGeometry = NavMeshCollectGeometry.RenderMeshes;
+        navMesh.agentTypeID = 0;
+        navMesh.defaultArea = 0;
+        //navMesh.size = new Vector2(_roomData.Width, _roomData.Height);
+        var navCollector = _root.AddComponent<CollectSources2d>();
+        _root.transform.rotation = Quaternion.Euler(-90, 0, 0);
+        var settings = navMesh.GetBuildSettings();
+        settings.agentRadius = 2f;
+        settings.agentHeight = 2f;
+        settings.agentClimb = 0.75f;
+        settings.minRegionArea = 1f;
+        settings.tileSize = 8;
+
         foreach (Room room in _generatedRooms)
         {
+            room.transform.parent = _root.transform;
             room.CreateDoors();
             room.CreateNavMeshes();
             yield return new WaitForEndOfFrame();
         }
+
+        navMesh.BuildNavMesh();
     }
 
     private IEnumerator SpawnEnemies()
     {
         foreach (Room room in _generatedRooms)
         {
-            //List<Enemy> enemies = EnemyManager.Instance;
-            //room.SpawnEnemies();
+            room.GenerateSpawnPoints(UnityEngine.Random.Range(_minEnemies, _maxEnemies));
+            EnemyManager.Instance.GetRandomEnemies(
+                UnityEngine.Random.Range(_minEnemies, _maxEnemies), 
+                out room.Enemies
+            );
+            foreach (var (spawn, enemy) in room.SpawnPoints.Zip(room.Enemies, 
+                (s, e) => new Tuple<GameObject, Enemy>(s, e)))
+            {
+                GameObject newEnemy = Instantiate(enemy.gameObject);
+                newEnemy.transform.position = spawn.transform.position;
+                newEnemy.SetActive(false);
+            }
             yield return new WaitForEndOfFrame();
         }
     }
 
-    System.Tuple<Room, RoomData.Dir> FindFurthestRoom()
+    private (int, int) XY(Room room) => (room.DistanceFromStart.x, room.DistanceFromStart.y);
+
+    Tuple<Room, RoomData.Dir> FindFurthestRoom()
     {
         Room furthestRoom = _generatedRooms[0];
         int maxDistance = 0;
@@ -136,24 +191,29 @@ public class DungeonGenerator : MonoBehaviour
         foreach (RoomData.Dir dir in dirs)
         {
             if (furthestRoom.GetRoomFromDirection(dir) == null)
-                return new System.Tuple<Room, RoomData.Dir>(furthestRoom, dir);
+                return new Tuple<Room, RoomData.Dir>(furthestRoom, dir);
         }
         return null;
     }
 
-    private RoomData GetRandomRoomType()
-    {
-        return SpawnableRooms[Random.Range(0, SpawnableRooms.Count)];
-    }
+    private RoomData GetRandomRoomType() => SpawnableRooms[UnityEngine.Random.Range(0, SpawnableRooms.Count)];
 
-    private List<Room> GetAdjRooms(int roomIndex, Room[,] adjMatrix)
+    private List<Room> GetAdjRooms((int, int) coord, Dictionary<(int, int), Room> matrix)
     {
-        List<Room> adjRooms = new(adjMatrix.Length);
-        for (int i = 0; i < adjMatrix.GetLength(0); i++)
-        {
-            if (adjMatrix[roomIndex, i] != null && i != roomIndex)
-                adjRooms.Add(adjMatrix[roomIndex, i]);
-        }
+        List<Room> adjRooms = new(4);
+
+        if (matrix.ContainsKey((coord.Item1, coord.Item2 + 1)))
+            adjRooms.Add(matrix[(coord.Item1, coord.Item2 + 1)]);
+
+        if (matrix.ContainsKey((coord.Item1, coord.Item2 - 1)))
+            adjRooms.Add(matrix[(coord.Item1, coord.Item2 - 1)]);
+
+        if (matrix.ContainsKey((coord.Item1 + 1, coord.Item2)))
+            adjRooms.Add(matrix[(coord.Item1 + 1, coord.Item2)]);
+
+        if (matrix.ContainsKey((coord.Item1 - 1, coord.Item2)))
+            adjRooms.Add(matrix[(coord.Item1 - 1, coord.Item2)]);
+
         return adjRooms;
     }
 
@@ -229,14 +289,14 @@ public class DungeonGenerator : MonoBehaviour
     {
         foreach (Room room in _generatedRooms)
         {
-            foreach (BoxCollider2D collider in room.GetComponents<BoxCollider2D>())
+            foreach (BoxCollider2D collider in room.GetComponentsInChildren<BoxCollider2D>())
             {
                 RaycastHit2D[] raycastHits = new RaycastHit2D[1];
                 Gizmos.DrawWireCube(collider.bounds.center, collider.bounds.size);
                 if (collider.Raycast(Vector2.up, raycastHits, 1f) > 0)
                 {
                     GameObject hitObject = raycastHits[0].transform.gameObject;
-                    if (hitObject == collider.gameObject)
+                    if (hitObject == collider.gameObject ||hitObject == collider.transform.parent.gameObject)
                         continue;
                     
                     Room roomHit = hitObject.GetComponent<Room>();
@@ -255,8 +315,5 @@ public class DungeonGenerator : MonoBehaviour
     /// <summary>
     /// Draw the colliders of the generated rooms in the editor every unity message callback.
     /// </summary>
-    private void OnDrawGizmos()
-    {
-        DebugDraw();
-    }
+    private void OnDrawGizmos() => DebugDraw();
 }
