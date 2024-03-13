@@ -22,8 +22,8 @@ public class RapidFire : BasicShoot
     {
         for (int i = 0; i < numOfShots; i++)
         {
-            Bullet newBullet = enemyManager.GetBullet();
-            newBullet.SetTarget(enemyManager.GetPlayerPosition(), force, bulletLifespan, this.gameObject, transform.position, transform.rotation);
+            Bullet newBullet = enemyManager.GetBullet(transform.position, transform.rotation);
+            newBullet.SetTarget(enemyManager.GetPlayerPosition(), force, bulletLifespan, this.gameObject);
             yield return new WaitForSeconds(timeBetweenShots);
         }
         StartCoroutine(FireCooldown());

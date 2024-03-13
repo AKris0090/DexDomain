@@ -151,23 +151,23 @@ public class Boss : Enemy
             {
                 for(int j = 0; j < bulletsToSpawn; j++)
                 {
-                    Bullet newBullet = EnemyManager.Instance.GetBullet();
+                    Bullet newBullet = EnemyManager.Instance.GetBullet(boss.transform.position, boss.transform.rotation);
                     float properAngle = ((2*Mathf.PI) / bulletsToSpawn) * j;
                     float y = Mathf.Cos(properAngle);
                     float x = Mathf.Sin(properAngle);
                     Vector3 dir = new Vector3(x * 10f, y * 10f, 0);
                     Debug.Log(boss.ringBulletForce);
-                    newBullet.SetTarget(dir + boss.transform.position, boss.ringBulletForce * boss.phase, 5, boss.gameObject, boss.transform.position, boss.transform.rotation);
+                    newBullet.SetTarget(dir + boss.transform.position, boss.ringBulletForce * boss.phase, 5, boss.gameObject);
                 }
                 yield return new WaitForSeconds(boss.secondsBetweenRings);
                 for (int j = 0; j < bulletsToSpawn; j++)
                 {
-                    Bullet newBullet = EnemyManager.Instance.GetBullet();
+                    Bullet newBullet = EnemyManager.Instance.GetBullet(boss.transform.position, boss.transform.rotation);
                     float properAngle = (((2 * Mathf.PI) / bulletsToSpawn) * j);
                     float x = Mathf.Cos(properAngle);
                     float y = Mathf.Sin(properAngle);
                     Vector3 dir = new Vector3(x * 10f, y * 10f, 0);
-                    newBullet.SetTarget(dir + boss.transform.position, boss.ringBulletForce * boss.phase, 5, boss.gameObject, boss.transform.position, boss.transform.rotation);
+                    newBullet.SetTarget(dir + boss.transform.position, boss.ringBulletForce * boss.phase, 5, boss.gameObject);
                 }
                 yield return new WaitForSeconds(boss.secondsBetweenRings);
             }
@@ -222,11 +222,11 @@ public class Boss : Enemy
                 {
                     Vector2 line = (boss.transform.position - nextLocation);
                     Vector2 bossLoc = boss.transform.position;
-                    Bullet newBullet = EnemyManager.Instance.GetBullet();
+                    Bullet newBullet = EnemyManager.Instance.GetBullet(boss.transform.position, boss.transform.rotation);
                     // Fire bullets perpendicuarly from the direction of travel
-                    newBullet.SetTarget(line.Perpendicular1() + bossLoc, boss.dashForce, 3, boss.gameObject, boss.transform.position, boss.transform.rotation);
-                    newBullet = EnemyManager.Instance.GetBullet();
-                    newBullet.SetTarget(line.Perpendicular1() * -1 + bossLoc, boss.dashForce, 3, boss.gameObject, boss.transform.position, boss.transform.rotation);
+                    newBullet.SetTarget(line.Perpendicular1() + bossLoc, boss.dashForce, 3, boss.gameObject);
+                    newBullet = EnemyManager.Instance.GetBullet(boss.transform.position, boss.transform.rotation);
+                    newBullet.SetTarget(line.Perpendicular1() * -1 + bossLoc, boss.dashForce, 3, boss.gameObject);
                     yield return new WaitForSeconds(boss.dashFirerate / boss.phase);
                 }
                 // Update the current location
@@ -274,8 +274,8 @@ public class Boss : Enemy
                     float x = Mathf.Cos(angle);
                     float y = Mathf.Sin(angle);
                     Vector3 dir = new Vector2(x, y);
-                    Bullet newBullet = EnemyManager.Instance.GetBullet();
-                    newBullet.SetTarget(dir + boss.transform.position, boss.shotGunForce, 5, boss.gameObject, boss.transform.position, boss.transform.rotation);
+                    Bullet newBullet = EnemyManager.Instance.GetBullet(boss.transform.position, boss.transform.rotation);
+                    newBullet.SetTarget(dir + boss.transform.position, boss.shotGunForce, 5, boss.gameObject);
                 }
                 yield return new WaitForSeconds(boss.shotgunFireRate);
             }

@@ -367,7 +367,7 @@ MonoBehaviour:
   dashForce: 400
   numOfBulletHellRings: 4
   bulletsInRings: 14
-  ringBulletForce: 200
+  ringBulletForce: 300
   bulletLifespan: 5
   secondsBetweenRings: 1
   numberOfShotgunShots: 5
