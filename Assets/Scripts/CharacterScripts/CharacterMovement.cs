@@ -27,6 +27,7 @@ public class CharacterMovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         enableMovement_ = true;
         _cmInstance = this;
+        invulnerable = false;
     }
 
     private void Update()
