@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CardSelector : MonoBehaviour
@@ -27,7 +28,7 @@ public class CardSelector : MonoBehaviour
         lists.Add(secondaries);
         lists.Add(specials);
         lists.Add(movements);
-        
+
         StartCoroutine(SelectCards());
     }
 
@@ -54,7 +55,7 @@ public class CardSelector : MonoBehaviour
                 }
             }
             // Wait until the player has picked their cards
-            while(numPicked < cardsPerCatagory)
+            while (numPicked < cardsPerCatagory)
             {
                 yield return new WaitForSeconds(0.1f);
             }
@@ -68,12 +69,9 @@ public class CardSelector : MonoBehaviour
                 }
             }
         }
-       foreach(BaseCardClass card in transferer.selectedCards)
-        {
-            Debug.Log(card);
-        }
+        SceneManager.LoadScene("BossTest");
     }
-    
+
 
     void AddCardToTransfer(BaseCardClass card, Button UICard)
     {
@@ -84,9 +82,4 @@ public class CardSelector : MonoBehaviour
         numPicked++;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

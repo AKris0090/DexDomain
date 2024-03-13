@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6195998761263945885}
+  - component: {fileID: 3503900112709983292}
   m_Layer: 0
   m_Name: CardManager
   m_TagString: Untagged
@@ -25,9 +26,28 @@ Transform:
   m_GameObject: {fileID: 8172856591923742898}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.9201457, y: 0.52132946, z: 0.039201185}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3503900112709983292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8172856591923742898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6d50123533821c4d9958550c76205e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  equippedCards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hand: []
+  transferer: {fileID: 11400000, guid: dd4fdf0a2854c94499e701f3afccdbde, type: 2}
