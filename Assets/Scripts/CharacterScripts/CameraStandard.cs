@@ -1,8 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
-using Unity.VisualScripting;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class CameraStandard : MonoBehaviour
@@ -14,6 +10,11 @@ public class CameraStandard : MonoBehaviour
     public void MoveTo(Vector2 position)
     {
         StartCoroutine(LerpToPosition(position));
+    }
+
+    public void Test()
+    {
+        MoveTo(testPosition);
     }
 
     private IEnumerator LerpToPosition(Vector2 endPosition)
@@ -30,9 +31,10 @@ public class CameraStandard : MonoBehaviour
         }
     }
 
-    private Vector2 EaseOutQuintVec(Vector2 start, Vector2 end, float progress)
+    private Vector3 EaseOutQuintVec(Vector2 start, Vector2 end, float progress)
     {
-        return Vector2.Lerp(start, end, EaseOutQuint(progress));
+        var vec = Vector2.Lerp(start, end, EaseOutQuint(progress));
+        return new(vec.x, vec.y, -10f);
     }
 
     private float EaseOutQuint(float x) 
