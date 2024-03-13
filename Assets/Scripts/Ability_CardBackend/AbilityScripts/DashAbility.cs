@@ -7,8 +7,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Abstract Abilities/DashAbility")]
 public class DashAbility : AbilityAbstract
 {
-    public float force;
-    public float lifespan;
     public float dashTime = 1.5f;
     public float dashPower = 100f;
     public GameObject player;

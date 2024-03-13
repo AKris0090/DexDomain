@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64ae93f7d44475641bfc8f86fc5f05f4, type: 3}
+  m_Name: MaceCard
+  m_EditorClassIdentifier: 
+  cardName: Mace
+  abilityAbs: {fileID: 11400000, guid: ad895bd0e5d58db4a97ef194ef42a70f, type: 2}
+  _equipSlot: 0
+  cardUIPrefab: {fileID: 3147494322152419602, guid: ba253724710ac07479ec3f66b0301786, type: 3}
+  cooldown: 1

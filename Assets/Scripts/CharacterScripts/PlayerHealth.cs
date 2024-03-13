@@ -14,13 +14,16 @@ public class PlayerHealth : MonoBehaviour
     // public reference to health, call when enemy attacks player
     public void DealDamage(int value)
     {
-        health.Value -= value;
-        Debug.Log(health.Value);
-        // Player death
-        // TODO: Add more UI events for death screen
-        if(health.Value == 0)
+        if (CharacterMovement._cmInstance.invulnerable)
         {
-            gameObject.SetActive(false);
+            health.Value -= value;
+            Debug.Log(health.Value);
+            // Player death
+            // TODO: Add more UI events for death screen
+            if (health.Value == 0)
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 }

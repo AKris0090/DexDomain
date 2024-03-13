@@ -13,9 +13,12 @@ public class CharacterMovement : MonoBehaviour
     public float moveSpeed;
     private float _moveX, _moveY;
     public Rigidbody2D _rb;
-    private Vector2 _mousePos;
+    public Vector2 _mousePos;
     public Vector2 mouseDirection;
     public bool enableMovement_ = true;
+    public int dmgMod = 1;
+    public bool invulnerable = false;
+    public Camera mainCam;
 
     // Start is called before the first frame update
     void Start()
@@ -52,5 +55,19 @@ public class CharacterMovement : MonoBehaviour
 
         // get direction you want to point at
         mouseDirection = (_mousePos - (Vector2)transform.position).normalized;
+    }
+
+    public IEnumerator incMS(float time)
+    {
+        this.moveSpeed *= 2;
+        yield return new WaitForSeconds(time);
+        this.moveSpeed /= 2;
+    }
+
+    public IEnumerator incDmg(float time)
+    {
+        this.dmgMod = 2;
+        yield return new WaitForSeconds(time);
+        this.dmgMod = 1;
     }
 }
