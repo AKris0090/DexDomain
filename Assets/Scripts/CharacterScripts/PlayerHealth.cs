@@ -14,7 +14,7 @@ public class PlayerHealth : MonoBehaviour
     // public reference to health, call when enemy attacks player
     public void DealDamage(int value)
     {
-        if (CharacterMovement._cmInstance.invulnerable)
+        if (!CharacterMovement._cmInstance.invulnerable)
         {
             health.Value -= value;
             Debug.Log(health.Value);

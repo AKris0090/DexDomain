@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cbffb61c6cc8da489aac40be872d852, type: 3}
+  m_Name: ThrowingDaggersCard
+  m_EditorClassIdentifier: 
+  cardName: Throwing Daggers
+  abilityAbs: {fileID: 0}
+  _equipSlot: 0
+  cardUIPrefab: {fileID: 3147494322152419602, guid: cb0a733e30f4e4b33afc3dd7b89c2c97, type: 3}
+  cooldown: 10
+  maxUses: 10
