@@ -1,14 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Abstract Abilities/DashAbility")]
-public class DashAbility : AbilityAbstract
+[CreateAssetMenu(menuName = "Abstract Abilities/FlashStep")]
+public class FlashStep : AbilityAbstract
 {
-    public float dashTime = 1.5f;
-    public float dashPower = 100f;
+    public float dashTime = 0.005f;
+    private float dashPower = 100000000f;
     public GameObject player;
 
     public override async void UseAbility(Vector2 playerPos, Vector2 lookAt)
@@ -16,8 +13,10 @@ public class DashAbility : AbilityAbstract
         base.UseAbility(playerPos, lookAt);
         CharacterMovement._cmInstance.enableMovement_ = false;
         CharacterMovement._cmInstance._rb.velocity = lookAt.normalized * dashPower;
-        await Task.Delay((int) (dashTime * 1000));
+        CharacterMovement._cmInstance.invulnerable = true;
+        await Task.Delay((int)(dashTime * 1000));
         CharacterMovement._cmInstance._rb.velocity = new Vector2(0, 0);
         CharacterMovement._cmInstance.enableMovement_ = true;
+        CharacterMovement._cmInstance.invulnerable = false;
     }
 }

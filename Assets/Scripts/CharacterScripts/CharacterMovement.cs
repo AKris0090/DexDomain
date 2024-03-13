@@ -13,10 +13,12 @@ public class CharacterMovement : MonoBehaviour
     public float moveSpeed;
     private float _moveX, _moveY;
     public Rigidbody2D _rb;
-    private Vector2 _mousePos;
+    public Vector2 _mousePos;
     public Vector2 mouseDirection;
     public bool enableMovement_ = true;
     public int dmgMod = 1;
+    public bool invulnerable = false;
+    public Camera mainCam;
 
     // Start is called before the first frame update
     void Start()
