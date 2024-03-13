@@ -14,6 +14,9 @@ public class RoomData : ScriptableObject
     // Editor exposed setter variables
     [SerializeField]
     private string roomName;
+    [SerializeField] private Sprite roomSprite;
+    [SerializeField] private Sprite doorClosedSprite;
+    [SerializeField] private Sprite doorOpenSprite;
     [Header("Room Size")]
     [SerializeField]
     private int width;
@@ -32,7 +35,7 @@ public class RoomData : ScriptableObject
     private bool west;
     [Header("Door Size")]
     [SerializeField]
-    private Vector2 doorSize;
+    private int doorSize;
 
     // Dictionary to store the connections
     private readonly Dictionary<Dir, bool> connectDirs = new()
@@ -46,9 +49,12 @@ public class RoomData : ScriptableObject
     // Public getter properties for the room data
 
     public string RoomName => roomName;
+    public Sprite RoomSprite => roomSprite;
+    public Sprite DoorClosedSprite => doorClosedSprite;
+    public Sprite DoorOpenSprite => doorOpenSprite;
     public int Width => width;
     public int Height => height;
-    public Vector2 DoorSize => doorSize;
+    public int DoorSize => doorSize;
     // Public getters for the room connections
     public Dictionary<Dir, bool> ConnectDirs => connectDirs;
     public bool North => north;
