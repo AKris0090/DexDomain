@@ -91,7 +91,7 @@ public class Boss : Enemy
     void SelectNewState()
     {
         // Don't selected a new state if the boss is dying
-        if (state == deathRattle)
+        if (state != deathRattle)
         {
             // This allows for the boss repeatedly selecting the same state. Should be okay? 
             int selector = Random.Range(0, states.Count);
@@ -162,6 +162,7 @@ public class Boss : Enemy
             if (!lookedRecently)
             {
                 lookedRecently = true;
+                Debug.Log(boss);
                 boss.StartCoroutine(CheckForPlayer(boss));
             }
         }

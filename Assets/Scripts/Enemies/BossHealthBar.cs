@@ -26,6 +26,7 @@ public class BossHealthBar : MonoBehaviour
 
     public void Activate(int initialHealth)
     {
+        Debug.Log(holder);
         holder.SetActive(true);
         bar.fillAmount = 1;
         maxHealth = initialHealth;
