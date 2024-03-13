@@ -550,6 +550,7 @@ GameObject:
   - component: {fileID: 3641962619741814483}
   - component: {fileID: 8238665311013638411}
   - component: {fileID: 5975758902278853927}
+  - component: {fileID: 1212609711639829401}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -655,6 +656,18 @@ MonoBehaviour:
   healthPointsContainer: {fileID: 4971097230502859837}
   heartsPrefab: {fileID: 5913089021908314407, guid: e6ec7f00befaf4b32b93ea4fea9a1c31, type: 3}
   playerHealth: {fileID: 11400000, guid: 89512ef41c743374d8b2eb6afdef9633, type: 2}
+--- !u!225 &1212609711639829401
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3872291141214416982}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4001871162719805395
 GameObject:
   m_ObjectHideFlags: 0
@@ -667,6 +680,7 @@ GameObject:
   - component: {fileID: 6568592690943360369}
   - component: {fileID: 6440022073627226239}
   - component: {fileID: 1525172075595564109}
+  - component: {fileID: 8466461929458704416}
   m_Layer: 5
   m_Name: AbilitiesMenu
   m_TagString: Untagged
@@ -761,6 +775,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &8466461929458704416
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4001871162719805395}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4513862375015115623
 GameObject:
   m_ObjectHideFlags: 0
@@ -848,6 +874,7 @@ GameObject:
   - component: {fileID: 7410715030908056899}
   - component: {fileID: 1838324681884438063}
   - component: {fileID: 5350748899280871392}
+  - component: {fileID: 5035578080517543479}
   m_Layer: 5
   m_Name: EndMenu
   m_TagString: Untagged
@@ -941,6 +968,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &5035578080517543479
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5689454426742895071}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5827719430278908132
 GameObject:
   m_ObjectHideFlags: 0
@@ -953,6 +992,7 @@ GameObject:
   - component: {fileID: 177973521945578746}
   - component: {fileID: 2254615944179749146}
   - component: {fileID: 4121823192734841242}
+  - component: {fileID: 1909636375240964743}
   m_Layer: 5
   m_Name: PauseMenu
   m_TagString: Untagged
@@ -979,7 +1019,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.21618652, y: 2387}
+  m_AnchoredPosition: {x: -0.21612549, y: 2387}
   m_SizeDelta: {x: 362, y: 176}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &177973521945578746
@@ -1045,6 +1085,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &1909636375240964743
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5827719430278908132}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6961828735601747310
 GameObject:
   m_ObjectHideFlags: 0
@@ -1191,6 +1243,7 @@ GameObject:
   - component: {fileID: 5969605887659437108}
   - component: {fileID: 1340824033521904228}
   - component: {fileID: 5786749081584798544}
+  - component: {fileID: 1099106875983430981}
   m_Layer: 5
   m_Name: CardSwapMenu
   m_TagString: Untagged
@@ -1291,6 +1344,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &1099106875983430981
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7828080515439708680}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8002549985172750280
 GameObject:
   m_ObjectHideFlags: 0
@@ -1410,6 +1475,7 @@ GameObject:
   - component: {fileID: 8501148951173452192}
   - component: {fileID: 2949225441501628838}
   - component: {fileID: 8632929323063210482}
+  - component: {fileID: 5171385783450305038}
   m_Layer: 5
   m_Name: StartMenu
   m_TagString: Untagged
@@ -1502,6 +1568,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &5171385783450305038
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9095186393991607405}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &158111610429616668
 PrefabInstance:
   m_ObjectHideFlags: 0

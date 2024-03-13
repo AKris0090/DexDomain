@@ -8,7 +8,6 @@ public class Enemy : MonoBehaviour
 {
     public int health = 1;
     // Dirty bool checking if this enemy can take damage
-    // NEED TO SET THIS TO TRUE IN ALL THE CHILD STARTS OR THEY CAN'T TAKE DAMAGE
     protected bool canTakeDamage;
     public float damageCooldown = 0.5f;
     protected EnemyManager enemyManager;

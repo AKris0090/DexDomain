@@ -21,7 +21,10 @@ using static UnityEditor.FilePathAttribute;
 public class EnemyManager : MonoBehaviour
 {
     // Variables for all of the enemy types
-    public GameObject basicShoot;
+    public Enemy basicShoot;
+    public Enemy rapidFire;
+    public Enemy ram;
+    List<Enemy> mainEnemyList;
 
     // Variable to keep track of the player
     public GameObject player;
@@ -49,6 +52,13 @@ public class EnemyManager : MonoBehaviour
     {
         // Create a pool for enemy bullets
         bullets = Pool.Create(enemyBullet);
+        // add all the enemy types to the enemy list
+        mainEnemyList = new List<Enemy>
+        {
+            basicShoot,
+            ram,
+            rapidFire
+        };
     }
 
     public Bullet GetBullet()
@@ -58,20 +68,32 @@ public class EnemyManager : MonoBehaviour
 
     public void ReturnBullet(Bullet bullet)
     {
-        bullets.Take(bullet);
+        if (bullet.gameObject.activeInHierarchy)
+        {
+            bullets.Take(bullet);
+        }
     }
 
-    // Spawns a basic shoot enemy at location, targeting target
-    // Basic shoot enemies move towards their target, until they're within a certain range, before firing a damaging projectile
-    public void SpawnBasicShoot(Vector3 location)
+    // Gets count random enemies
+    public void GetRandomEnemies(int count, out List<Enemy> enemies)
     {
-        Instantiate(basicShoot, location, basicShoot.transform.rotation);
+        enemies = new List<Enemy>();
+        Enemy enemy;
+        for(int i = 0; i < count; i++)
+        {
+            GetRandomEnemy(out enemy);
+            enemies.Add(enemy);
+        }
+    }
+
+    // Gets one random enemy
+    public void GetRandomEnemy(out Enemy enemy)
+    {
+        int selector = Random.Range(0, mainEnemyList.Count);
+        enemy = mainEnemyList[selector];
     }
 
     // Hurts the passed in enemy
-    // TODO: firgue out a better way to do this
-    // the switch statement to determine which enemy has been damaged, then calling the respective damage function,
-    // feels clunky and kind of bad. I'll have to ask cole about a better way of doing this
     public void DamageEnemy(GameObject enemy, int amount)
     {
         Debug.Log(enemy);

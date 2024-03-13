@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5917b0ba7bf3d54cbc52e65c64d4583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basicShoot: {fileID: 6529392268432006113, guid: 465c3ce157a575f4e93d857583dc0e4f, type: 3}
+  basicShoot: {fileID: 3286506318984747486, guid: 465c3ce157a575f4e93d857583dc0e4f, type: 3}
+  rapidFire: {fileID: 6954984797754504002, guid: ddb139523fc022c4b9cab72f4a5af25c, type: 3}
+  ram: {fileID: 1824028665210577849, guid: c0ae51b75db8f0b47b49f498a253a30e, type: 3}
   player: {fileID: 0}
   enemyBullet: {fileID: 4661476730269234599, guid: cb2e8005ea96eab43a6a41f0eee5bbc7, type: 3}

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.WSA;
 
 // edited from mechanics module
 enum MENU
@@ -93,22 +94,34 @@ public class UIManager : MonoBehaviour
     void SwapMenu(MENU M) // USE IF YOU ONLY NEED ONE MENU OPEN
     {
         CloseAllMenus();
-        menus[(int)M].enabled = true;
+        CanvasGroup holder = menus[(int)M].GetComponent<CanvasGroup>();
+        holder.alpha = 1;
+        holder.interactable = true;
+        holder.blocksRaycasts = true;
     }
     void CloseAllMenus()
     {
         for (int i = 0; i < menus.Count; ++i)
         {
-            menus[i].enabled = false;
+            CanvasGroup holder = menus[i].GetComponent<CanvasGroup>();
+            holder.alpha = 0;
+            holder.interactable = false;
+            holder.blocksRaycasts = false;
         }
     }
     void CloseMenu(MENU M) // SINGLE MENU OP.
     {
-        menus[(int)M].enabled = false;
+        CanvasGroup holder = menus[(int)M].GetComponent<CanvasGroup>();
+        holder.alpha = 0;
+        holder.interactable = false;
+        holder.blocksRaycasts = false;
     }
     void OpenMenu(MENU M) // SINGLE MENU OP.
     {
-        menus[(int)M].enabled = true;
+        CanvasGroup holder = menus[(int)M].GetComponent<CanvasGroup>();
+        holder.alpha = 1;
+        holder.interactable = true;
+        holder.blocksRaycasts = true;
     }
 
 
