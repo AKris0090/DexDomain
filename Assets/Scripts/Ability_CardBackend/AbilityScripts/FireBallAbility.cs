@@ -8,7 +8,7 @@ using UnityEngine;
 public class FireBallAbility : AbilityAbstract
 {
     public GameObject fireBallRef;
-    public GameObject fireBallPrefab;
+    private GameObject fireBallPrefab;
     public float force;
     public float lifespan;
 

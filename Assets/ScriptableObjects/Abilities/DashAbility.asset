@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   force: 0
   lifespan: 0.2
-  dashTime: 0.35
-  dashPower: 27
+  dashTime: 0.2
+  dashPower: 24
   player: {fileID: 6281089458180515670, guid: 785a617d815ba484aab9fefb29399514, type: 3}

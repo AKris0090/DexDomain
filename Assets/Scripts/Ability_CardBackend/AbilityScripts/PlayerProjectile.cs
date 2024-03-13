@@ -17,14 +17,9 @@ public class PlayerProjectile : Bullet
     {
         if (collision.gameObject.GetComponent<Bullet>() == null)
         {
-            EnemyManager.Instance.DamageEnemy(collision.gameObject, (1 * CharacterMovement._cmInstance.dmgMod));
+            EnemyManager.Instance.DamageEnemy(collision.gameObject, 1);
             Destroy(this.gameObject);
         }
-    }
-
-    public void startLifeSpan(float life)
-    {
-        StartCoroutine(Lifespan(life));
     }
 
     protected override IEnumerator Lifespan(float seconds)

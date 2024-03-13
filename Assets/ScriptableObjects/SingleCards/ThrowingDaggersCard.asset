@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64ae93f7d44475641bfc8f86fc5f05f4, type: 3}
-  m_Name: MaceCard
+  m_Script: {fileID: 11500000, guid: 8cbffb61c6cc8da489aac40be872d852, type: 3}
+  m_Name: ThrowingDaggersCard
   m_EditorClassIdentifier: 
-  cardName: Mace
-  abilityAbs: {fileID: 11400000, guid: ad895bd0e5d58db4a97ef194ef42a70f, type: 2}
+  cardName: Throwing Daggers
+  abilityAbs: {fileID: 0}
   _equipSlot: 0
-  cardUIPrefab: {fileID: 3147494322152419602, guid: ba253724710ac07479ec3f66b0301786, type: 3}
-  cooldown: 1
+  cardUIPrefab: {fileID: 3147494322152419602, guid: cb0a733e30f4e4b33afc3dd7b89c2c97, type: 3}
+  cooldown: 10
+  maxUses: 10

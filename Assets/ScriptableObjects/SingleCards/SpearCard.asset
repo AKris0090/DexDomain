@@ -9,7 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e2b1513c446911498ff8d8d8347766c, type: 3}
-  m_Name: SwordAbility
+  m_Script: {fileID: 11500000, guid: 8cbffb61c6cc8da489aac40be872d852, type: 3}
+  m_Name: SpearCard
   m_EditorClassIdentifier: 
-  weaponPrefab: {fileID: 3506301218640899836, guid: b760e73eec1401944974929796110b4e, type: 3}
+  cardName: Spear
+  abilityAbs: {fileID: 0}
+  _equipSlot: 0
+  cardUIPrefab: {fileID: 3147494322152419602, guid: 21c825a8756f446e7b360b3943123d58, type: 3}
+  cooldown: 5
+  maxUses: 1

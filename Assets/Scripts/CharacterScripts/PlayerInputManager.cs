@@ -11,6 +11,7 @@ public class PlayerInputManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _characterMovement = this.gameObject.GetComponent<CharacterMovement>();
     }
 
     // Update is called once per frame
@@ -19,22 +20,22 @@ public class PlayerInputManager : MonoBehaviour
         if(Input.GetButton("PrimaryAttack")) {
             // Fire the primary weapon/card towards the mouse position
             Debug.Log("player input primary attack");
-            CardManager.Instance.UsePrimary(transform.position, CharacterMovement._cmInstance.mouseDirection);
+            CardManager.Instance.UsePrimary(transform.position, _characterMovement.mouseDirection);
         }
         if (Input.GetButton("SecondaryAttack"))
         {
             // Fire the secondary weapon/card towards the mouse position
-            CardManager.Instance.UseSecondary(transform.position, CharacterMovement._cmInstance.mouseDirection);
+            CardManager.Instance.UseSecondary(transform.position, _characterMovement.mouseDirection);
         }
         if (Input.GetButton("SpecialAbility"))
         {
             // Fire the special weapon/card towards the mouse position
-            CardManager.Instance.UseSpecial(transform.position, CharacterMovement._cmInstance.mouseDirection);
+            CardManager.Instance.UseSpecial(transform.position, _characterMovement.mouseDirection);
         }
         if (Input.GetButton("MovementAbility"))
         {
             // Use the movement weapon/card towards the mouse position
-            CardManager.Instance.UseMovement(transform.position, CharacterMovement._cmInstance.mouseDirection);
+            CardManager.Instance.UseMovement(transform.position, _characterMovement.mouseDirection);
         }
     }
 }

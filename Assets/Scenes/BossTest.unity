@@ -285,7 +285,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0.18182373
       objectReference: {fileID: 0}
-
     - target: {fileID: 398195916923603293, guid: c05ed55591129453895c9d54d2227c77, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 0
@@ -409,7 +408,6 @@ PrefabInstance:
       addedObject: {fileID: 1879798724}
   m_SourcePrefab: {fileID: 100100000, guid: c05ed55591129453895c9d54d2227c77, type: 3}
 --- !u!1 &342845395
-
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -422,7 +420,6 @@ GameObject:
   - component: {fileID: 342845397}
   m_Layer: 5
   m_Name: Image (1)
-
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -499,7 +496,6 @@ GameObject:
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
-
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -920,7 +916,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c83b930f8328732479a6e8e7abc2de2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-
 --- !u!1 &1917529133 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6281089458180515670, guid: 785a617d815ba484aab9fefb29399514, type: 3}
