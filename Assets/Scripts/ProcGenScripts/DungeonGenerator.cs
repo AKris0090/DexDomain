@@ -38,6 +38,8 @@ public class DungeonGenerator : MonoBehaviour
     {
         foreach (Room room in _generatedRooms)
         {
+            if (room && !room.Ended)
+                room.EndRoom();
             Destroy(room.gameObject);
         }
         _generatedRooms.Clear();

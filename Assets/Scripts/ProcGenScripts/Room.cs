@@ -285,6 +285,12 @@ public class Room : MonoBehaviour
             return;
         }
 
+        if (_isStart)
+        {
+            Debug.LogError("Room is already started");
+            return;
+        }
+
         _isStart = true;
         SetVisibility(true);
 
@@ -299,6 +305,12 @@ public class Room : MonoBehaviour
 
     public void EndRoom(bool unlockDoors=true)
     {
+        if (_isEnd)
+        {
+            Debug.LogError("Room is already ended");
+            return;
+        }
+
         _isEnd = true;
         foreach (var enemy in Enemies)
         { 
