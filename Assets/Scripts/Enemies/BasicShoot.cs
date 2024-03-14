@@ -44,6 +44,10 @@ public class BasicShoot : Enemy
     {
         while (true)
         {
+            if (canAct == false)
+            {
+                yield break;
+            }
             Vector2 circilingVector = transform.position;
             Vector2 pos = transform.position;
             Vector3 playerPos = enemyManager.GetPlayerPosition();

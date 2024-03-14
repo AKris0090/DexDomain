@@ -2,6 +2,7 @@ using Redcode.Pools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 // Parent class for enemies
 public class Enemy : MonoBehaviour
@@ -10,6 +11,7 @@ public class Enemy : MonoBehaviour
     protected bool canLookAtPlayer;
     // Dirty bool checking if this enemy can take damage
     protected bool canTakeDamage;
+    protected bool canAct;
     public float damageCooldown = 0.5f;
     protected EnemyManager enemyManager;
     protected Pool<Bullet> bulletPool;
@@ -18,6 +20,7 @@ public class Enemy : MonoBehaviour
     protected virtual void Start()
     {
         canTakeDamage = true;
+        canAct = true;
         enemyManager = EnemyManager.Instance;
         canLookAtPlayer = true;
         self = GetComponent<SpriteRenderer>();
@@ -54,9 +57,26 @@ public class Enemy : MonoBehaviour
             Debug.Log("Damage delt to enemy");
             if (health <= 0)
             {
-                Destroy(this.gameObject);
+                StopAllCoroutines();
+                StartCoroutine(Die());
             }
         }
+    }
+
+    protected IEnumerator Die()
+    {
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        GetComponent<NavMeshAgent>().SetDestination(transform.position);
+        canAct = false;
+        renderer.color = Color.red;
+        for(int i = 0; i < 10; i++)
+        {
+            Color color = renderer.color;
+            color.a -= 0.1f;
+            renderer.color = color;
+            yield return new WaitForSeconds(0.05f);
+        }
+        Destroy(this.gameObject);
     }
 
     // Give the player some feedback for damaging the enemy

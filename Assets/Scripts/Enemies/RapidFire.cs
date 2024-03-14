@@ -20,6 +20,10 @@ public class RapidFire : BasicShoot
 
     IEnumerator RapidFireShoot()
     {
+        if(canAct == false)
+        {
+            yield break;
+        }
         for (int i = 0; i < numOfShots; i++)
         {
             Bullet newBullet = enemyManager.GetBullet(transform.position, transform.rotation);
