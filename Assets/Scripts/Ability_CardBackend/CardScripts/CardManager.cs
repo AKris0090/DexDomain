@@ -16,6 +16,7 @@ public class CardManager : MonoBehaviour
     // ref: https://medium.com/nerd-for-tech/implementing-a-game-manager-using-the-singleton-pattern-unity-eb614b9b1a74
     private static CardManager _instance;
     public static CardManager Instance { get { return _instance; } }
+    public CardTransferer transferer;
 
     void Awake()
     {
@@ -24,7 +25,6 @@ public class CardManager : MonoBehaviour
         Debug.Log("game manager exists");
         if (_instance == null) // If there is no instance already
         {
-            DontDestroyOnLoad(gameObject); // Keep the GameObject, this component is attached to, across different scenes
             _instance = this;
         }
         else if (_instance != this) // If there is already an instance and it's not `this` instance
@@ -37,6 +37,15 @@ public class CardManager : MonoBehaviour
     void Start()
     {
         equippedCards = new BaseCardClass[4];
+        Debug.Assert(transferer != null, "Error: CardManager transferer not found." +
+            " No cards will be added to hand");
+        if(transferer && transferer.selectedCards.Count != 0)
+        {
+            foreach(BaseCardClass card in transferer.selectedCards)
+            {
+                AddCard(card);
+            }
+        }
     }
 
     /// <summary>

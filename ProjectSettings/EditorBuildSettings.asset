@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/CardSelect.unity
+    guid: fb17246179ea79c42b6298c772b7e000
+  - enabled: 1
+    path: Assets/Scenes/BossTest.unity
+    guid: a1a5b70a577adfc4eb7c8cf35888dcf8
   m_configObjects: {}
