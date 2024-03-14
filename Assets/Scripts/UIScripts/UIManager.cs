@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.WSA;
 
 // edited from mechanics module
 enum MENU
@@ -45,6 +44,7 @@ public class UIManager : MonoBehaviour
     KeyCode PAUSEGAME_K = KeyCode.P;
     KeyCode SWAPCARDPAGE_K = KeyCode.T;
     KeyCode ENDGAME_K = KeyCode.O;
+    KeyCode SWAPCARDPAGE_ALT_K = KeyCode.Escape;
 
     // Start is called before the first frame update
     void Start()
@@ -69,7 +69,7 @@ public class UIManager : MonoBehaviour
             OpenMenu(MENU.Pause);
             gamePlaying = false;
         }
-        if (gamePlaying && Input.GetKeyDown(SWAPCARDPAGE_K))
+        if (gamePlaying && (Input.GetKeyDown(SWAPCARDPAGE_K) || Input.GetKeyDown(SWAPCARDPAGE_ALT_K)))
         {
             if (cardSwapping)
             {
