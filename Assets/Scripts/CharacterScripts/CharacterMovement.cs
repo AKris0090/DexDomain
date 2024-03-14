@@ -71,4 +71,25 @@ public class CharacterMovement : MonoBehaviour
         yield return new WaitForSeconds(time);
         this.dmgMod = 1;
     }
+
+    public IEnumerator msParticleTurnOn(float time)
+    {
+        this.gameObject.transform.GetChild(1).gameObject.SetActive(true);
+        yield return new WaitForSeconds(time);
+        this.gameObject.transform.GetChild(1).gameObject.SetActive(false);
+    }
+
+    public IEnumerator dmgParticleTurnOn(float time)
+    {
+        this.gameObject.transform.GetChild(2).gameObject.SetActive(true);
+        yield return new WaitForSeconds(time);
+        this.gameObject.transform.GetChild(2).gameObject.SetActive(false);
+    }
+
+    public IEnumerator TPParticleTurnOn(float time)
+    {
+        this.gameObject.transform.GetChild(3).gameObject.SetActive(true);
+        yield return new WaitForSeconds(time);
+        this.gameObject.transform.GetChild(3).gameObject.SetActive(false);
+    }
 }

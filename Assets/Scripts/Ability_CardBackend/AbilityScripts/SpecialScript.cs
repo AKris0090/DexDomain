@@ -18,10 +18,12 @@ public class SpecialScript : AbilityAbstract
         if (abilityType == SpecialAbilityType.movementSpeed)
         {
             CharacterMovement._cmInstance.StartCoroutine(CharacterMovement._cmInstance.incMS(lifespan));
+            CharacterMovement._cmInstance.StartCoroutine(CharacterMovement._cmInstance.msParticleTurnOn(lifespan));
         }
         else if (abilityType == SpecialAbilityType.damage)
         {
             CharacterMovement._cmInstance.StartCoroutine(CharacterMovement._cmInstance.incDmg(lifespan));
+            CharacterMovement._cmInstance.StartCoroutine(CharacterMovement._cmInstance.dmgParticleTurnOn(lifespan));
         }
     }
 }
