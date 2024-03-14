@@ -9,6 +9,7 @@ TagManager:
   - Hitbox
   - CardPickup
   - Door
+  - BossDoor
   layers:
   - Default
   - TransparentFX

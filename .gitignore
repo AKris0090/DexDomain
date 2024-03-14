@@ -72,3 +72,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 /Assets/ProcGenScripts/TestRoom.asset
 /Assets/ProcGenScripts/TestRoom.asset.meta
+/Assets/Prefabs/Enemies/NavMesh-BossMesh.asset
+/Assets/Prefabs/Enemies/NavMesh-BossMesh.asset.meta
