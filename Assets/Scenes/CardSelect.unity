@@ -183,6 +183,10 @@ MonoBehaviour:
   m_text: 'Moore Macauley - Enemy Design, Main Menu Design
 
 
+    Arjun Krishnan -
+    Abilities, Particle Effects, Character Controller
+
+
     External Sources:
 
     NavMeshPlus:
@@ -190,8 +194,26 @@ MonoBehaviour:
 
     Assistance with NavMeshPlus: https://www.youtube.com/watch?v=HRX0pUSucW4
 
+
+    Lightning
+    Particle Texture:
+
+    https://opengameart.org/content/radial-lightning-effect
+
+
+    Fonts:
+
+    https://www.fontspace.com/rony-siswadi-architect-5-font-f57946
+
+
+    https://www.fontspace.com/g-grip-font-f93737
+
+
     Pools:
-    https://assetstore.unity.com/packages/tools/utilities/pools-231438'
+    https://assetstore.unity.com/packages/tools/utilities/pools-231438
+
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bad48ea090d2d514d84320e16c1a88eb, type: 2}
   m_sharedMaterial: {fileID: -4357950617727951668, guid: bad48ea090d2d514d84320e16c1a88eb, type: 2}
