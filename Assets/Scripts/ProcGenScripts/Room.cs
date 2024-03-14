@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using ProcGenScripts;
 using UnityEngine;
 using NavMeshPlus.Components;
+using System.Collections;
 
 public class Room : MonoBehaviour
 {
@@ -263,6 +264,7 @@ public class Room : MonoBehaviour
 
         if (lockDoors) LockDoors();
         else UnlockDoors();
+        StartCoroutine(CheckRoomEnd());
     }
 
     public void EndRoom(bool unlockDoors=true)
@@ -625,6 +627,25 @@ public class Room : MonoBehaviour
         roomRenderer.sortingOrder = -1;
 
         return roomRenderer;
+    }
+
+    public IEnumerator CheckRoomEnd()
+    {
+        while(Enemies != null && Enemies.Count != 0)
+        {
+            for(int i = 0; i < Enemies.Count; i++)
+            {
+                GameObject enemy = Enemies[i];
+                if(enemy == null)
+                {
+                    Enemies.Remove(enemy);
+                    Debug.Log("Enemies: " + Enemies.Count);
+                    i--;
+                }
+            }
+            yield return new WaitForSeconds(0.5f);
+        }
+        EndRoom();
     }
 
 }
