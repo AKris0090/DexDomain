@@ -534,9 +534,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 93087560797225681, guid: 22a63ae7e86fec447bfdf3ecc3def498, type: 3}
+      propertyPath: _bossDoor
+      value: 
+      objectReference: {fileID: 3699424905596170668, guid: ff9780f344774714aaf4c07e52f2c4b8, type: 3}
+    - target: {fileID: 93087560797225681, guid: 22a63ae7e86fec447bfdf3ecc3def498, type: 3}
       propertyPath: BossRoomPrefab
       value: 
       objectReference: {fileID: 5538199715903591796, guid: 405e177819703ba4ea2765c5391f321f, type: 3}
+    - target: {fileID: 93087560797225681, guid: 22a63ae7e86fec447bfdf3ecc3def498, type: 3}
+      propertyPath: _bossDoorOpenSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 876be53bfa5726b479864dfe24d233a9, type: 3}
     - target: {fileID: 1978654015375318610, guid: 22a63ae7e86fec447bfdf3ecc3def498, type: 3}
       propertyPath: m_Name
       value: DungeonGenerator
