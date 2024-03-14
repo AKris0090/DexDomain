@@ -14,6 +14,9 @@ public class CharacterMovement : MonoBehaviour
     public int dmgMod = 1;
     public bool invulnerable = false;
     public Camera mainCam;
+    // Down, Up, Left, Right
+    public Sprite[] characterSides = new Sprite[4];
+    public SpriteRenderer sp;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +26,7 @@ public class CharacterMovement : MonoBehaviour
         enableMovement_ = true;
         _cmInstance = this;
         invulnerable = false;
+        sp = this.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>();
     }
 
     private void Update()
@@ -38,7 +42,32 @@ public class CharacterMovement : MonoBehaviour
         // CODE FROM: https://discussions.unity.com/t/2d-look-at-mouse-position-z-rotation-c/117860
 
         // set vector of transform directly
-        transform.up = mouseDirection;
+        transform.up = Vector3.up;
+        if (Mathf.Abs(_moveX) > 0 || Mathf.Abs(_moveY) > 0)
+        {
+            if (Mathf.Abs(_moveX) > Mathf.Abs(_moveY))
+            {
+                if (_moveX < 0)
+                {
+                    sp.sprite = characterSides[2];
+                }
+                else
+                {
+                    sp.sprite = characterSides[3];
+                }
+            }
+            else
+            {
+                if (_moveY < 0)
+                {
+                    sp.sprite = characterSides[0];
+                }
+                else
+                {
+                    sp.sprite = characterSides[1];
+                }
+            }
+        }
     }
 
     // Update is called once per frame
@@ -97,22 +126,22 @@ public class CharacterMovement : MonoBehaviour
 
     public IEnumerator msParticleTurnOn(float time)
     {
+        this.gameObject.transform.GetChild(0).gameObject.SetActive(true);
+        yield return new WaitForSeconds(time);
+        this.gameObject.transform.GetChild(0).gameObject.SetActive(false);
+    }
+
+    public IEnumerator dmgParticleTurnOn(float time)
+    {
         this.gameObject.transform.GetChild(1).gameObject.SetActive(true);
         yield return new WaitForSeconds(time);
         this.gameObject.transform.GetChild(1).gameObject.SetActive(false);
     }
 
-    public IEnumerator dmgParticleTurnOn(float time)
+    public IEnumerator TPParticleTurnOn(float time)
     {
         this.gameObject.transform.GetChild(2).gameObject.SetActive(true);
         yield return new WaitForSeconds(time);
         this.gameObject.transform.GetChild(2).gameObject.SetActive(false);
-    }
-
-    public IEnumerator TPParticleTurnOn(float time)
-    {
-        this.gameObject.transform.GetChild(3).gameObject.SetActive(true);
-        yield return new WaitForSeconds(time);
-        this.gameObject.transform.GetChild(3).gameObject.SetActive(false);
     }
 }
