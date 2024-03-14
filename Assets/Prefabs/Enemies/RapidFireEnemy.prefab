@@ -122,13 +122,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0878780a7b799ad4089656614d91413a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 3
+  health: 5
   damageCooldown: 0.5
   viewDistance: 30
   runRange: 5
   fireRange: 20
   firerate: 0.5
-  force: 300
+  force: 500
   bulletLifespan: 5
   timeBetweenShots: 0.2
   numOfShots: 3
