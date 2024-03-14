@@ -19,6 +19,7 @@ public class Room : MonoBehaviour
 
     public Vector2Int DistanceFromStart;
     public bool Visited;
+    public GameObject BossDoor = null;
 
     private RoomData _roomData;
     private readonly List<RoomData.Dir> availableDirections = new();
@@ -283,13 +284,17 @@ public class Room : MonoBehaviour
                 if (enemy)
                 {
                     if (EnemyManager.Instance)
-                        EnemyManager.Instance.DamageEnemy(enemy.gameObject, 1000);
+                        EnemyManager.Instance.DamageEnemy(enemy, 1000);
                     else
-                        Destroy(enemy.gameObject);
+                        Destroy(enemy);
                 }
             }
 
         if (unlockDoors) UnlockDoors();
+        if (BossDoor) 
+        {
+            FindFirstObjectByType<DungeonGenerator>().GetComponent<DungeonGenerator>().OpenBossDoor();
+        }
     }
 
     public void SetVisibility(bool visible)

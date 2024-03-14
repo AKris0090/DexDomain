@@ -1,11 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using Redcode.Pools;
-using static UnityEditor.FilePathAttribute;
-using System;
 
 // Singlton manager for managing enemies
 // To get it to work, add the EnemyManager prefab to a scene

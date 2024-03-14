@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NavMeshPlus.Components;
 using NavMeshPlus.Extensions;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -17,8 +16,13 @@ public class DungeonGenerator : MonoBehaviour
 
     public List<RoomData> SpawnableRooms = new();
     public GameObject BossRoomPrefab;
+    private GameObject _bossRoom;
     [SerializeField]
     private GameObject _root;
+    [SerializeField]
+    private GameObject _bossDoor;
+    [SerializeField]
+    private Sprite _bossDoorOpenSprite;
     private readonly List<Room> _generatedRooms = new();
     [SerializeField]
     private int _minRooms = 1;
@@ -45,6 +49,12 @@ public class DungeonGenerator : MonoBehaviour
         _generatedRooms.Clear();
         if (_root)
             Destroy(_root);
+    }
+
+    public void OpenBossDoor()
+    {
+        _bossDoor.GetComponent<SpriteRenderer>().sprite = _bossDoorOpenSprite;
+        _bossRoom.SetActive(true);
     }
 
     /// <summary>
@@ -108,11 +118,17 @@ public class DungeonGenerator : MonoBehaviour
         }
         // Second pass to create Boss room
         Debug.Log("Generating boss room");
-        var bossRoom = Instantiate(BossRoomPrefab, new Vector3(5000f, 5000f), Quaternion.identity);
-        bossRoom.SetActive(false);
+        _bossRoom = Instantiate(BossRoomPrefab, new Vector3(5000f, 5000f), Quaternion.identity);
+        _bossRoom.SetActive(false);
         var pair = FindFurthestRoom();
         Room furthestRoom = pair.Item1;
         RoomData.Dir dirToBoss = pair.Item2;
+        var doorLoc = furthestRoom.GetTeleportLocation(dirToBoss);
+        _bossDoor = Instantiate(_bossDoor, doorLoc, Quaternion.identity);
+        _bossDoor.transform.position = doorLoc;
+        _bossDoor.transform.parent = furthestRoom.transform;
+        _bossDoor.transform.rotation = Quaternion.Euler(0, 0, -90 * (int)dirToBoss);
+        furthestRoom.BossDoor = _bossDoor;
         
         // Third pass to create doors
         Debug.Log("Creating doors and nav meshes");
