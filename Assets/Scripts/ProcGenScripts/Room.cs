@@ -504,13 +504,14 @@ public class Room : MonoBehaviour
     /// <returns>A new collider created for the specified type</returns>
     private GameObject CreateCollider(ColliderType type, GameObject go=null)
     {
+        bool isDoor = true;
         if (go == null)
         {
             go = new ($"{type} Wall");
             go.transform.parent = transform;
             go.transform.localPosition = Vector3.zero;
-            go.isStatic = true;
             go.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+            isDoor = false;
         }
         BoxCollider2D collider = go.AddComponent<BoxCollider2D>();
         float wallLengthH = _roomData.Width / 2 - _roomData.DoorSize / 2;
@@ -522,22 +523,22 @@ public class Room : MonoBehaviour
             // Doors
             case ColliderType.NorthDoor:
                 collider.size = new (_roomData.DoorSize, _roomData.WallThickness);
-                if (go.isStatic)
+                if (!isDoor)
                     go.transform.localPosition = new (0, _roomData.Height / 2);
                 break;
             case ColliderType.EastDoor:
                 collider.size = new (_roomData.WallThickness, _roomData.DoorSize);
-                if (go.isStatic)
+                if (!isDoor)
                     go.transform.localPosition = new (_roomData.Width / 2, 0);
                 break;
             case ColliderType.SouthDoor:
                 collider.size = new (_roomData.DoorSize, _roomData.WallThickness);
-                if (go.isStatic)
+                if (!isDoor)
                     go.transform.localPosition = new (0, -_roomData.Height / 2);
                 break;
             case ColliderType.WestDoor:
                 collider.size = new (_roomData.WallThickness, _roomData.DoorSize);
-                if (go.isStatic)
+                if (!isDoor)
                     go.transform.localPosition = new (-_roomData.Width / 2, 0);
                 break;
             // Directions
