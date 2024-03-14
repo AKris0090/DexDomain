@@ -40,6 +40,12 @@ namespace CardOperations
             return true;
         }
 
+        IEnumerator CooldownFlip()
+        {
+            yield return new WaitForSeconds(cooldown);
+            AbilityManager.Instance.UnflipCard(this);
+        }
+
         // returns float 0-1 for how far cooldown has progressed 
         // (was thinking itd be helpful for ui or something)
         public float CooldownProgress()
@@ -89,6 +95,8 @@ namespace CardOperations
             // if not on cooldown, runs parent UseActive()
             //Debug.Log("starting cooldown on " + cardName);
             StartCooldown();
+            // Need a monobehavior that's not gonna die to run a coroutine on, so here we go i guess
+            AbilityManager.Instance.StartCoroutine(CooldownFlip());
             base.UseActive(playerPosition, lookAt);
         }
 
