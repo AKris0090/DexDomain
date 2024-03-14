@@ -69,6 +69,8 @@ public class CardSelector : MonoBehaviour
                 }
             }
         }
+        var json = JsonUtility.ToJson(transferer);
+        PlayerPrefs.SetString("Transferer", json);
         SceneManager.LoadScene("FinalScene");
     }
 
