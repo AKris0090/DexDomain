@@ -69,7 +69,7 @@ public class CardSelector : MonoBehaviour
                 }
             }
         }
-        SceneManager.LoadScene("BossTest");
+        SceneManager.LoadScene("FinalScene");
     }
 
 

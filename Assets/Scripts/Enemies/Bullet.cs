@@ -29,8 +29,10 @@ public class Bullet : MonoBehaviour
     // TODO: Make this either ignore enemies, or damage them
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject != spawner && collision.gameObject.GetComponent<Bullet>() == null)
+        int ignoreRaycastLayer = LayerMask.NameToLayer("Ignore Raycast");
+        if (ignoreRaycastLayer != collision.gameObject.layer)
         {
+            Debug.Log(collision.gameObject);
             EnemyManager.Instance.DamageObject(collision.gameObject);
             EnemyManager.Instance.ReturnBullet(this);
         }

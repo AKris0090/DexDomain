@@ -16,7 +16,8 @@ public class PlayerProjectile : Bullet
     }
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<Bullet>() == null)
+        int ignoreRaycastLayer = LayerMask.NameToLayer("Ignore Raycast");
+        if (collision.gameObject.GetComponent<Bullet>() == null && collision.gameObject != spawner && (ignoreRaycastLayer != collision.gameObject.layer || collision.gameObject.GetComponent<Enemy>() != null))
         {
             EnemyManager.Instance.DamageEnemy(collision.gameObject, (damage * CharacterMovement._cmInstance.dmgMod));
             Destroy(this.gameObject);
