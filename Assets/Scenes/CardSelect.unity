@@ -180,40 +180,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Moore Macauley - Enemy Design, Main Menu Design
-
-
-    Arjun Krishnan -
-    Abilities, Particle Effects, Character Controller
-
-
-    External Sources:
-
-    NavMeshPlus:
-    https://github.com/h8man/NavMeshPlus.git
-
-    Assistance with NavMeshPlus: https://www.youtube.com/watch?v=HRX0pUSucW4
-
-
-    Lightning
-    Particle Texture:
-
-    https://opengameart.org/content/radial-lightning-effect
-
-
-    Fonts:
-
-    https://www.fontspace.com/rony-siswadi-architect-5-font-f57946
-
-
-    https://www.fontspace.com/g-grip-font-f93737
-
-
-    Pools:
-    https://assetstore.unity.com/packages/tools/utilities/pools-231438
-
-
-'
+  m_text: "Moore Macauley - Enemy Design, Main Menu Design\n\nArjun Krishnan - Abilities,
+    Particle Effects, Character Controller\n\nJaxon Ruiz - Card Management Backend,
+    In-Game Art Assets\n\nLyssa Li - UI Management, U/CanvasI Art Assets\n\nLily
+    Chen (external help) - Jack and Queen sprites \n\nExternal Sources:\nNavMeshPlus:
+    https://github.com/h8man/NavMeshPlus.git\nAssistance with NavMeshPlus: https://www.youtube.com/watch?v=HRX0pUSucW4\n\nLightning
+    Particle Texture:\nhttps://opengameart.org/content/radial-lightning-effect\n\nFonts:\nhttps://www.fontspace.com/rony-siswadi-architect-5-font-f57946\n\nhttps://www.fontspace.com/g-grip-font-f93737\n\nPools:
+    https://assetstore.unity.com/packages/tools/utilities/pools-231438\n\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bad48ea090d2d514d84320e16c1a88eb, type: 2}
   m_sharedMaterial: {fileID: -4357950617727951668, guid: bad48ea090d2d514d84320e16c1a88eb, type: 2}
@@ -1280,7 +1253,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.09991455}
+  m_AnchoredPosition: {x: 0, y: -0.099853516}
   m_SizeDelta: {x: 0, y: -0.19983}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1526847926
@@ -1542,7 +1515,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.16052246, y: -0.099853516}
+  m_AnchoredPosition: {x: -0.16064453, y: -0.099853516}
   m_SizeDelta: {x: -0.30004883, y: -0.19995117}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1693468136
@@ -1654,7 +1627,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.010131836, y: -0.000061035156}
+  m_AnchoredPosition: {x: 0.010253906, y: -0.00012207031}
   m_SizeDelta: {x: -0.30004883, y: -0.19995117}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1700083250
