@@ -35,6 +35,7 @@ public class UIManager : MonoBehaviour
     }
 
     public List<Canvas> menus;
+    public GameObject feedbackLayer;
 
     // dirties
     public bool gamePlaying = false;
@@ -158,5 +159,18 @@ public class UIManager : MonoBehaviour
         Debug.Log("ending game");
         CloseAllMenus();
         SceneManager.LoadScene("GameOver");
+    }
+
+    // Give the player some damage feedback
+    public IEnumerator PlayerDamageFeedback(PlayerHealth health)
+    {
+        CanvasGroup red = feedbackLayer.GetComponent<CanvasGroup>();
+        for(int i = 0; i < 2; i++)
+        {
+            red.alpha = 1;
+            yield return new WaitForSeconds(health.iframes / 4);
+            red.alpha = 0;
+            yield return new WaitForSeconds(health.iframes / 4);
+        }
     }
 }
