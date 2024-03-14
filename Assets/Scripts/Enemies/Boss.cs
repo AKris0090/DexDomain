@@ -71,6 +71,8 @@ public class Boss : Enemy
         dashLocations.Add(dashLocation4);
         dashLocations.Add(dashLocation5);
 
+        canLookAtPlayer = false;
+
         bloodEmmiter = GetComponent<ParticleSystem>();
     }
 

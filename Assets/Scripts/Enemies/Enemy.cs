@@ -7,17 +7,42 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public int health = 1;
+    protected bool canLookAtPlayer;
     // Dirty bool checking if this enemy can take damage
     protected bool canTakeDamage;
     public float damageCooldown = 0.5f;
     protected EnemyManager enemyManager;
     protected Pool<Bullet> bulletPool;
+    SpriteRenderer self;
     // Take damage using damage feedback and waiting for damage cooldown before being able to take damage again
     protected virtual void Start()
     {
         canTakeDamage = true;
         enemyManager = EnemyManager.Instance;
+        canLookAtPlayer = true;
+        self = GetComponent<SpriteRenderer>();
+        StartCoroutine(lookAtPlayer());
     }
+
+    IEnumerator lookAtPlayer()
+    {
+        while (true)
+        {
+            if (canLookAtPlayer)
+            {
+                if(enemyManager.GetPlayerPosition().x < transform.position.x)
+                {
+                    self.flipX = false;
+                }
+                else
+                {
+                    self.flipX = true;
+                }
+            }
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
     public virtual void Damage(int amount)
     {
         if (canTakeDamage)

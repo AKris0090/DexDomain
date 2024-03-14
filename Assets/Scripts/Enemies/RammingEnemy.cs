@@ -102,6 +102,7 @@ public class RammingEnemy : Enemy
             Vector2 line = playerPos - loc;
             // Normalize that line, and use it to set the real target to past the player
             currentlyRamming = true;
+            canLookAtPlayer = false;
             agent.SetDestination(playerPos + (line.normalized * ramDistance));
             // Give another quick blink
             renderer.color = Color.blue;
@@ -126,6 +127,7 @@ public class RammingEnemy : Enemy
             agent.speed = oldSpeed;
             agent.acceleration = oldAccel;
             currentlyRamming = false;
+            canLookAtPlayer = true;
             StartCoroutine(FireCooldown());
         }
     }
