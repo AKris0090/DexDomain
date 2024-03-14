@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BulletDeath: {fileID: 0}
+  damage: 2
 --- !u!50 &5645841095545444556
 Rigidbody2D:
   serializedVersion: 4

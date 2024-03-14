@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerProjectile : Bullet
 {
+    public int damage;
     // Derives from abstract class bullet, but spawns from the player in direction of mouse
     public override void SetTarget(Vector3 tar, float force, float life, GameObject spawner)
     {
@@ -17,7 +18,7 @@ public class PlayerProjectile : Bullet
     {
         if (collision.gameObject.GetComponent<Bullet>() == null)
         {
-            EnemyManager.Instance.DamageEnemy(collision.gameObject, (1 * CharacterMovement._cmInstance.dmgMod));
+            EnemyManager.Instance.DamageEnemy(collision.gameObject, (damage * CharacterMovement._cmInstance.dmgMod));
             Destroy(this.gameObject);
         }
     }
