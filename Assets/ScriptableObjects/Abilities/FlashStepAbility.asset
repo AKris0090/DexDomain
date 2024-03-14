@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: FlashStepAbility
   m_EditorClassIdentifier: 
   dashTime: 0.25
+  dashPower: 54
   player: {fileID: 6281089458180515670, guid: 785a617d815ba484aab9fefb29399514, type: 3}
