@@ -122,6 +122,20 @@ public class CharacterMovement : MonoBehaviour
 
             fromRoom.SetVisibility(false);
         }
+        else if (col.gameObject.CompareTag("BossDoor"))
+        {
+            GameObject door = col.gameObject;
+            Room fromRoom = door.GetComponentInParent<Room>();
+
+            if (!fromRoom.Ended)
+                return;
+            if (!GameObject.FindGameObjectWithTag("BossRoom"))
+                return;
+            Vector2 telePos = GameObject.FindGameObjectWithTag("BossRoom").transform.Find("Teleport").transform.position;
+            transform.position = new (telePos.x, telePos.y, transform.position.z);
+            mainCam.transform.position = new Vector3(telePos.x, telePos.y, mainCam.transform.position.z);
+            mainCam.GetComponent<CameraFollow>().SetFollowing(true);
+        }
     }
 
     public IEnumerator msParticleTurnOn(float time)

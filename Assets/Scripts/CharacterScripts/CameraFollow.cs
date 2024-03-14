@@ -12,7 +12,7 @@ public class CameraFollow : MonoBehaviour
     {
         // Set camera position to the position of the player. subtract from z to bring the camera up a couple z-layers
         if (_isFollowing)
-            gameObject.transform.position.Set
+            gameObject.transform.position = new
             (
                 playerPos.position.x,
                 playerPos.position.y,

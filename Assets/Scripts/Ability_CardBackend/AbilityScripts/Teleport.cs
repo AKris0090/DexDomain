@@ -1,7 +1,5 @@
-using System;
 using System.Threading.Tasks;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 [CreateAssetMenu(menuName = "Abstract Abilities/Teleport")]
 public class Teleport : AbilityAbstract
