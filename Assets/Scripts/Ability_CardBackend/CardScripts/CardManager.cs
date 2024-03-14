@@ -37,7 +37,9 @@ public class CardManager : MonoBehaviour
     void Start()
     {
         equippedCards = new BaseCardClass[4];
-        if(transferer.selectedCards.Count != 0)
+        Debug.Assert(transferer != null, "Error: CardManager transferer not found." +
+            " No cards will be added to hand");
+        if(transferer && transferer.selectedCards.Count != 0)
         {
             foreach(BaseCardClass card in transferer.selectedCards)
             {
