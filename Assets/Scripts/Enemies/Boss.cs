@@ -72,6 +72,7 @@ public class Boss : Enemy
         dashLocations.Add(dashLocation5);
 
         canLookAtPlayer = false;
+        StartCoroutine(Spin());
 
         bloodEmmiter = GetComponent<ParticleSystem>();
     }
@@ -88,6 +89,18 @@ public class Boss : Enemy
         else
         {
             state.Act(this);
+        }
+    }
+
+    IEnumerator Spin()
+    {
+        while (true)
+        {
+            if(phase > 1)
+            {
+                transform.Rotate(Vector3.forward, 10);
+            }
+            yield return new WaitForSeconds(0.01f);
         }
     }
 
