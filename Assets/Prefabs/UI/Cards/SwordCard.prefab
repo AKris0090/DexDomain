@@ -68,7 +68,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fb2e16e924838a54e82ace576021054b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4175a64b94824934ea7de37c74562738, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CardScriptObj: {fileID: 11400000, guid: dc8fcda5e752c114d9688eac9336c208, type: 2}
-  ActiveImage: {fileID: 21300000, guid: fb2e16e924838a54e82ace576021054b, type: 3}
+  ActiveImage: {fileID: 21300000, guid: 4175a64b94824934ea7de37c74562738, type: 3}
   InactiveImage: {fileID: 21300000, guid: f2821112434ec4c49a12a7db19c4d491, type: 3}
 --- !u!1 &6514457311964679953
 GameObject:
