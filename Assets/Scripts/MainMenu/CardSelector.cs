@@ -69,14 +69,12 @@ public class CardSelector : MonoBehaviour
                 }
             }
         }
-        SceneManager.LoadScene("FinalScene");
+        SceneManager.LoadScene("BossTest");
     }
 
 
     void AddCardToTransfer(BaseCardClass card, Button UICard)
     {
-        Debug.Log(UICard);
-        Debug.Log(card);
         transferer.selectedCards.Add(card);
         Destroy(UICard.gameObject);
         numPicked++;

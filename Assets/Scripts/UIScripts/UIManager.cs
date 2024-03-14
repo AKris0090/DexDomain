@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.WSA;
 
 // edited from mechanics module
@@ -156,6 +157,6 @@ public class UIManager : MonoBehaviour
     {
         Debug.Log("ending game");
         CloseAllMenus();
-        OpenMenu(MENU.End);
+        SceneManager.LoadScene("GameOver");
     }
 }

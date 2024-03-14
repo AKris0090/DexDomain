@@ -35,7 +35,6 @@ public class AbilityManager : MonoBehaviour
 
     void Start()
     {
-        cardToUI = new Dictionary<BaseCardClass, GameObject>();
         UIToCard = new Dictionary<GameObject, BaseCardClass>();
     }
 
@@ -55,6 +54,13 @@ public class AbilityManager : MonoBehaviour
     public void AddCardToHand(BaseCardClass card)
     {
         Debug.Log("(UI) Adding " + card.cardName + " card to hand");
+
+        // Had a problem with this being called on the same frame as start resulting in cardToUI being null depending on if this was being run first
+        // this if statement resolves that problem
+        if(cardToUI == null)
+        {
+            cardToUI = new Dictionary<BaseCardClass, GameObject>();
+        }
 
         // make visible
         nextSlot = findNextSlot();

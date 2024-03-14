@@ -43,6 +43,7 @@ public class CardManager : MonoBehaviour
         {
             foreach(BaseCardClass card in transferer.selectedCards)
             {
+                Debug.Log(card);
                 AddCard(card);
             }
         }
