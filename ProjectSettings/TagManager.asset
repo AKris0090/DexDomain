@@ -10,6 +10,7 @@ TagManager:
   - CardPickup
   - Door
   - BossDoor
+  - BossRoom
   layers:
   - Default
   - TransparentFX
