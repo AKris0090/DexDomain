@@ -98,7 +98,7 @@ public class Boss : Enemy
         {
             if(phase > 1)
             {
-                transform.Rotate(Vector3.forward, 10);
+                transform.Rotate(Vector3.forward, 5);
             }
             yield return new WaitForSeconds(0.01f);
         }
@@ -194,7 +194,7 @@ public class Boss : Enemy
             // If this line hit the player
             if (boss.enemyManager.CheckIfPlayer(hit.collider.gameObject))
             {
-                boss.state = boss.bulletHell;
+                boss.state = boss.shotgun;
                 BossHealthBar.Instance.Activate(boss.health);
             }
             yield return new WaitForSeconds(1f);
@@ -335,9 +335,10 @@ public class Boss : Enemy
             for (int i = 0; i < boss.numberOfShotgunShots * boss.phase; i++)
             {
                 Vector3 playerPos = EnemyManager.Instance.GetPlayerPosition();
-                Vector2 line = -(boss.transform.position - playerPos);
+                Vector2 line = boss.transform.position - playerPos;
                 // OuterArc should be at a 45 degree angle from the boss to the player
-                Vector3 outerArc = line + Vector2.Perpendicular(line);
+                Vector3 outerArc = -(line - Vector2.Perpendicular(line));
+                Debug.DrawRay(boss.transform.position, outerArc, Color.white, 5);
                 for (int j = 0; j < phasedNumOfShells; j++)
                 {
                     // calculate the angle the bullet should be fired at

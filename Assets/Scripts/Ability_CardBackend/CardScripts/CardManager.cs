@@ -39,21 +39,24 @@ public class CardManager : MonoBehaviour
         CardTransferer transferer = new CardTransferer();
         var json = PlayerPrefs.GetString("Transferer");
         JsonUtility.FromJsonOverwrite(json, transferer);
-        foreach(BaseCardClass card in transferer.selectedCards)
+        if (transferer == null)
         {
-            Debug.Log(card);
-            AddCard(card);
+            foreach (BaseCardClass card in transferer.selectedCards)
+            {
+                Debug.Log(card);
+                AddCard(card);
+            }
         }
-   
+
     }
 
-    /// <summary>
-    /// Equips given card. 
-    /// assumes card is already in hand
-    /// (card is removed from hand to be equippped)
-    /// </summary>
-    /// <param name="card"></param>
-    public void SwapIn(BaseCardClass card)
+        /// <summary>
+        /// Equips given card. 
+        /// assumes card is already in hand
+        /// (card is removed from hand to be equippped)
+        /// </summary>
+        /// <param name="card"></param>
+        public void SwapIn(BaseCardClass card)
     {
         Debug.Log("swapping cards");
         // making sure input card is in hand

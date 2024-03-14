@@ -17,4 +17,9 @@ public class MainMenuButton : MonoBehaviour
         group.interactable = true;
         group.blocksRaycasts = true;
     }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }
