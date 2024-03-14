@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3994075135801689400}
   - component: {fileID: 5645841095545444556}
   - component: {fileID: 8452271932784788401}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Fireball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c5e2b2b458d18468be7dd6b761e32c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BulletDeath: {fileID: 0}
 --- !u!50 &5645841095545444556
 Rigidbody2D:
   serializedVersion: 4
@@ -119,7 +120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7288820000932041094}
   - component: {fileID: 5579618854103655986}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}

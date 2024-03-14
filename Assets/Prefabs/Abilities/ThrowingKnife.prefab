@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7187990969246742475}
   - component: {fileID: 323045629932504628}
   - component: {fileID: 2814507514468150643}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ThrowingKnife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c5e2b2b458d18468be7dd6b761e32c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BulletDeath: {fileID: 0}
 --- !u!50 &2814507514468150643
 Rigidbody2D:
   serializedVersion: 4
@@ -84,7 +85,7 @@ GameObject:
   - component: {fileID: 3475251211015788129}
   - component: {fileID: 962946618411464903}
   - component: {fileID: 1241508537734430054}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: The-monarch-medieval-sword_800x
   m_TagString: Untagged
   m_Icon: {fileID: 0}

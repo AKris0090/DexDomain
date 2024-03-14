@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1024822122364198554}
   - component: {fileID: 5974441256306301868}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,9 +98,9 @@ GameObject:
   - component: {fileID: 1231520785573962133}
   - component: {fileID: 8295782010370468097}
   - component: {fileID: 7473716217141700607}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,7 +134,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
+  _rb: {fileID: 0}
+  _mousePos: {x: 0, y: 0}
   mouseDirection: {x: 0, y: 0}
+  enableMovement_: 1
+  dmgMod: 1
+  invulnerable: 0
+  mainCam: {fileID: 0}
 --- !u!58 &388418349910705250
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -222,3 +228,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: {fileID: 11400000, guid: 89512ef41c743374d8b2eb6afdef9633, type: 2}
+  iframes: 0.5

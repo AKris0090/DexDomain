@@ -728,6 +728,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sprite
       objectReference: {fileID: 0}
+    - target: {fileID: 3918334083854667380, guid: 785a617d815ba484aab9fefb29399514, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5411470096503279641, guid: 785a617d815ba484aab9fefb29399514, type: 3}
       propertyPath: moveSpeed
       value: 10
@@ -735,6 +739,10 @@ PrefabInstance:
     - target: {fileID: 6281089458180515670, guid: 785a617d815ba484aab9fefb29399514, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6281089458180515670, guid: 785a617d815ba484aab9fefb29399514, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6281089458180515670, guid: 785a617d815ba484aab9fefb29399514, type: 3}
       propertyPath: m_TagString
