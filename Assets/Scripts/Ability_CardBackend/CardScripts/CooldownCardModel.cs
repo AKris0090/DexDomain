@@ -53,7 +53,7 @@ namespace CardOperations
 
         // returns time remaining as a float
         // (maybe useful for ui or something)
-        public float CooldownRemaining()
+        public override float  CooldownRemaining()
         {
             // return cooldown - (time since initial) = time remaining
             if (OnCooldown()) return cooldown - (Time.time - _initialTime);
@@ -68,7 +68,7 @@ namespace CardOperations
             if (OnCooldown())
             {
                 // ideally shouldnt hit here since UseActive checks OnCooldown() too, but just in case
-                Debug.Log("already on cooldown, avoided restarting cooldown");
+                //Debug.Log("already on cooldown, avoided restarting cooldown");
                 return;
             }
             _initialTime = Time.time;
@@ -81,13 +81,13 @@ namespace CardOperations
             // first checks if card on cooldown
             if (OnCooldown())
             {
-                Debug.Log("Card " + cardName + " on cooldown, " + CooldownRemaining() + " seconds left");
+                //Debug.Log("Card " + cardName + " on cooldown, " + CooldownRemaining() + " seconds left");
                 return;
                 // ability not used if on cooldown
             }
             abilityAbs.UseAbility(playerPosition, lookAt);
             // if not on cooldown, runs parent UseActive()
-            Debug.Log("starting cooldown on " + cardName);
+            //Debug.Log("starting cooldown on " + cardName);
             StartCooldown();
             base.UseActive(playerPosition, lookAt);
         }

@@ -15,8 +15,6 @@ public class HUDManager : MonoBehaviour
     void Start()
     {
         prevHealth = playerHealth.MaxValue; // start at max health
-
-        Debug.Log(playerHealth.MaxValue);
         for (int i=0; i<playerHealth.MaxValue; ++i)
         {
             GameObject heartSprite = Instantiate(heartsPrefab, healthPointsContainer.transform, false);

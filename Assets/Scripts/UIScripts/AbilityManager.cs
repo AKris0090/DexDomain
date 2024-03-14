@@ -75,11 +75,17 @@ public class AbilityManager : MonoBehaviour
         {
             cardToUI.Add(card, newCard);
         }
-        Debug.Log(newCard);
+
         Button cardButton = deckSlots[nextSlot].GetComponentInChildren<Button>();
         cardButton.onClick.AddListener(() => CardManager.Instance.SwapIn(card));
         // basically clicking a card calls the card manager to do it's swapping in
         // then the card manager SwapIn() calls the ability ui manager (this) to update the UI
+
+        // If the card is currently on cooldown, reflect that
+        if (card.CooldownRemaining() != 0)
+        {
+            FlipCard(card);
+        }
 
         // for next
         nextSlot++;
@@ -88,7 +94,6 @@ public class AbilityManager : MonoBehaviour
     // also called from Card Manager
     public void EquipCard(BaseCardClass card)
     {
-        Debug.Log("(UI) Equipping " + card.cardName);
 
         Canvas targetCanvas = abilitySlots[(int)card.EquipPlacement];
 
@@ -107,8 +112,31 @@ public class AbilityManager : MonoBehaviour
         }
 
         // add to equip slot
-        Instantiate(card.cardUIPrefab, targetCanvas.transform, false);
+        GameObject cardUI = Instantiate(card.cardUIPrefab, targetCanvas.transform, false);
         // using the cards should be done in player control
+        // Swap the UI element that corresponds to this card over to ability slot
         Destroy(cardToUI[card]);
+        cardToUI[card] = cardUI;
+
+        // If the card is currently on cooldown, reflect that
+        if (card.CooldownRemaining() != 0)
+        {
+            FlipCard(card);
+        }
+    }
+
+    // Show the back of the card
+    public void FlipCard(BaseCardClass card)
+    {
+        GameObject uiCard = cardToUI[card];
+        Sprite cardBack = uiCard.GetComponent<CardComponent>().InactiveImage;
+        uiCard.GetComponent<Image>().sprite = cardBack;
+    }
+
+    public void UnflipCard(BaseCardClass card)
+    {
+        GameObject uiCard = cardToUI[card];
+        Sprite cardBack = uiCard.GetComponent<CardComponent>().ActiveImage;
+        uiCard.GetComponent<Image>().sprite = cardBack;
     }
 }

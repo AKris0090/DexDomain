@@ -44,8 +44,13 @@ namespace CardOperations
         // uses the card's active effect
         public virtual void UseActive(Vector2 playerPosition, Vector2 lookAt)
         {
-            if (_isEquipped) {Debug.Log("Used " + cardName + " active"); }
-            else { Debug.Log("Failed to use " + cardName + " active. Not Equipt"); }
+            //if (_isEquipped) {Debug.Log("Used " + cardName + " active"); }
+            //else { Debug.Log("Failed to use " + cardName + " active. Not Equipt"); }
+        }
+
+        public virtual float CooldownRemaining()
+        {
+            return 0;
         }
 
         // maybe replace. intended to swap in/out cards, but maybe just do that in the manager

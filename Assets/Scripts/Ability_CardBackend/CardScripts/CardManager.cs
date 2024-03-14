@@ -136,7 +136,10 @@ public class CardManager : MonoBehaviour
     public void UsePrimary(Vector2 playerPosition, Vector2 lookAt)
     {
         int slot = (int) EquipSlots.Primary;
-        if (equippedCards[slot] != null ) {equippedCards[slot].UseActive(playerPosition, lookAt); }
+        if (equippedCards[slot] != null ) {
+            equippedCards[slot].UseActive(playerPosition, lookAt);
+            AbilityManager.Instance.FlipCard(equippedCards[slot]);
+        }
         else
         {
             Debug.Log("no primary card equipped");
@@ -146,7 +149,10 @@ public class CardManager : MonoBehaviour
     public void UseSecondary(Vector2 playerPosition, Vector2 lookAt)
     {
         int slot = (int)EquipSlots.Secondary;
-        if (equippedCards[slot] != null) { equippedCards[slot].UseActive(playerPosition, lookAt); }
+        if (equippedCards[slot] != null) { 
+            equippedCards[slot].UseActive(playerPosition, lookAt);
+            AbilityManager.Instance.FlipCard(equippedCards[slot]);
+        }
         else
         {
             Debug.Log("no secondary card equipped");
@@ -156,7 +162,10 @@ public class CardManager : MonoBehaviour
     public void UseSpecial(Vector2 playerPosition, Vector2 lookAt)
     {
         int slot = (int)EquipSlots.Special;
-        if (equippedCards[slot] != null) { equippedCards[slot].UseActive(playerPosition, lookAt); }
+        if (equippedCards[slot] != null) { 
+            equippedCards[slot].UseActive(playerPosition, lookAt);
+            AbilityManager.Instance.FlipCard(equippedCards[slot]);
+        }
         else
         {
             Debug.Log("no special card equipped");
@@ -166,7 +175,10 @@ public class CardManager : MonoBehaviour
     public void UseMovement(Vector2 playerPosition, Vector2 lookAt)
     {
         int slot = (int)EquipSlots.Movement;
-        if (equippedCards[slot] != null) { equippedCards[slot].UseActive(playerPosition, lookAt); }
+        if (equippedCards[slot] != null) { 
+            equippedCards[slot].UseActive(playerPosition, lookAt);
+            AbilityManager.Instance.FlipCard(equippedCards[slot]);
+        }
         else
         {
             Debug.Log("no movement card equipped");
