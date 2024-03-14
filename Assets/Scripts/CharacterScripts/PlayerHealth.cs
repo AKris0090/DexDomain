@@ -22,10 +22,10 @@ public class PlayerHealth : MonoBehaviour
             health.Value -= value;
             canTakeDamage = false;
             StartCoroutine(damageCooldown());
-            Debug.Log(health.Value);
             // Player death
             // TODO: Add more UI events for death screen
             if(health.Value < 0) { health.Value = 0; }
+            StartCoroutine(UIManager.Instance.PlayerDamageFeedback(this));
             if (health.Value == 0)
             {
                 UIManager.Instance.EndGame();
