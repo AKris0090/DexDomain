@@ -104,7 +104,6 @@ public class EnemyManager : MonoBehaviour
     // Hurts the passed in enemy
     public void DamageEnemy(GameObject enemy, int amount)
     {
-        Debug.Log(enemy);
         Enemy damagedEnemy = enemy.GetComponent<Enemy>();
         if(damagedEnemy != null)
         {

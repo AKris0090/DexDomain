@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2510973711582537703}
   - component: {fileID: 4223590554288157424}
   - component: {fileID: 3286506318984747486}
-  - component: {fileID: 1616635555802609445}
-  - component: {fileID: 5226185645371340219}
+  - component: {fileID: 5922083756280394283}
+  - component: {fileID: 4243798852142831117}
   m_Layer: 2
   m_Name: BasicShootEnemy
   m_TagString: ShootEnemy
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b72c7ed15b6e61d4298d55c7aa5ad9ce, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -130,8 +130,8 @@ MonoBehaviour:
   firerate: 0.5
   force: 300
   bulletLifespan: 5
---- !u!58 &1616635555802609445
-CircleCollider2D:
+--- !u!70 &5922083756280394283
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -162,10 +162,10 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
---- !u!50 &5226185645371340219
+  m_Offset: {x: 0, y: -0.03}
+  m_Size: {x: 0.83, y: 1.11}
+  m_Direction: 0
+--- !u!50 &4243798852142831117
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
