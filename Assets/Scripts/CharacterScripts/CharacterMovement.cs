@@ -1,10 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Experimental.XR.Interaction;
-using static UnityEngine.GraphicsBuffer;
 
 public class CharacterMovement : MonoBehaviour
 {
@@ -70,5 +65,33 @@ public class CharacterMovement : MonoBehaviour
         this.dmgMod = 2;
         yield return new WaitForSeconds(time);
         this.dmgMod = 1;
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.CompareTag("Door"))
+        {
+            GameObject door = col.gameObject;
+            Room fromRoom = door.GetComponentInParent<Room>();
+            RoomData.Dir doorDir = fromRoom.GetDoorDirection(door);
+
+            if (fromRoom.IsDoorLocked(doorDir))
+                return;
+
+            Vector2 telePos = fromRoom.TeleportLocationToNextRoom(door);
+            Room toRoom = fromRoom.GetRoomFromDirection(doorDir);
+            mainCam.GetComponent<CameraStandard>().MoveTo(toRoom.CameraPosition);
+            transform.position = new (telePos.x, telePos.y, transform.position.z);
+
+            if (toRoom.Started == false && toRoom.Ended == false)
+                toRoom.StartRoom();
+            else
+                toRoom.SetVisibility(true);
+
+            if (fromRoom.Started == true && fromRoom.Ended == false)
+                fromRoom.EndRoom();
+
+            fromRoom.SetVisibility(false);
+        }
     }
 }
