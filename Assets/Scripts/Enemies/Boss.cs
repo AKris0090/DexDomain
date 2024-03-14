@@ -296,9 +296,9 @@ public class Boss : Enemy
                     Vector2 bossLoc = boss.transform.position;
                     Bullet newBullet = EnemyManager.Instance.GetBullet(boss.transform.position, boss.transform.rotation);
                     // Fire bullets perpendicuarly from the direction of travel
-                    newBullet.SetTarget(line.Perpendicular1() + bossLoc, boss.dashForce, 3, boss.gameObject);
+                    newBullet.SetTarget(Vector2.Perpendicular(line) + bossLoc, boss.dashForce, 3, boss.gameObject);
                     newBullet = EnemyManager.Instance.GetBullet(boss.transform.position, boss.transform.rotation);
-                    newBullet.SetTarget(line.Perpendicular1() * -1 + bossLoc, boss.dashForce, 3, boss.gameObject);
+                    newBullet.SetTarget(Vector2.Perpendicular(line) * -1 + bossLoc, boss.dashForce, 3, boss.gameObject);
                     yield return new WaitForSeconds(boss.dashFirerate / boss.phase);
                 }
                 // Update the current location
@@ -337,7 +337,7 @@ public class Boss : Enemy
                 Vector3 playerPos = EnemyManager.Instance.GetPlayerPosition();
                 Vector2 line = -(boss.transform.position - playerPos);
                 // OuterArc should be at a 45 degree angle from the boss to the player
-                Vector3 outerArc = line + line.Perpendicular1();
+                Vector3 outerArc = line + Vector2.Perpendicular(line);
                 for (int j = 0; j < phasedNumOfShells; j++)
                 {
                     // calculate the angle the bullet should be fired at

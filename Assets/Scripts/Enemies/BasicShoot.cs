@@ -81,7 +81,7 @@ public class BasicShoot : Enemy
                         circiling = true;
                         circelingDirection = Random.Range(-1, 1) < 0 ? -1 : 1;
                     }
-                    circilingVector = line.Perpendicular1() * circelingDirection;
+                    circilingVector = Vector2.Perpendicular(line) * circelingDirection;
                     float x = Random.Range(-1, 1);
                     float y = Random.Range(-1, 1);
                     Vector2 offset = new Vector2(x, y);
