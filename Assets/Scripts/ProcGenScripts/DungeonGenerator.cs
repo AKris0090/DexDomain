@@ -17,7 +17,7 @@ public class DungeonGenerator : MonoBehaviour
 
     public List<RoomData> SpawnableRooms = new();
     public GameObject BossRoomPrefab;
-
+    [SerializeField]
     private GameObject _root;
     private readonly List<Room> _generatedRooms = new();
     [SerializeField]
@@ -32,7 +32,7 @@ public class DungeonGenerator : MonoBehaviour
     private float _branchingFactor = 1f;
     [SerializeField]
     private float _centeringFactor = 1f;
-    public void StartGeneration() => StartCoroutine(GenerateDungeon());
+    public void Start() => StartCoroutine(GenerateDungeon());
 
     public void DestroyDungeon()
     {
@@ -108,7 +108,8 @@ public class DungeonGenerator : MonoBehaviour
         }
         // Second pass to create Boss room
         Debug.Log("Generating boss room");
-        var bossRoom = Instantiate(BossRoomPrefab, new Vector3(50000f, 50000f), Quaternion.identity);
+        var bossRoom = Instantiate(BossRoomPrefab, new Vector3(5000f, 5000f), Quaternion.identity);
+        bossRoom.SetActive(false);
         var pair = FindFurthestRoom();
         Room furthestRoom = pair.Item1;
         RoomData.Dir dirToBoss = pair.Item2;
@@ -120,56 +121,74 @@ public class DungeonGenerator : MonoBehaviour
         // Fourth pass to spawn enemies
         Debug.Log("Spawning enemies");
         StartCoroutine(SpawnEnemies());
+
+        // Move player to the first room
+        if (GameObject.FindGameObjectWithTag("Player") == null)
+        {
+            Debug.LogError("Player not found in scene. Please add a player to the scene.");
+            Debug.Break();
+        }
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        player.transform.position = _generatedRooms[0].CameraPosition;
     }
 
     private IEnumerator CreateDoorsAndMeshes()
     {
         if (!_root)
-            _root = new GameObject("NavMesh");
-        var navMesh = _root.AddComponent<NavMeshSurface>();
-        navMesh.collectObjects = CollectObjects.Children;
-        navMesh.useGeometry = NavMeshCollectGeometry.RenderMeshes;
+            _root = new GameObject("Map");
+        var meshObj = new GameObject("NavMesh");
+        var navMesh = meshObj.AddComponent<NavMeshSurface>();
+        meshObj.AddComponent<CollectSources2d>();
+        navMesh.collectObjects = CollectObjects.All;
+        navMesh.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
         navMesh.agentTypeID = 0;
         navMesh.defaultArea = 0;
-        //navMesh.size = new Vector2(_roomData.Width, _roomData.Height);
-        var navCollector = _root.AddComponent<CollectSources2d>();
-        _root.transform.rotation = Quaternion.Euler(-90, 0, 0);
-        var settings = navMesh.GetBuildSettings();
-        settings.agentRadius = 2f;
-        settings.agentHeight = 2f;
-        settings.agentClimb = 0.75f;
-        settings.minRegionArea = 1f;
-        settings.tileSize = 8;
+        meshObj.transform.rotation = Quaternion.Euler(-90, 0, 0);
+        navMesh.overrideTileSize = true;
+        navMesh.tileSize = 64;
+        navMesh.overrideVoxelSize = true;
+        navMesh.voxelSize = 0.3f;
 
         foreach (Room room in _generatedRooms)
         {
             room.transform.parent = _root.transform;
             room.CreateDoors();
             room.CreateNavMeshes();
-            yield return new WaitForEndOfFrame();
+            room.SetVisibility(false);
         }
 
-        navMesh.BuildNavMesh();
+        yield return new WaitForFixedUpdate();
+
+        navMesh.BuildNavMeshAsync();
     }
 
     private IEnumerator SpawnEnemies()
     {
+        GameObject enemyRoot = new ("Enemies");
         foreach (Room room in _generatedRooms)
         {
+            if (XY(room) == (0, 0))
+                continue;
+
             room.GenerateSpawnPoints(UnityEngine.Random.Range(_minEnemies, _maxEnemies));
             EnemyManager.Instance.GetRandomEnemies(
                 UnityEngine.Random.Range(_minEnemies, _maxEnemies), 
-                out room.Enemies
+                out var enemies
             );
-            foreach (var (spawn, enemy) in room.SpawnPoints.Zip(room.Enemies, 
+            foreach (var (spawn, enemy) in room.SpawnPoints.Zip(enemies, 
                 (s, e) => new Tuple<GameObject, Enemy>(s, e)))
             {
-                GameObject newEnemy = Instantiate(enemy.gameObject);
+                GameObject newEnemy = Instantiate(enemy.gameObject, enemyRoot.transform);
                 newEnemy.transform.position = spawn.transform.position;
                 newEnemy.SetActive(false);
+                room.Enemies.Add(newEnemy);
             }
             yield return new WaitForEndOfFrame();
         }
+
+        // Start the first room
+        _generatedRooms[0].StartRoom(lockDoors: false);
     }
 
     private (int, int) XY(Room room) => (room.DistanceFromStart.x, room.DistanceFromStart.y);
@@ -303,9 +322,16 @@ public class DungeonGenerator : MonoBehaviour
                     
                     Room roomHit = hitObject.GetComponent<Room>();
                     Gizmos.color = Color.red;
-                    if (roomHit.GetConnectedRooms().Contains(room))
+                    try 
                     {
-                        Gizmos.color = Color.green;
+                        if (roomHit.GetConnectedRooms().Contains(room))
+                        {
+                            Gizmos.color = Color.green;
+                        }
+                    }
+                    catch (NullReferenceException)
+                    {
+                        Gizmos.color = Color.magenta;
                     }
                     Gizmos.DrawWireCube(raycastHits[0].collider.bounds.center,
                         raycastHits[0].collider.bounds.size);

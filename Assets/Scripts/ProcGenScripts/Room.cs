@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using ProcGenScripts;
 using UnityEngine;
 using NavMeshPlus.Components;
-using NavMeshPlus.Extensions;
-using UnityEngine.AI;
 
 public class Room : MonoBehaviour
 {
@@ -11,8 +9,9 @@ public class Room : MonoBehaviour
     public Room SouthRoom  = null;
     public Room EastRoom  = null;
     public Room WestRoom  = null;
+    public Vector2 CameraPosition => transform.position;
 
-    public List<Enemy> Enemies;
+    public List<GameObject> Enemies = new();
     public bool Started => _isStart;
     public bool Ended => _isEnd;
     public List<GameObject> SpawnPoints => _spawnPoints;
@@ -109,6 +108,7 @@ public class Room : MonoBehaviour
         
         foreach (var door in doors)
         {
+            door.Value.tag = "Door";
             _colliders.Add(door.Key switch
                 {
                     RoomData.Dir.North => ColliderType.NorthDoor,
@@ -232,46 +232,6 @@ public class Room : MonoBehaviour
         return diff.y > 0 ? RoomData.Dir.North : RoomData.Dir.South;
     }
 
-    //public List<Room> FindAdjRooms()
-    //{
-    //    List<Room> adjRooms = new();
-    //    foreach (RoomData.Dir dir in availableDirections)
-    //    {
-    //        if (GetRoomFromDirection(dir) != null)
-    //            adjRooms.Add(GetRoomFromDirection(dir));
-    //        else
-    //        {
-    //            Vector2 origin = dir switch
-    //            {
-    //                RoomData.Dir.North => new Vector2(0, _roomData.Height / 2),
-    //                RoomData.Dir.East => new Vector2(_roomData.Width / 2, 0),
-    //                RoomData.Dir.South => new Vector2(0, -_roomData.Height / 2),
-    //                RoomData.Dir.West => new Vector2(-_roomData.Width / 2, 0),
-    //                _ => Vector2.zero,
-    //            };
-
-    //            Vector2 direction = dir switch
-    //            {
-    //                RoomData.Dir.North => Vector2.up,
-    //                RoomData.Dir.East  => Vector2.right,
-    //                RoomData.Dir.South => Vector2.down,
-    //                RoomData.Dir.West  => Vector2.left,
-    //                _ => Vector2.zero,
-    //            };
-
-    //            origin += new Vector2(transform.position.x, transform.position.y);
-    //            RaycastHit2D hit = Physics2D.Raycast(origin, direction, 0.5f);
-    //            if (hit.collider != null)
-    //            {
-    //                if (hit.collider.gameObject.TryGetComponent<Room>(out var hitRoom))
-    //                    adjRooms.Add(hitRoom);
-    //            }
-    //        }
-    //    }
-    //    return adjRooms;
-    //}
-
-
     public ref readonly RoomData GetRoomData()
     {
         return ref _roomData;
@@ -294,13 +254,15 @@ public class Room : MonoBehaviour
         _isStart = true;
         SetVisibility(true);
 
-        foreach (var enemy in Enemies)
-        {
-            if (enemy)
-                enemy.gameObject.SetActive(true);
-        }
+        if (Enemies != null)
+            foreach (var enemy in Enemies)
+            {
+                if (enemy)
+                    enemy.gameObject.SetActive(true);
+            }
 
         if (lockDoors) LockDoors();
+        else UnlockDoors();
     }
 
     public void EndRoom(bool unlockDoors=true)
@@ -312,16 +274,18 @@ public class Room : MonoBehaviour
         }
 
         _isEnd = true;
-        foreach (var enemy in Enemies)
-        { 
-            if (enemy)
-            {
-                if (EnemyManager.Instance)
-                    EnemyManager.Instance.DamageEnemy(enemy.gameObject, 1000);
-                else
-                    Destroy(enemy.gameObject);
+
+        if (Enemies != null)
+            foreach (var enemy in Enemies)
+            { 
+                if (enemy)
+                {
+                    if (EnemyManager.Instance)
+                        EnemyManager.Instance.DamageEnemy(enemy.gameObject, 1000);
+                    else
+                        Destroy(enemy.gameObject);
+                }
             }
-        }
 
         if (unlockDoors) UnlockDoors();
     }
@@ -332,6 +296,7 @@ public class Room : MonoBehaviour
         foreach (var door in _doors)
         {
             door.Value.GetComponent<SpriteRenderer>().enabled = visible;
+            door.Value.GetComponent<BoxCollider2D>().enabled = visible;
         }
     }
 
@@ -397,18 +362,22 @@ public class Room : MonoBehaviour
             return false;
         }
 
-        return GetDoorCollider(dir).enabled;
+        return _doors[dir].GetComponent<SpriteRenderer>().sprite == _roomData.DoorClosedSprite;
     }
 
-    private Collider2D GetDoorCollider(RoomData.Dir dir)
+    public RoomData.Dir GetDoorDirection(GameObject door)
     {
-        return dir switch
+        return door switch
         {
-            RoomData.Dir.North => _colliders[ColliderType.NorthDoor].GetComponent<BoxCollider2D>(),
-            RoomData.Dir.East => _colliders[ColliderType.EastDoor].GetComponent<BoxCollider2D>(),
-            RoomData.Dir.South => _colliders[ColliderType.SouthDoor].GetComponent<BoxCollider2D>(),
-            RoomData.Dir.West => _colliders[ColliderType.WestDoor].GetComponent<BoxCollider2D>(),
-            _ => null,
+            { } when _doors.ContainsKey(RoomData.Dir.North) && door == _doors[RoomData.Dir.North] 
+                => RoomData.Dir.North,
+            { } when _doors.ContainsKey(RoomData.Dir.South) && door == _doors[RoomData.Dir.South]
+                => RoomData.Dir.South,
+            { } when _doors.ContainsKey(RoomData.Dir.East) && door == _doors[RoomData.Dir.East]
+                => RoomData.Dir.East,
+            { } when _doors.ContainsKey(RoomData.Dir.West) && door == _doors[RoomData.Dir.West]
+                => RoomData.Dir.West,
+            _ => RoomData.Dir.North,
         };
     }
 
@@ -451,6 +420,7 @@ public class Room : MonoBehaviour
     }
     public void CreateNavMeshes()
     {
+
         foreach (var collider in _colliders)
         {
             var meshMod = collider.Value.AddComponent<NavMeshModifier>();
@@ -458,10 +428,64 @@ public class Room : MonoBehaviour
             meshMod.AffectsAgentType(-1);
             meshMod.area = 1;
         }
-
-        var mod = gameObject.AddComponent<NavMeshModifier>();
+        var walkBoxObj = new GameObject("Walk Box");
+        walkBoxObj.transform.parent = transform;
+        walkBoxObj.transform.localPosition = Vector3.zero;
+        var walkBox = walkBoxObj.AddComponent<BoxCollider2D>();
+        walkBox.size = new(
+            _roomData.Width - _roomData.WallThickness,
+            _roomData.Height - _roomData.WallThickness
+        );
+        walkBox.isTrigger = true;
+        var mod = walkBoxObj.AddComponent<NavMeshModifier>();
         mod.overrideArea = true;
+        mod.AffectsAgentType(-1);
         mod.area = 0;
+        Invoke(nameof(SetWalkBoxLayer), 0.75f);
+    }
+
+    private void SetWalkBoxLayer()
+    {
+        var walkBoxObj = transform.Find("Walk Box").gameObject;
+        walkBoxObj.layer = LayerMask.NameToLayer("Ignore Raycast");
+    }
+
+
+    public Vector2 GetTeleportLocation(RoomData.Dir dir)
+    {
+        return dir switch
+        {
+            RoomData.Dir.North => new (
+                transform.position.x,
+                transform.position.y + _roomData.Height / 2 - _roomData.WallThickness
+            ),
+            RoomData.Dir.East => new (
+                transform.position.x + _roomData.Width / 2 - _roomData.WallThickness, 
+                transform.position.y
+            ),
+            RoomData.Dir.South => new (
+                transform.position.x, 
+                transform.position.y - _roomData.Height / 2 + _roomData.WallThickness
+            ),
+            RoomData.Dir.West => new (
+                transform.position.x - _roomData.Width / 2 + _roomData.WallThickness, 
+                transform.position.y
+            ),
+            _ => Vector2.zero,
+        };
+    }
+    public Vector2 TeleportLocationToNextRoom(GameObject door)
+    {
+        var nextRoom = GetRoomFromDirection(GetDoorDirection(door));
+
+        if (!nextRoom)
+        {
+            Debug.LogError("Next room not found");
+            Debug.Break();
+            return Vector2.zero;
+        }
+
+        return nextRoom.GetTeleportLocation(nextRoom.GetDirectionToRoom(this));
     }
 
     // Private functions
@@ -479,6 +503,7 @@ public class Room : MonoBehaviour
             go.transform.parent = transform;
             go.transform.localPosition = Vector3.zero;
             go.isStatic = true;
+            go.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         }
         BoxCollider2D collider = go.AddComponent<BoxCollider2D>();
         float wallLengthH = _roomData.Width / 2 - _roomData.DoorSize / 2;
@@ -571,12 +596,6 @@ public class Room : MonoBehaviour
         if (dir == RoomData.Dir.West || dir == RoomData.Dir.East)
             collider.size = new (collider.size.y, collider.size.x);
 
-        //door.GetComponent<BoxCollider2D>().size *= dir switch
-        //{
-        //    RoomData.Dir.North or RoomData.Dir.South => new Vector2(1 / doorScale.x, 1 / doorScale.y),
-        //    RoomData.Dir.East or RoomData.Dir.West => new Vector2(1 / doorScale.y, 1 / doorScale.x),
-        //    _ => Vector2.one
-        //};
         door.transform.SetLocalPositionAndRotation(dir switch
         {
             RoomData.Dir.North => new Vector3(0, _roomData.Height / 2),
@@ -593,7 +612,7 @@ public class Room : MonoBehaviour
             _ => Quaternion.identity,
         });
 
-
+        door.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
 
         return door;
     }
@@ -603,7 +622,7 @@ public class Room : MonoBehaviour
         SpriteRenderer roomRenderer = gameObject.AddComponent<SpriteRenderer>();
         roomRenderer.sprite = _roomData.RoomSprite;
         roomRenderer.sortingLayerName = "Rooms";
-        roomRenderer.sortingOrder = 0;
+        roomRenderer.sortingOrder = -1;
 
         return roomRenderer;
     }
