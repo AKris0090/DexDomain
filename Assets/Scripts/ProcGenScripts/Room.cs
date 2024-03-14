@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using ProcGenScripts;
 using UnityEngine;
 using NavMeshPlus.Components;
-using NavMeshPlus.Extensions;
-using UnityEngine.AI;
 
 public class Room : MonoBehaviour
 {
@@ -462,6 +460,32 @@ public class Room : MonoBehaviour
         var mod = gameObject.AddComponent<NavMeshModifier>();
         mod.overrideArea = true;
         mod.area = 0;
+    }
+
+    public Vector2 GetCameraPosition => transform.position;
+
+    public Vector2 GetTeleportLocation(RoomData.Dir dir)
+    {
+        return dir switch
+        {
+            RoomData.Dir.North => new Vector2(
+                transform.position.x,
+                transform.position.y + _roomData.Height / 2 - _roomData.WallThickness
+            ),
+            RoomData.Dir.East => new Vector2(
+                transform.position.x + _roomData.Width / 2 - _roomData.WallThickness, 
+                transform.position.y
+            ),
+            RoomData.Dir.South => new Vector2(
+                transform.position.x, 
+                transform.position.y - _roomData.Height / 2 + _roomData.WallThickness
+            ),
+            RoomData.Dir.West => new Vector2(
+                transform.position.x - _roomData.Width / 2 + _roomData.WallThickness, 
+                transform.position.y
+            ),
+            _ => Vector2.zero,
+        };
     }
 
     // Private functions
