@@ -4,6 +4,7 @@ using System.ComponentModel.Design.Serialization;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 using static RoomData;
 using static Unity.VisualScripting.Member;
 
@@ -148,6 +149,7 @@ public class Boss : Enemy
                 boss.bloodEmmiter.Emit(50);
                 yield return new WaitForSeconds(0.3f);
             }
+            SceneManager.LoadScene("Victory"); 
             Destroy(boss.gameObject);
         }
 

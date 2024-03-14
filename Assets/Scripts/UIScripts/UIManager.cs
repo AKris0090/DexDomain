@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.WSA;
 
 // edited from mechanics module
@@ -54,7 +55,8 @@ public class UIManager : MonoBehaviour
         }
 
         // start game
-        SwapMenu(MENU.Start);
+        // SwapMenu(MENU.Start);
+        StartGame();
     }
 
     // Update is called once per frame
@@ -151,10 +153,10 @@ public class UIManager : MonoBehaviour
     }
 
     // other things
-    void EndGame()
+    public void EndGame()
     {
         Debug.Log("ending game");
         CloseAllMenus();
-        OpenMenu(MENU.End);
+        SceneManager.LoadScene("GameOver");
     }
 }

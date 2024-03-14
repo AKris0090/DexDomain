@@ -8,4 +8,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/CardSelect.unity
+    guid: fb17246179ea79c42b6298c772b7e000
+  - enabled: 1
+    path: Assets/Scenes/BossTest.unity
+    guid: a1a5b70a577adfc4eb7c8cf35888dcf8
+  - enabled: 1
+    path: Assets/Scenes/FinalScene.unity
+    guid: 7b74354e073583847b530b8cbac2ad20
+  - enabled: 1
+    path: Assets/Scenes/Victory.unity
+    guid: a0132702b49361641a140bafc5aca795
+  - enabled: 1
+    path: Assets/Scenes/GameOver.unity
+    guid: c8d100fb208a7f9499b7d001fd9bd655
   m_configObjects: {}
