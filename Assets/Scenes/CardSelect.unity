@@ -157,7 +157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 62}
+  m_AnchoredPosition: {x: 0, y: -15}
   m_SizeDelta: {x: 38.51123, y: -332.92157}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &643930043
@@ -180,13 +180,15 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Moore Macauley - Enemy Design, Main Menu Design\n\nArjun Krishnan - Abilities,
-    Particle Effects, Character Controller\n\nJaxon Ruiz - Card Management Backend,
-    In-Game Art Assets\n\nLyssa Li - UI Management, U/CanvasI Art Assets\n\nLily
-    Chen (external help) - Jack and Queen sprites \n\nExternal Sources:\nNavMeshPlus:
-    https://github.com/h8man/NavMeshPlus.git\nAssistance with NavMeshPlus: https://www.youtube.com/watch?v=HRX0pUSucW4\n\nLightning
-    Particle Texture:\nhttps://opengameart.org/content/radial-lightning-effect\n\nFonts:\nhttps://www.fontspace.com/rony-siswadi-architect-5-font-f57946\n\nhttps://www.fontspace.com/g-grip-font-f93737\n\nPools:
-    https://assetstore.unity.com/packages/tools/utilities/pools-231438\n\n"
+  m_text: "Moore Macauley - Enemy Design, Main Menu Design, Enemy VFX\n\nArjun Krishnan
+    - Abilities, Particle Effects, Character Controller\n\nJaxon Ruiz - Card Management
+    Backend, In-Game Art Assets\n\nLyssa Li - UI Management, U/CanvasI Art Assets\n\nCole
+    Falxa-Sturken - Procedural Generation, Map Design\n\nLily Chen (external help)
+    - Jack and Queen sprites \n\nExternal Sources:\nNavMeshPlus: https://github.com/h8man/NavMeshPlus.git\nAssistance
+    with NavMeshPlus: https://www.youtube.com/watch?v=HRX0pUSucW4\n\nLightning Particle
+    Texture:\nhttps://opengameart.org/content/radial-lightning-effect\n\nFonts:\nhttps://www.fontspace.com/rony-siswadi-architect-5-font-f57946\nhttps://www.fontspace.com/g-grip-font-f93737\n\nPools:
+    https://assetstore.unity.com/packages/tools/utilities/pools-231438\n\nMusic:\nhttps://pixabay.com/music/trap-hip-hop-black-angel-full-161265/\n\nGitHub
+    Copilot: Weighted Random Class"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bad48ea090d2d514d84320e16c1a88eb, type: 2}
   m_sharedMaterial: {fileID: -4357950617727951668, guid: bad48ea090d2d514d84320e16c1a88eb, type: 2}
@@ -213,8 +215,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 18.9
+  m_fontSizeBase: 18.9
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -249,7 +251,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 19.325684, y: 0, z: 21.878906, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1013,7 +1015,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -27.320007, y: 40.400024}
+  m_AnchoredPosition: {x: -27.319946, y: 40.400024}
   m_SizeDelta: {x: -54.599976, y: 80.80005}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1180275443
@@ -1193,8 +1195,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 18.47998, y: -42.835022}
+  m_SizeDelta: {x: 75.471, y: -85.669}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1479010966
 MonoBehaviour:
